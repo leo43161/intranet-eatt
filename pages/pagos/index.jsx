@@ -40,7 +40,7 @@ export default function Pagos() {
                         </ListGroup>
                     </Form>
                 </div>
-                <div class="table-responsive">
+                <div className="table-responsive">
                     <Table striped bordered hover>
                         <thead>
                             <tr>

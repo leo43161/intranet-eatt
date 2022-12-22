@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import DropZone from '../../components/Dropzone';
@@ -7,10 +6,7 @@ import DropZone from '../../components/Dropzone';
 export default function Carga() {
     const [pagoFile, setPagoFile] = useState(null)
     return (
-        <div>
-            <ListGroup className="container mb-4">
-                <ListGroup.Item className='col d-flex justify-content-center'>Pagos</ListGroup.Item>
-            </ListGroup>
+        <div className="mt-4">
             <div className="container d-flex justify-content-center">
                 <div className="col-8">
                     <Card className="p-4">
