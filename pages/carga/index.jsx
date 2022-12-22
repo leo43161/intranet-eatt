@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileLines } from '@fortawesome/free-solid-svg-icons';
+import Button from 'react-bootstrap/Button';
+import DropZone from '../../components/Dropzone';
 
 export default function Carga() {
+    const [pagoFile, setPagoFile] = useState(null)
     return (
         <div>
             <ListGroup className="container mb-4">
@@ -12,14 +14,14 @@ export default function Carga() {
             <div className="container d-flex justify-content-center">
                 <div className="col-8">
                     <Card className="p-4">
-                        <h2 className="text-center mb-3">Arrastre para cargar el SIGEDOC</h2>
-                        <div className=" d-flex justify-content-center">
-                            <div style={{ border: "dashed 3px #6C757D", height: "300px" }} className="col-8 d-flex justify-content-center align-items-center rounded">
-                                <div className="flex-column d-flex p-4">
-                                    <FontAwesomeIcon size="3x" icon={faFileLines} />
-                                    <h4 className="m-0">Arrastre aqui</h4>
-                                </div>
-                            </div>
+                        <h2 className="text-center mb-3">Arrastre para cargar los pagos</h2>
+                        <div className="d-flex justify-content-center mb-3" style={{ height: "300px" }}>
+                            <DropZone setState={setPagoFile}></DropZone>
+                        </div>
+                        <div className="d-flex justify-content-center">
+                            <Button variant="success" disabled={!pagoFile}>
+                                <span className="">Subir pagos</span>
+                            </Button>
                         </div>
                     </Card>
                 </div>
