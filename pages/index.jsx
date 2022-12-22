@@ -8,7 +8,7 @@ export default function Home() {
       <div className="d-flex justify-content-center py-4">
         <div className="row row-cols-1 row-cols-md-2 g-3 col-6">
           <div className="col">
-            <Link href="/carga">
+            <Link className="text-dark" href="/carga">
               <div className="card">
                 <div className="d-flex align-items-center justify-content-center py-4">
                   <FontAwesomeIcon size="3x" icon={faFileLines} />
@@ -18,7 +18,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="col">
-            <Link href="/pagos">
+            <Link className="text-dark" href="/pagos">
               <div className="card">
                 <div className="d-flex align-items-center justify-content-center py-4">
                   <FontAwesomeIcon size="3x" icon={faBook} />
