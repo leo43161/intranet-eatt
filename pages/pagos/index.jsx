@@ -2,8 +2,12 @@ import Table from 'react-bootstrap/Table';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import TableExport from 'table-export';
 
 export default function Pagos() {
+    const excelHandler = () => {
+        TableExport('table-excel', 'test', 'doc');
+    }
     return (
         <div>
             <div className="container">
@@ -30,7 +34,7 @@ export default function Pagos() {
                                 </div>
                             </ListGroup.Item>
                             <ListGroup.Item className='col-md-3 col-lg-3 col-12 d-flex align-items-center justify-content-around'>
-                                <Button variant="success" disabled>
+                                <Button variant="success" onClick={excelHandler} >
                                     <span className="">Descargar Excel</span>
                                 </Button>
                                 <Button variant="primary">
@@ -41,7 +45,7 @@ export default function Pagos() {
                     </Form>
                 </div>
                 <div className="table-responsive">
-                    <Table striped bordered hover>
+                    <Table striped bordered hover id='table-excel'>
                         <thead>
                             <tr>
                                 <th>N°</th>
