@@ -1,0 +1,16 @@
+for(fila)
+	{
+	//revisa en la fila si esta cargado el proveedor
+	if (codret == 000) y "sp_verificarCargaOrdenPago" entre un null (significa que no esta cargado en el sistema)
+		{
+		if verificar si esta cargado el proveedor "sp_VerificarCargaProveedor"
+			{
+			si no esta cargado store procedure "sp_InsertarProveedor";
+			}
+		cargar ordenpago store procedure "sp_InsertarOrdenPago";
+		}
+		
+	//revisa la retencion cargada
+	if (codret == 409) y "sp_VerificarCargaDetalleOrdenPago" es falso,  verifica si esta cargada la retencion select ( from ordenpago and codret son verdadero)
+		cargar detalleenpago () "sp_InsertarDetalleOrdenPago";
+	}

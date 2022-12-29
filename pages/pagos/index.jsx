@@ -3,18 +3,18 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import TableExport from 'table-export';
+import ItemTable from '../../components/pagos/ItemTable';
+import { useState } from 'react';
 
 export default function Pagos() {
+    const [edit, setEdit] = useState(null);
     const excelHandler = () => {
         TableExport('table-excel', 'test', 'doc');
     }
     return (
         <div>
             <div className="container">
-                <ListGroup>
-                    <ListGroup.Item className='col d-flex justify-content-center'>Pagos</ListGroup.Item>
-                </ListGroup>
-                <div>
+                <div className="my-3">
                     <Form>
                         <ListGroup horizontal>
                             <ListGroup.Item className='col-md-5 col-lg-4 col-12 d-flex align-items-center'>
@@ -48,6 +48,7 @@ export default function Pagos() {
                     <Table striped bordered hover id='table-excel'>
                         <thead>
                             <tr>
+                                <th>Editar</th>
                                 <th>N°</th>
                                 <th>LIB</th>
                                 <th>OP</th>
@@ -69,66 +70,9 @@ export default function Pagos() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>745</td>
-                                <td>130023</td>
-                                <td>06/12/2022</td>
-                                <td>30612790813</td>
-                                <td className='text-nowrap'>COMPAÑIA DE CIRCUITOS CERRADOS</td>
-                                <td className='text-nowrap'>VILLA JARDIN LOTE 1 - EL CADILLAL</td>
-                                <td>B</td>
-                                <td>06-03616</td>
-                                <td>18/11/2022</td>
-                                <td>43.560,00</td>
-                                <td>2.5</td>
-                                <td>2.178,00</td>
-                                <td>8.256,60</td>
-                                <td>4.800,00</td>
-                                <td>6907</td>
-                                <td>0,625</td>
-                                <td>3.000,00</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>745</td>
-                                <td>130023</td>
-                                <td>06/12/2022</td>
-                                <td>30612790813</td>
-                                <td className='text-nowrap'>COMPAÑIA DE CIRCUITOS CERRADOS</td>
-                                <td className='text-nowrap'>VILLA JARDIN LOTE 1 - EL CADILLAL</td>
-                                <td>B</td>
-                                <td>06-03616</td>
-                                <td>18/11/2022</td>
-                                <td>43.560,00</td>
-                                <td>2.5</td>
-                                <td>2.178,00</td>
-                                <td>8.256,60</td>
-                                <td>4.800,00</td>
-                                <td>6907</td>
-                                <td>0,625</td>
-                                <td>3.000,00</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>745</td>
-                                <td>130023</td>
-                                <td>06/12/2022</td>
-                                <td>30612790813</td>
-                                <td className='text-nowrap'>COMPAÑIA DE CIRCUITOS CERRADOS</td>
-                                <td className='text-nowrap'>VILLA JARDIN LOTE 1 - EL CADILLAL</td>
-                                <td>B</td>
-                                <td>06-03616</td>
-                                <td>18/11/2022</td>
-                                <td>43.560,00</td>
-                                <td>2.5</td>
-                                <td>2.178,00</td>
-                                <td>8.256,60</td>
-                                <td>4.800,00</td>
-                                <td>6907</td>
-                                <td>0,625</td>
-                                <td>3.000,00</td>
-                            </tr>
+                            <ItemTable  setEdit={setEdit} edit={edit}></ItemTable>
+                            <ItemTable  setEdit={setEdit} edit={edit}></ItemTable>
+                            <ItemTable  setEdit={setEdit} edit={edit}></ItemTable>
                         </tbody>
                     </Table>
                 </div>
