@@ -1,7 +1,8 @@
-
+import axios from "axios";
+import Consultas from "./consultasHelpers";
+const { verificarProv, verificarOrden, verificarDetalleOrden, cargarOrden, cargarProv } = Consultas;
 function formatearTxt(txt) {
     const contenido = txt;
-    console.log(contenido);
     const arrayData = contenido.split(/\r\n|\r|\n/, -1);
     const listaPagos = [];
     arrayData.forEach((element) => {
@@ -25,7 +26,7 @@ function formatearTxt(txt) {
         listaPagos.push(pago);
     })
     /* console.log(arrayData); */
-    console.log(listaPagos);
+    subirPagos(listaPagos);
 }
 
 export default function leerArchivo(file) {
@@ -39,4 +40,33 @@ export default function leerArchivo(file) {
         return formatearTxt(contenido);
     };
     lector.readAsText(archivo);
+}
+
+const subirPagos = async (pagos = []) => {
+    const countPagos = {
+        proveedores: [],
+        ordenesDePago: [],
+        proveedoresRepetidos: [],
+        pagosRepetidos: [],
+        cantidad: 0
+    }
+    pagos.forEach(async (pago, index) => {
+        if (index > 7) {
+            if (pago.codRet === "000" && !await verificarOrden(pago.ordenPago, pago.cuit)) {
+                if (!await verificarProv(pago.cuit)) {
+                    countPagos.proveedores.push(pago.cuit)
+                    console.log(pago);
+                } else {
+                    countPagos.proveedoresRepetidos.push(pago.cuit)
+                }
+                countPagos.ordenesDePago.push(pago.ordenPago)
+            } else if (!await verificarDetalleOrden(pago.ordenPago, pago.codRet)) {
+                countPagos.ordenesDePago.push(pago.ordenPago)
+            } else {
+                countPagos.pagosRepetidos.push(pago.ordenPago)
+            }
+        }
+        countPagos.cantidad++;
+    })
+    console.log(countPagos);
 }
