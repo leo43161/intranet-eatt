@@ -1,6 +1,6 @@
 import { pool } from "../../config/db";
 const queryGetProv = (cuit) => `CALL sp_VerificarCargaProveedor(${cuit});`;
-const queryPostProv = ({ cuit, nombreP, domicilio, telefono, email }) => `CALL sp_InsertarProveedor(${cuit},${nombreP},${domicilio},${activo},${telefono},${email});`;
+const queryPostProv = ({ cuit, nombreP, domicilio, telefono, email }) => `CALL sp_InsertarProveedor(${cuit},'${nombreP}','${domicilio}','${telefono}','${email}');`;
 
 export default async function handler(req, res) {
     switch (req.method) {
@@ -15,6 +15,7 @@ export default async function handler(req, res) {
 
 const getProveedores = async (req, res) => {
     const { cuit } = req.query
+    console.log(queryGetProv(cuit));
     try {
         const results = await pool.query(queryGetProv(cuit));
         return res.status(200).json(results[0]);
@@ -24,11 +25,12 @@ const getProveedores = async (req, res) => {
 };
 
 const postProveedor = async (req, res) => {
-    const { prov } = req.query
+    const { proveedor } = req.body.params
     try {
-        const results = await pool.query(queryPostProv(prov));
+        const results = await pool.query(queryPostProv(proveedor));
         return res.status(200).json(results);
     } catch (error) {
+        console.log(queryPostProv(proveedor))
         return res.status(500).json({ error });
     }
 };

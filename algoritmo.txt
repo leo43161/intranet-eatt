@@ -9,8 +9,15 @@ for(fila)
 			}
 		cargar ordenpago store procedure "sp_InsertarOrdenPago";
 		}
-		
+	}
+
+for(fila){
 	//revisa la retencion cargada
 	if (codret == 409) y "sp_VerificarCargaDetalleOrdenPago" es falso,  verifica si esta cargada la retencion select ( from ordenpago and codret son verdadero)
-		cargar detalleenpago () "sp_InsertarDetalleOrdenPago";
+		if(verifcar si existe sp_verificarCargaOrdenPago )
+			obtener Idcontrol
+			cargar detalleenpago () "sp_InsertarDetalleOrdenPago";
+		sino {
+			sp_InsertarOrdenPago (generico los valores que son distintos) y sp_InsertarDetalleOrdenPago
+		}
 	}

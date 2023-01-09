@@ -1,6 +1,6 @@
 import axios from "axios";
 import Consultas from "./consultasHelpers";
-const { verificarProv, verificarOrden, verificarDetalleOrden, cargarOrden, cargarProv } = Consultas;
+const { verificarProv, verificarOrden, verificarDetalleOrden, cargarOrden, cargarProv, cargarDetallePago } = Consultas;
 function formatearTxt(txt) {
     const contenido = txt;
     const arrayData = contenido.split(/\r\n|\r|\n/, -1);
@@ -46,27 +46,47 @@ const subirPagos = async (pagos = []) => {
     const countPagos = {
         proveedores: [],
         ordenesDePago: [],
+        detalleDePago: [],
         proveedoresRepetidos: [],
+        pagosDetalleRepetidos: [],
         pagosRepetidos: [],
         cantidad: 0
     }
+    console.log(pagos);
     pagos.forEach(async (pago, index) => {
-        if (index > 7) {
-            if (pago.codRet === "000" && !await verificarOrden(pago.ordenPago, pago.cuit)) {
-                if (!await verificarProv(pago.cuit)) {
+        if (pago.codRet === "000" && !await verificarOrden(pago.ordenPago, pago.cuit)) {
+            console.log("PASA POR AQUI")
+            console.log(await verificarProv(pago.cuit));
+            const checkProv = await verificarProv(pago.cuit);
+            if (!checkProv) {
+                if (!countPagos.proveedores.includes(pago.cuit)) {
                     countPagos.proveedores.push(pago.cuit)
                     console.log(pago);
-                } else {
-                    countPagos.proveedoresRepetidos.push(pago.cuit)
+                    const resProv = await cargarProv(pago);
+                    console.log(resProv);
                 }
-                countPagos.ordenesDePago.push(pago.ordenPago)
-            } else if (!await verificarDetalleOrden(pago.ordenPago, pago.codRet)) {
-                countPagos.ordenesDePago.push(pago.ordenPago)
+            } else {
+                countPagos.proveedoresRepetidos.push(pago.cuit)
+            }
+            const resPago = await cargarOrden(pago);
+            console.log(pago);
+            countPagos.ordenesDePago.push(pago.ordenPago);
+        } else {
+            countPagos.pagosRepetidos.push(pago.ordenPago)
+        }
+    })
+    /* pagos.forEach(async (pago, index) => {
+        if (index < 10) {
+            if (!await verificarDetalleOrden(pago.ordenPago, pago.codRet)) {
+                console.log(pago);
+                countPagos.detalleDePago.push(pago.ordenPago)
+
+            } else if (await verificarDetalleOrden(pago.ordenPago, pago.codRet)) {
+                countPagos.pagosDetalleRepetidos.push(pago.ordenPago)
             } else {
                 countPagos.pagosRepetidos.push(pago.ordenPago)
             }
         }
-        countPagos.cantidad++;
-    })
+    }); */
     console.log(countPagos);
 }
