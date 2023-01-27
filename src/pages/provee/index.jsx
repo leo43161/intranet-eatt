@@ -3,9 +3,9 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import TableExport from 'table-export';
-import ItemTable from '../../components/pagos/ItemTable';
+import Comprobante from '../../components/proveedores/Comprobante';
 import { useState } from 'react';
-import PagosModal from '../../components/pagos/PagosModal';
+
 
 export default function Pagos() {
     const [show, setShow] = useState(false);
@@ -21,12 +21,7 @@ export default function Pagos() {
                 <div className="my-3">
                     <Form>
                         <ListGroup horizontal>
-                            <ListGroup.Item className='col-md-5 col-lg-4 col-12 d-flex align-items-center'>
-                                <p className="m-0 me-2">Orden de pago:</p>
-                                <div className="col">
-                                    <Form.Control type="email" placeholder="Inserte orden de pago" />
-                                </div>
-                            </ListGroup.Item>
+                            
                             <ListGroup.Item className='col-md-4 col-lg-5 col-12 d-flex align-items-center justify-content-around'>
                                 <div className="d-flex align-items-center">
                                     <p className="m-0 me-2">Desde:</p>
@@ -38,9 +33,7 @@ export default function Pagos() {
                                 </div>
                             </ListGroup.Item>
                             <ListGroup.Item className='col-md-3 col-lg-3 col-12 d-flex align-items-center justify-content-around'>
-                                <Button variant="success" onClick={excelHandler} >
-                                    <span className="">Descargar Excel</span>
-                                </Button>
+                                
                                 <Button variant="primary">
                                     <span className="">Filtrar</span>
                                 </Button>
@@ -52,36 +45,31 @@ export default function Pagos() {
                     <Table striped bordered hover id='table-excel'>
                         <thead>
                             <tr>
-                                <th>Editar</th>
-                                <th>N°</th>
-                                <th>LIB</th>
-                                <th>OP</th>
-                                <th>F. PAGO</th>
                                 <th>CUIT</th>
                                 <th>RAZON SOCIAL</th>
                                 <th>DOMICILIO</th>
-                                <th>TIPO</th>
                                 <th>FACTURA</th>
                                 <th>FECHA</th>
                                 <th>MONTO</th>
-                                <th>%</th>
                                 <th>SARET</th>
+                                <th>Imprimir</th>
                                 <th>Gan</th>
+                                <th>Imprimir</th>
                                 <th>SS</th>
-                                <th>ID</th>
-                                <th>%</th>
+                                <th>Imprimir</th>
                                 <th>TEM</th>
+                                <th>Imprimir</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <ItemTable setModal={setModal} handleShow={handleShow}></ItemTable>
-                            <ItemTable setModal={setModal} handleShow={handleShow}></ItemTable>
-                            <ItemTable setModal={setModal} handleShow={handleShow}></ItemTable>
+                            <Comprobante setModal={setModal} handleShow={handleShow}></Comprobante>
+                            <Comprobante setModal={setModal} handleShow={handleShow}></Comprobante>
+                            <Comprobante setModal={setModal} handleShow={handleShow}></Comprobante>
                         </tbody>
                     </Table>
                 </div>
             </div>
-            <PagosModal show={show} handleClose={handleClose} modal={modal}></PagosModal>
+           
         </div>
     )
 }

@@ -1,20 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
 
-export default function ItemTable({ edit, setEdit }) {
+export default function ItemTable({ setModal, handleShow }) {
+    const handleModal = (pago) => {
+        handleShow(true)
+        setModal(pago);
+    }
     return (
         <tr className="align-middle">
             <td className="text-center">
-                {edit === 1 ?
-                    <Button variant="success" onClick={() => setEdit(null)}>
-                        <FontAwesomeIcon size="1x" icon={faCheck} />
-                    </Button>
-                    :
-                    <Button variant="success" onClick={() => setEdit(1)} disabled={edit}>
-                        <FontAwesomeIcon size="1x" icon={faPen} />
-                    </Button>
-                }
+                <Button variant="success" onClick={(pago = {}) => handleModal(pago)}>
+                    <FontAwesomeIcon size="1x" icon={faPen} />
+                </Button>
             </td>
             <td>1</td>
             <td>745</td>

@@ -13,6 +13,7 @@ export default function Header() {
                     <Nav className="me-auto">
                         <Nav.Link href="/pagos" active={router.asPath === "/pagos"}>Pagos</Nav.Link>
                         <Nav.Link href="/carga" active={router.asPath === "/carga"}>Cargar pagos</Nav.Link>
+                        <Nav.Link href="/provee" active={router.asPath === "/provee"}>Imprimir Comprobantes</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>

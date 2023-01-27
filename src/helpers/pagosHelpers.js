@@ -52,10 +52,14 @@ const subirPagos = async (pagos = []) => {
         pagosRepetidos: [],
         cantidad: 0
     }
+    /* Se aplica la funcion para realizar la filtracion general */
+    const _pagos = filterPagos(pagos);
+
     console.log(pagos);
-    pagos.forEach(async (pago, index) => {
+    _pagos.forEach(async (pago, index) => {
+        console.log(pago.ctaEmisora === "71975050" ? pago : false);
         if (pago.codRet === "000" && !await verificarOrden(pago.ordenPago, pago.cuit)) {
-            console.log("PASA POR AQUI")
+            console.log("PASA POR AQUI");
             console.log(await verificarProv(pago.cuit));
             const checkProv = await verificarProv(pago.cuit);
             if (!checkProv) {
@@ -89,4 +93,11 @@ const subirPagos = async (pagos = []) => {
         }
     }); */
     console.log(countPagos);
+}
+
+const filterPagos = (pagos = []) => {
+    /* Se aplica la filtracion a la cuenta de pagos del ente EATT - Pagos segun su nro de cuenta */
+    let filterPagos = pagos.filter(({ ctaEmisora }) => ctaEmisora !== "71975050");
+
+    return filterPagos;
 }
