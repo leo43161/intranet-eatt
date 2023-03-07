@@ -38,6 +38,7 @@ Consultas.cargarOrden = async (orden) => {
         idCuentaEmisora: orden.ctaEmisora,
         libramiento: 0
     }
+    console.log(ordenPago);
     const { data: check } = await axios.post(
         apiUrl + "pagos/orden", { params: { ordenPago } }
     );
@@ -68,10 +69,10 @@ Consultas.cargarDetallePago = async (orden) => {
         codRetencion: orden.codRet,
         idControl: orden.ordenPago
     }
-    console.log(detalleOrden);
     const { data: check } = await axios.post(
         apiUrl + "pagos/detalle", { params: { detalleOrden } }
     );
+    console.log(check);
     return check;
 };
 

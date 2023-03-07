@@ -31,6 +31,6 @@ const postOrdenDetalle = async (req, res) => {
         const results = await pool.query(queryPostDetalle(detalleOrden));
         return res.status(200).json(results);
     } catch (error) {
-        return res.status(500).json({ error });
+        return res.status(500).json({ error, queryString: queryPostDetalle(detalleOrden) });
     }
 };

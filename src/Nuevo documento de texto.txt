@@ -1,0 +1,4 @@
+CALL sp_InsertarOrdenPago(124847,'','2022-11-24','A',15000,0,0,1,30709204617,71978981,0);
+CALL sp_InsertarDetalleOrdenPago(1,1144.8,0,1,409,127648);
+ERROR
+CALL sp_InsertarDetalleOrdenPago(1,1144.8,0,1,409,127648);
