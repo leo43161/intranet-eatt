@@ -30,10 +30,14 @@ const FORMAT_PAGOS = {
     33: "razonSocial",
     36: "descGastos",
     39: "cbuProv",
+    40: "netoProv",
     41: "fechafact",
     42: "tipoFact",
     43: "factura1",
     44: "factura2",
+    47: "ctaEmisora1",
+    48: "ctaEmisora2",
+    49: "ctaEmisora3",
 }
 function formatearPagos(_pagos) {
     console.log(_pagos);
@@ -82,6 +86,10 @@ export default function leerArchivo(file, txt) {
 
 const subirPagos = async (pagos = []) => {
     console.log(pagos);
+    const _pagos = filterPagos(pagos);
+    checkPagos(_pagos);
+    return
+    console.log(_pagos[0] === _pagos[1])
     const countPagos = {
         proveedores: [],
         ordenesDePago: [],
@@ -92,9 +100,35 @@ const subirPagos = async (pagos = []) => {
         pagosDetalleOmitidos: [],
         cantidad: 0
     }
+    _pagos.forEach(async (pago, index) => {
+        const checkProv = await verificarProv(pago.cuit);
+        const checkOrden = await verificarOrden(pago.nOrden, pago.cuit);
+        console.log(checkProv);
+        console.log(checkOrden);
+        if (!countPagos.ordenesDePago.includes(pago.ordenPago)) {
+            if (!checkOrden) {
+                if (!checkProv) {
+                    if (!countPagos.proveedores.includes(pago.cuit)) {
+                        console.log(pago);
+                        countPagos.proveedores.push(pago.cuit);
+                        const resProv = await cargarProv(pago);
+                        console.log(resProv);
+                    }
+                } else {
+                    countPagos.proveedoresRepetidos.push(pago.cuit)
+                }
+                const resPago = await cargarOrden(pago);
+                countPagos.ordenesDePago.push(pago.ordenPago);
+                console.log(resPago);
+            } else {
+
+            }
+        }
+
+    });
+    console.log(countPagos);
     return;
     /* Se aplica la funcion para realizar la filtracion general */
-    const _pagos = filterPagos(pagos);
 
     console.log(_pagos.length);
 
@@ -108,7 +142,6 @@ const subirPagos = async (pagos = []) => {
         if (pago.codRet === "000" && pago.cuit > 9999999999) {
             if (!await verificarOrden(pago.ordenPago, pago.cuit)) {
                 console.log("PASA POR AQUI");
-                const checkProv = await verificarProv(pago.cuit);
                 if (!checkProv) {
                     if (!countPagos.proveedores.includes(pago.cuit)) {
                         countPagos.proveedores.push(pago.cuit)
@@ -157,18 +190,42 @@ const subirDedudas = () => {
 
 const filterPagos = (pagos = []) => {
     /* Se aplica la filtracion a la cuenta de pagos del ente EATT - Pagos segun su nro de cuenta */
-    let filterPagos = pagos.filter(({ ctaEmisora }) => ctaEmisora !== "71975050");
-    filterPagos = filterPagos.filter(({ ctaEmisora }) => ctaEmisora !== "71975050");
-    console.log(filterPagos);
+    let filterPagos = pagos.filter(({ cuit }) => cuit !== "30709204617");
+    /* filterPagos = filterPagos.filter(({ ctaEmisora }) => ctaEmisora !== "71975050");
+    console.log(filterPagos); */
     return filterPagos;
 }
 const formatearPago = (pago) => {
     let _pago = pago;
-    _pago.codExpEatt = pago.codExpEatt.slice(2, -1).replace('460   ', '-');
+    _pago.libramiento = pago.codExpEatt.slice(2, -1).replace('460   ', '');
     _pago.fechaP = pago.fechaP.slice(0, 4) + "-" + pago.fechaP.slice(4, 6) + "-" + pago.fechaP.slice(6, 8);
     _pago.nombre = pago.nombre.trim();
     _pago.fechafact = pago.fechafact.slice(0, 4) + "-" + pago.fechafact.slice(4, 6) + "-" + pago.fechafact.slice(6, 8);
     _pago.tipoFact = pago.tipoFact.replace('FACT ', '');
     _pago.nFactura = `${pago.factura1}-${pago.factura2}`;
+    _pago.netoProv = `${_pago.netoProv.trim().slice(0, _pago.netoProv.trim().length - 2)}.${_pago.netoProv.trim().slice(-2)}`;
+    _pago.ctaEmisora = `${pago.ctaEmisora1}${pago.ctaEmisora2}${pago.ctaEmisora3}`;
     return _pago;
 }
+const checkPagos = (pagos) => {
+    console.log(pagos);
+    let _pagos = pagos;
+    let _checkPagos = [];
+    const busqueda = _pagos.reduce((acc, _pagos) => {
+        acc[_pagos.nOrden] = ++acc[_pagos.nOrden] || 0;
+        return acc;
+    }, {});
+
+    for (const key in busqueda) {
+        const element = busqueda[key];
+        if (element) {
+            const filterExist = _pagos.map((_pago, idx) => _pago.nOrden === key && { _pago, index: idx }).filter(Boolean);
+            _checkPagos.push(filterExist);
+        }
+    }
+    console.log(_checkPagos);
+};
+
+var arr = [1, 2, 3, 4];
+arr = arr.map(function (val) { return ++val; });
+console.log(arr);

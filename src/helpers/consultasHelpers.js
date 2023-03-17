@@ -25,18 +25,19 @@ Consultas.verificarDetalleOrden = async (orden, ret) => {
 };
 
 Consultas.cargarOrden = async (orden) => {
+    /* ACTUALIZAR LOS DATOS PARA PODER SUBIR LA ORDEN DE PAGO */
     const ordenPago = {
-        codOp: orden.ordenPago,
-        factura: "",
-        tipoFactura: null,
-        fechaPago: orden.fechaEmision,
-        montoBase: orden.monto,
+        codOp: orden.nOrden,
+        factura: orden.nFactura,
+        tipoFactura: orden.tipoFact,
+        fechaPago: orden.fechaP,
+        montoBase: orden.netoProv,
         pagada: 0,
         borrado: 0,
         activo: 1,
         cuit: orden.cuit,
         idCuentaEmisora: orden.ctaEmisora,
-        libramiento: 0
+        libramiento: orden.libramiento
     }
     console.log(ordenPago);
     const { data: check } = await axios.post(
@@ -48,7 +49,7 @@ Consultas.cargarOrden = async (orden) => {
 Consultas.cargarProv = async (prov) => {
     const proveedor = {
         cuit: prov.cuit,
-        nombreP: prov.beneficiarios.trim(),
+        nombreP: prov.razonSocial,
         domicilio: "",
         activo: 1,
         telefono: "",

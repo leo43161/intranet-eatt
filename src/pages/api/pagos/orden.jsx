@@ -1,6 +1,6 @@
 import { pool } from "../../config/db";
 const queryGetOrdenVerf = (orden, cuit) => `CALL sp_VerificarCargaOrdenPago(${orden},${cuit});`;
-const queryPostOrden = ({ codOp, factura, fechaPago, tipoFactura, montoBase, pagada, borrado, activo, cuit, idCuentaEmisora, libramiento }) => `CALL sp_InsertarOrdenPago(${codOp},'${factura}','${fechaPago}',${tipoFactura ? tipoFactura : "'A'"},${montoBase},${pagada},${borrado},${activo},${cuit},${idCuentaEmisora},${libramiento});`;
+const queryPostOrden = ({ codOp, factura, fechaPago, tipoFactura, montoBase, pagada, borrado, activo, cuit, idCuentaEmisora, libramiento }) => `CALL sp_InsertarOrdenPago(${codOp},'${factura}','${fechaPago}','${tipoFactura ? tipoFactura : "A"}',${montoBase},${pagada},${borrado},${activo},${cuit},${idCuentaEmisora},'${libramiento}');`;
 
 export default async function handler(req, res) {
     switch (req.method) {
