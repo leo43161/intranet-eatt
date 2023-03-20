@@ -1,52 +1,32 @@
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
 
-export default function OrdenDePago() {
+export default function OrdenDePago({ pago: { _pago, index }, handleChange, idx }) {
+    const { fechaP, razonSocial, netoProv, fechafact, nFactura, nOrden } = _pago;
+
     return (
-        <div>
-            <Alert variant={"danger"}>
-                <h4 className="mb-3">Orden de pago: 3487</h4>
-                <Card className="mb-2">
-                    <Card.Body>
-                        <div className="d-flex justify-content-between">
-                            <div><span className="fw-bold">Fecha de pago:</span> 2023-02-08</div>
-                            <div><span className="fw-bold">Proov:</span> MAGAL S.R.L.</div>
-                            <div><span className="fw-bold">Neto:</span> 13015.00</div>
-                            <div><span className="fw-bold">Fecha de fact:</span> 2023-02-02</div>
-                            <div><span className="fw-bold">N° Factura:</span> 7-1421</div>
-                            <div>
-                                <Form.Check
-                                    className="m-0"
-                                    inline
-                                    label=""
-                                    name="group1"
-                                    type={"radio"}
-                                    id={`inline-radio-1`}
-                                />
-                            </div>
+        <>
+            <Card className="mb-2" key={idx}>
+                <Card.Body>
+                    <div className="d-flex justify-content-between">
+                        <div><span className="fw-bold">Fecha de pago: </span>{fechaP}</div>
+                        <div><span className="fw-bold">Proov: </span>{razonSocial}</div>
+                        <div><span className="fw-bold">Neto: </span>{netoProv}</div>
+                        <div><span className="fw-bold">Fecha de fact: </span>{fechafact}</div>
+                        <div><span className="fw-bold">N° Factura: </span>{nFactura}</div>
+                        <div>
+                            <Form.Check
+                                className="m-0"
+                                name={nOrden}
+                                type={"radio"}
+                                id={`${index}`}
+                                onChange={(e) => handleChange(e)}
+                                defaultChecked={idx === 0}
+                            />
                         </div>
-                    </Card.Body>
-                </Card>
-                <Card className="mb-2">
-                    <Card.Body>
-                        <div className="d-flex justify-content-between">
-                            <div><span className="fw-bold">Fecha de pago:</span> 2023-02-08</div>
-                            <div className="col-3 text-truncate"><span className="fw-bold">Proov:</span> ESCUDERO REFRIGERACIONES S.R.L.</div>
-                            <div><span className="fw-bold">Neto:</span> 13015.00</div>
-                            <div><span className="fw-bold">Fecha de fact:</span> 2023-02-02</div>
-                            <div><span className="fw-bold">N° Factura:</span> 7-1421</div>
-                            <div>
-                                <Form.Check
-                                    className="m-0"
-                                    inline
-                                    label=""
-                                    name="group1"
-                                    type={"radio"}
-                                    id={`0`}
-                                />
-                            </div>
-                        </div>
-                    </Card.Body>
-                </Card>
-            </Alert>
-        </div>
+                    </div>
+                </Card.Body>
+            </Card>
+        </>
     )
 }
