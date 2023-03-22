@@ -2,16 +2,34 @@ import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import DropZone from '../../components/Dropzone';
-import leerArchivo from '../../helpers/pagosHelpers';
+import { formatearTxt, checkPagos, subirPagos } from '../../helpers/pagosHelpers';
 import ModalPagos from './ModalPagos';
 
 export default function Carga() {
+    const [pagosFitered, setPagosFitered] = useState(null);
     const [pagoFile, setPagoFile] = useState(null);
     const [deudasFile, setDeudasFile] = useState(null);
-
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const handlerPagos = async () => {
+        if (pagoFile) {
+            let lector = new FileReader();
+            lector.onload = function (event) {
+                const result = event.target.result;
+                const pagos = formatearTxt(result, 1);
+                const pagosRepeat = checkPagos(pagos);
+                if (pagosRepeat.length > 0) {
+                    setPagosFitered(pagosRepeat);
+                    handleShow();
+                    return;
+                }
+                subirPagos(pagos);
+            }
+
+            lector.readAsText(pagoFile);
+        }
+    }
     return (
         <>
             <div className="mt-4">
@@ -24,8 +42,11 @@ export default function Carga() {
                                 <DropZone setState={setPagoFile}></DropZone>
                             </div>
                             <div className="d-flex justify-content-center">
-                                <Button variant="success" onClick={() => leerArchivo(pagoFile, 1)} disabled={!pagoFile}>
+                                <Button variant="success" onClick={handlerPagos} disabled={!pagoFile}>
                                     <span className="">Subir pagos</span>
+                                </Button>
+                                <Button variant="success" onClick={() => console.log(pagosFitered)} disabled={!pagoFile}>
+                                    <span className="">Comprobar pagos</span>
                                 </Button>
                             </div>
                         </Card>
@@ -46,7 +67,7 @@ export default function Carga() {
                     </div>
                 </div>
             </div>
-            <ModalPagos handleClose={handleClose} show={show}></ModalPagos>
+            {pagosFitered && <ModalPagos handleClose={handleClose} show={show} pagos={pagosFitered}></ModalPagos>}
         </>
     )
 }

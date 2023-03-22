@@ -39,8 +39,23 @@ const FORMAT_PAGOS = {
     48: "ctaEmisora2",
     49: "ctaEmisora3",
 }
+
+export const formatearTxt = (contenido, txt) => {
+    const arrayData = contenido.split(/\r\n|\r|\n/, -1);
+    let listaPagos = [];
+    arrayData.forEach((element) => {
+        const pago = element.split("	");
+        listaPagos.push(pago);
+    })
+    listaPagos.pop();
+    /* console.log(arrayData); */
+    console.log(listaPagos);
+    if (txt === 1) listaPagos = formatearPagos(listaPagos);
+    return listaPagos;
+    /* if (txt === 2) writeTable(listaPagos, formatDeudas); */
+}
+
 function formatearPagos(_pagos) {
-    console.log(_pagos);
     let pagos = [];
     _pagos.forEach((pago) => {
         let _pago = {};
@@ -53,42 +68,30 @@ function formatearPagos(_pagos) {
         pagos.push(_pago);
     });
     console.log(pagos);
-    subirPagos(pagos);
-}
-
-const formatearTxt = (contenido, txt) => {
-    const arrayData = contenido.split(/\r\n|\r|\n/, -1);
-    const listaPagos = [];
-    arrayData.forEach((element) => {
-        const pago = element.split("	");
-        listaPagos.push(pago);
-    })
-    listaPagos.pop();
-    /* console.log(arrayData); */
-    console.log(listaPagos);
-    if (txt === 1) formatearPagos(listaPagos);
-    /* if (txt === 2) writeTable(listaPagos, formatDeudas); */
-}
-
-export default function leerArchivo(file, txt) {
-    var archivo = file;
-    if (!archivo) {
-        return;
-    }
-    var lector = new FileReader();
-    lector.onload = function (e) {
-        const contenido = e.target.result;
-        return formatearTxt(contenido, txt);
-    };
-    lector.readAsText(archivo);
+    return (pagos);
 }
 
 
-const subirPagos = async (pagos = []) => {
+
+const formatearPago = (pago) => {
+    let _pago = pago;
+    _pago.libramiento = pago.codExpEatt.slice(2, -1).replace('460   ', '');
+    _pago.fechaP = pago.fechaP.slice(0, 4) + "-" + pago.fechaP.slice(4, 6) + "-" + pago.fechaP.slice(6, 8);
+    _pago.nombre = pago.nombre.trim();
+    _pago.fechafact = pago.fechafact.slice(0, 4) + "-" + pago.fechafact.slice(4, 6) + "-" + pago.fechafact.slice(6, 8);
+    _pago.tipoFact = pago.tipoFact.replace('FACT ', '');
+    _pago.nFactura = `${pago.factura1}-${pago.factura2}`;
+    _pago.netoProv = `${_pago.netoProv.trim().slice(0, _pago.netoProv.trim().length - 2)}.${_pago.netoProv.trim().slice(-2)}`;
+    _pago.ctaEmisora = `${pago.ctaEmisora1}${pago.ctaEmisora2}${pago.ctaEmisora3}`;
+    return _pago;
+}
+
+export const subirPagos = async (pagos, txt) => {
+    console.log("Se suben los pagos");
     console.log(pagos);
-    const _pagos = filterPagos(pagos);
-    checkPagos(_pagos);
-    return
+    return;
+    /* const _pagos = filterPagos(pagos);
+    checkPagos(_pagos); */
     console.log(_pagos[0] === _pagos[1])
     const countPagos = {
         proveedores: [],
@@ -191,23 +194,9 @@ const subirDedudas = () => {
 const filterPagos = (pagos = []) => {
     /* Se aplica la filtracion a la cuenta de pagos del ente EATT - Pagos segun su nro de cuenta */
     let filterPagos = pagos.filter(({ cuit }) => cuit !== "30709204617");
-    /* filterPagos = filterPagos.filter(({ ctaEmisora }) => ctaEmisora !== "71975050");
-    console.log(filterPagos); */
     return filterPagos;
 }
-const formatearPago = (pago) => {
-    let _pago = pago;
-    _pago.libramiento = pago.codExpEatt.slice(2, -1).replace('460   ', '');
-    _pago.fechaP = pago.fechaP.slice(0, 4) + "-" + pago.fechaP.slice(4, 6) + "-" + pago.fechaP.slice(6, 8);
-    _pago.nombre = pago.nombre.trim();
-    _pago.fechafact = pago.fechafact.slice(0, 4) + "-" + pago.fechafact.slice(4, 6) + "-" + pago.fechafact.slice(6, 8);
-    _pago.tipoFact = pago.tipoFact.replace('FACT ', '');
-    _pago.nFactura = `${pago.factura1}-${pago.factura2}`;
-    _pago.netoProv = `${_pago.netoProv.trim().slice(0, _pago.netoProv.trim().length - 2)}.${_pago.netoProv.trim().slice(-2)}`;
-    _pago.ctaEmisora = `${pago.ctaEmisora1}${pago.ctaEmisora2}${pago.ctaEmisora3}`;
-    return _pago;
-}
-const checkPagos = (pagos) => {
+export const checkPagos = (pagos) => {
     console.log(pagos);
     let _pagos = pagos;
     let _checkPagos = [];
@@ -224,8 +213,5 @@ const checkPagos = (pagos) => {
         }
     }
     console.log(_checkPagos);
+    return _checkPagos;
 };
-
-var arr = [1, 2, 3, 4];
-arr = arr.map(function (val) { return ++val; });
-console.log(arr);
