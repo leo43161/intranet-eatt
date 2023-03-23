@@ -67,7 +67,7 @@ function formatearPagos(_pagos) {
         _pago = formatearPago(_pago);
         pagos.push(_pago);
     });
-    console.log(pagos);
+    pagos = filterPagos(pagos)
     return (pagos);
 }
 
@@ -89,10 +89,6 @@ const formatearPago = (pago) => {
 export const subirPagos = async (pagos, txt) => {
     console.log("Se suben los pagos");
     console.log(pagos);
-    return;
-    /* const _pagos = filterPagos(pagos);
-    checkPagos(_pagos); */
-    console.log(_pagos[0] === _pagos[1])
     const countPagos = {
         proveedores: [],
         ordenesDePago: [],
@@ -103,7 +99,7 @@ export const subirPagos = async (pagos, txt) => {
         pagosDetalleOmitidos: [],
         cantidad: 0
     }
-    _pagos.forEach(async (pago, index) => {
+    pagos.forEach(async (pago, index) => {
         const checkProv = await verificarProv(pago.cuit);
         const checkOrden = await verificarOrden(pago.nOrden, pago.cuit);
         console.log(checkProv);

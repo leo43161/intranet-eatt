@@ -8,6 +8,7 @@ import ModalPagos from './ModalPagos';
 export default function Carga() {
     const [pagosFitered, setPagosFitered] = useState(null);
     const [pagoFile, setPagoFile] = useState(null);
+    const [pagos, setPagos] = useState(null);
     const [deudasFile, setDeudasFile] = useState(null);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -17,14 +18,16 @@ export default function Carga() {
             let lector = new FileReader();
             lector.onload = function (event) {
                 const result = event.target.result;
-                const pagos = formatearTxt(result, 1);
-                const pagosRepeat = checkPagos(pagos);
+                const _pagos = formatearTxt(result, 1);
+                setPagos(_pagos);
+                const pagosRepeat = checkPagos(_pagos);
                 if (pagosRepeat.length > 0) {
                     setPagosFitered(pagosRepeat);
                     handleShow();
                     return;
                 }
-                subirPagos(pagos);
+                setPagosFitered(null);
+                subirPagos(_pagos);
             }
 
             lector.readAsText(pagoFile);
@@ -45,9 +48,6 @@ export default function Carga() {
                                 <Button variant="success" onClick={handlerPagos} disabled={!pagoFile}>
                                     <span className="">Subir pagos</span>
                                 </Button>
-                                <Button variant="success" onClick={() => console.log(pagosFitered)} disabled={!pagoFile}>
-                                    <span className="">Comprobar pagos</span>
-                                </Button>
                             </div>
                         </Card>
                     </div>
@@ -67,7 +67,7 @@ export default function Carga() {
                     </div>
                 </div>
             </div>
-            {pagosFitered && <ModalPagos handleClose={handleClose} show={show} pagos={pagosFitered}></ModalPagos>}
+            {pagosFitered && <ModalPagos handleClose={handleClose} show={show} pagosFitered={pagosFitered} pagos={pagos}></ModalPagos>}
         </>
     )
 }
