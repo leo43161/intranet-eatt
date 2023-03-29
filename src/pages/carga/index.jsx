@@ -20,6 +20,8 @@ export default function Carga() {
                 const result = event.target.result;
                 const _pagos = formatearTxt(result, 1);
                 setPagos(_pagos);
+                console.log(_pagos)
+                return
                 const pagosRepeat = checkPagos(_pagos);
                 if (pagosRepeat.length > 0) {
                     setPagosFitered(pagosRepeat);
@@ -31,6 +33,49 @@ export default function Carga() {
             }
 
             lector.readAsText(pagoFile);
+        }
+    }
+    const handlerDeudas = () => {
+        if (deudasFile) {
+            let lector = new FileReader();
+            lector.onload = function (event) {
+                const result = event.target.result;
+                const _deudas = formatearTxt(result, 2);
+                console.log(_deudas);
+                /* setPagos(_pagos);
+                const pagosRepeat = checkPagos(_pagos);
+                if (pagosRepeat.length > 0) {
+                    setPagosFitered(pagosRepeat);
+                    handleShow();
+                    return;
+                }
+                setPagosFitered(null);
+                subirPagos(_pagos); */
+            }
+
+            lector.readAsText(deudasFile);
+        }
+    }
+
+    const handlerOrdenes = () => {
+        if (deudasFile) {
+            let lector = new FileReader();
+            lector.onload = function (event) {
+                const result = event.target.result;
+                const _deudas = formatearTxt(result, 2);
+                console.log(_deudas);
+                /* setPagos(_pagos);
+                const pagosRepeat = checkPagos(_pagos);
+                if (pagosRepeat.length > 0) {
+                    setPagosFitered(pagosRepeat);
+                    handleShow();
+                    return;
+                }
+                setPagosFitered(null);
+                subirPagos(_pagos); */
+            }
+
+            lector.readAsText(deudasFile);
         }
     }
     return (
@@ -45,9 +90,9 @@ export default function Carga() {
                                 <DropZone setState={setPagoFile}></DropZone>
                             </div>
                             <div className="d-flex justify-content-center">
-                                <Button variant="success" onClick={handlerPagos} disabled={!pagoFile}>
+                                {/* <Button variant="success" onClick={handlerPagos} disabled={!pagoFile}>
                                     <span className="">Subir pagos</span>
-                                </Button>
+                                </Button> */}
                             </div>
                         </Card>
                     </div>
@@ -59,11 +104,24 @@ export default function Carga() {
                                 <DropZone setState={setDeudasFile}></DropZone>
                             </div>
                             <div className="d-flex justify-content-center">
-                                <Button variant="success" onClick={() => handleShow()}>
+                                {/* <Button variant="success" onClick={handlerDeudas} disabled={!deudasFile}>
                                     <span className="">Subir deudas</span>
-                                </Button>
+                                </Button> */}
                             </div>
                         </Card>
+                    </div>
+                </div>
+                <div className='d-flex justify-content-center col pt-4'>
+                    <div className='col-6 d-flex justify-content-between'>
+                        <Button variant="success" onClick={handlerPagos} disabled={!pagoFile}>
+                            <span className="">probar pagos</span>
+                        </Button>
+                        <Button variant="success" onClick={handlerOrdenes} disabled={!(deudasFile && pagoFile)}>
+                            <span className="">Subir Ordenes</span>
+                        </Button>
+                        <Button variant="success" onClick={handlerDeudas} disabled={!deudasFile}>
+                            <span className="">probar deudas</span>
+                        </Button>
                     </div>
                 </div>
             </div>

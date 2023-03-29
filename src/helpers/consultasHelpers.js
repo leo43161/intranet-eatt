@@ -46,6 +46,28 @@ Consultas.cargarOrden = async (orden) => {
     return check;
 };
 
+Consultas.cargarOrdenFantasma = async (orden) => {
+    /* ACTUALIZAR LOS DATOS PARA PODER SUBIR LA ORDEN DE PAGO */
+    const ordenPago = {
+        codOp: orden.nOrden,
+        factura: "0",
+        tipoFactura: "",
+        fechaPago: orden.fecha,
+        montoBase: orden.importeRet,
+        pagada: 0,
+        borrado: 0,
+        activo: 1,
+        cuit: orden.cuit,
+        idCuentaEmisora: orden.nCuenta,
+        libramiento: ""
+    }
+    console.log(ordenPago);
+    const { data: check } = await axios.post(
+        apiUrl + "pagos/orden", { params: { ordenPago } }
+    );
+    return check;
+};
+
 Consultas.cargarProv = async (prov) => {
     const proveedor = {
         cuit: prov.cuit,

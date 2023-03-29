@@ -2,7 +2,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import OrdenDePago from './OrdenDePago';
+import { subirPagos } from '../../helpers/pagosHelpers';
 import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 export default function ModalPagos({ show, handleClose, pagosFitered, pagos }) {
     const [pagosDeleted, setPagosDeleted] = useState({});
@@ -15,7 +17,6 @@ export default function ModalPagos({ show, handleClose, pagosFitered, pagos }) {
             setPagosDeleted(_pagosDeleted);
         }
     }, [pagosFitered]);
-
     const handleChange = (e) => {
         setPagosDeleted({
             ...pagosDeleted,
@@ -27,15 +28,28 @@ export default function ModalPagos({ show, handleClose, pagosFitered, pagos }) {
         for (const key in pagosDeleted) {
             const element = pagosDeleted[key];
             _pagos = _pagos.filter(({ }, index) => index !== element);
-            console.log(pagos[element]);
         }
 
-        /* FALTA REALIZAR UNA ULTIMA CONFIRMACION DE LAS ORDENES SELECCIONADAS (Sweetalert2) Y DESPUES SUBIR LAS ORDENES */
-
-        console.log(_pagos);
-        console.log(pagos);
-        console.log(pagosDeleted);
-        console.log(pagosFitered);
+        Swal.fire({
+            icon: 'warning',
+            title: 'Estas seguro que quiere descartar las ordenes de pago seleccionadas?',
+            showCancelButton: true,
+            confirmButtonText: 'Continuar',
+            cancelButtonText: 'Cancelar'
+        }).then(async (result) => {
+            console.log(_pagos);
+            Swal.showLoading();
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                await subirPagos(_pagos);
+                Swal.hideLoading();
+                /* Swal.fire('Pagos guardados!', '', 'success'); */
+                Swal.fire('Pagos guardados!', '', 'success');
+            } else if (result.isDenied) {
+                Swal.hideLoading()
+                Swal.fire('Ocurrio un error', 'Intentelo de nuevo en unos minutos', 'error')
+            }
+        });
     }
     return (
         <>

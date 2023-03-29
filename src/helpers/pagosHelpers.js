@@ -8,7 +8,7 @@ const codRetVerif = {
     409: "S.G.P. SIST. PENS. JUB. RETENC. PERSONAL"
 }
 
-const formatDeudas = {
+const FORMAT_DEUDAS = {
     1: "nCuenta",
     2: "nombre",
     28: "retencion",
@@ -18,6 +18,7 @@ const formatDeudas = {
     37: "codRet",
     38: "recursoEstado",
     39: "tipoRet",
+    40: "cuit",
     45: "importeRet",
 }
 const FORMAT_PAGOS = {
@@ -50,28 +51,30 @@ export const formatearTxt = (contenido, txt) => {
     listaPagos.pop();
     /* console.log(arrayData); */
     console.log(listaPagos);
-    if (txt === 1) listaPagos = formatearPagos(listaPagos);
+    listaPagos = formatearOrdenes(listaPagos, txt);
     return listaPagos;
-    /* if (txt === 2) writeTable(listaPagos, formatDeudas); */
 }
 
-function formatearPagos(_pagos) {
-    let pagos = [];
-    _pagos.forEach((pago) => {
-        let _pago = {};
-        for (const key in pago) {
-            if (FORMAT_PAGOS[key]) {
-                _pago[FORMAT_PAGOS[key]] = pago[key];
+function formatearOrdenes(_ordenes, txt) {
+    let ordenes = [];
+    const FORMAT = txt === 1 ? FORMAT_PAGOS : FORMAT_DEUDAS;
+    console.log(_ordenes)
+    _ordenes.forEach((orden) => {
+        let _orden = {};
+        for (const key in orden) {
+            if (FORMAT[key]) {
+                _orden[FORMAT[key]] = orden[key];
             }
         }
-        _pago = formatearPago(_pago);
-        pagos.push(_pago);
+        if (txt === 1) _orden = formatearPago(_orden);
+        if (txt === 2) _orden = formatearDeudas(_orden);
+        ordenes.push(_orden);
     });
-    pagos = filterPagos(pagos)
-    return (pagos);
+    ordenes = filterPagos(ordenes);
+    return (ordenes);
 }
 
-
+console.log(parseFloat(" 10,785.95".replace(",", "")));
 
 const formatearPago = (pago) => {
     let _pago = pago;
@@ -85,10 +88,23 @@ const formatearPago = (pago) => {
     _pago.ctaEmisora = `${pago.ctaEmisora1}${pago.ctaEmisora2}${pago.ctaEmisora3}`;
     return _pago;
 }
+const formatearDeudas = (pago) => {
+    let _pago = pago;
+    _pago.importeRet = parseFloat(pago.importeRet.replace(",", ""));
+    _pago.nCuenta = pago.nCuenta.replaceAll("-", "");
+    return _pago;
+}
 
-export const subirPagos = async (pagos, txt) => {
-    console.log("Se suben los pagos");
-    console.log(pagos);
+const filterPagos = (deudas = []) => {
+    /* Se aplica la filtracion a la cuenta de deudas del ente EATT - deudas segun su nro de cuenta */
+    let filterPagos = deudas.filter(({ cuit }) => cuit !== "30709204617");
+    /* filterPagos = deudas.filter(({ cuit }) => cuit.length < 10); */
+    /* filterPagos = deudas; */
+    console.log(filterPagos);
+    return filterPagos;
+}
+
+export const subirPagos = async (pagos) => {
     const countPagos = {
         proveedores: [],
         ordenesDePago: [],
@@ -99,12 +115,10 @@ export const subirPagos = async (pagos, txt) => {
         pagosDetalleOmitidos: [],
         cantidad: 0
     }
-    pagos.forEach(async (pago, index) => {
+    pagos.forEach(async (pago) => {
         const checkProv = await verificarProv(pago.cuit);
         const checkOrden = await verificarOrden(pago.nOrden, pago.cuit);
-        console.log(checkProv);
-        console.log(checkOrden);
-        if (!countPagos.ordenesDePago.includes(pago.ordenPago)) {
+        if (!countPagos.ordenesDePago.includes(pago.nOrden)) {
             if (!checkOrden) {
                 if (!checkProv) {
                     if (!countPagos.proveedores.includes(pago.cuit)) {
@@ -114,52 +128,19 @@ export const subirPagos = async (pagos, txt) => {
                         console.log(resProv);
                     }
                 } else {
-                    countPagos.proveedoresRepetidos.push(pago.cuit)
+                    countPagos.proveedoresRepetidos.push(pago.cuit);
                 }
                 const resPago = await cargarOrden(pago);
-                countPagos.ordenesDePago.push(pago.ordenPago);
+                countPagos.ordenesDePago.push(pago.nOrden);
                 console.log(resPago);
             } else {
-
+                countPagos.pagosRepetidos.push(pago.nOrden);
             }
         }
-
     });
-    console.log(countPagos);
-    return;
-    /* Se aplica la funcion para realizar la filtracion general */
+    return countPagos;
 
-    console.log(_pagos.length);
-
-    const findPago = _pagos.filter(e => e.ordenPago === "114879");
-
-    console.log(findPago);
-
-    _pagos.forEach(async (pago, index) => {
-        /* console.log(codRetVerif[pago.codRet]); */
-        console.log(pago.ctaEmisora === "71975050" ? pago : false);
-        if (pago.codRet === "000" && pago.cuit > 9999999999) {
-            if (!await verificarOrden(pago.ordenPago, pago.cuit)) {
-                console.log("PASA POR AQUI");
-                if (!checkProv) {
-                    if (!countPagos.proveedores.includes(pago.cuit)) {
-                        countPagos.proveedores.push(pago.cuit)
-                        const resProv = await cargarProv(pago);
-                        console.log(resProv);
-                    }
-                } else {
-                    countPagos.proveedoresRepetidos.push(pago.cuit)
-                }
-                console.log(index === 1 && pago);
-                const resPago = await cargarOrden(pago);
-                countPagos.ordenesDePago.push(pago.ordenPago);
-            } else {
-                countPagos.pagosRepetidos.push(pago.ordenPago);
-            }
-        }
-    })
-
-    _pagos.forEach(async (pago, index) => {
+    pagos.forEach(async (pago, index) => {
         /* console.log(codRetVerif[pago.codRet]); */
         if (codRetVerif[pago.codRet]) {
             if (pago.codRet !== "000" && pago.cuit < 9999999999) {
@@ -183,15 +164,23 @@ export const subirPagos = async (pagos, txt) => {
     console.log(countPagos);
 }
 
-const subirDedudas = () => {
+export const subirDeudas = (deudas) => {
+    const countDeudas = {
+        proveedores: [],
+        ordenesDePago: [],
+        detalleDePago: [],
+        proveedoresRepetidos: [],
+        pagosDetalleRepetidos: [],
+        pagosRepetidos: [],
+        pagosDetalleOmitidos: [],
+        cantidad: 0
+    }
 
+    deudas.forEach((deuda) => {
+
+    })
 }
 
-const filterPagos = (pagos = []) => {
-    /* Se aplica la filtracion a la cuenta de pagos del ente EATT - Pagos segun su nro de cuenta */
-    let filterPagos = pagos.filter(({ cuit }) => cuit !== "30709204617");
-    return filterPagos;
-}
 export const checkPagos = (pagos) => {
     console.log(pagos);
     let _pagos = pagos;
