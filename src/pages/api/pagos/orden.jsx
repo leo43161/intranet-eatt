@@ -1,5 +1,5 @@
 import { pool } from "../../config/db";
-const queryGetOrdenVerf = (orden, cuit) => `CALL sp_VerificarCargaOrdenPago(${orden},${cuit});`;
+const queryGetOrdenVerf = (orden) => `CALL sp_VerificarCargaOrdenPago(${orden});`;
 const queryPostOrden = ({ codOp, factura, fechaPago, tipoFactura, montoBase, pagada, borrado, activo, cuit, idCuentaEmisora, libramiento }) => `CALL sp_InsertarOrdenPago(${codOp},'${factura}','${fechaPago}','${tipoFactura ? tipoFactura : "A"}',${montoBase},${pagada},${borrado},${activo},${cuit},${idCuentaEmisora},'${libramiento}');`;
 
 export default async function handler(req, res) {
@@ -14,9 +14,9 @@ export default async function handler(req, res) {
 }
 
 const getOrdenPago = async (req, res) => {
-    const { orden, cuit } = req.query
+    const { orden } = req.query
     try {
-        const results = await pool.query(queryGetOrdenVerf(orden, cuit));
+        const results = await pool.query(queryGetOrdenVerf(orden));
         return res.status(200).json(results[0]);
     } catch (error) {
         return res.status(500).json({ error });

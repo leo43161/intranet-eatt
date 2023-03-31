@@ -7,7 +7,6 @@ export default async function handler(req, res) {
         case "GET":
             return await getDetalleOrden(req, res);
         case "POST":
-            console.log(req.body)
             return await postOrdenDetalle(req, res);
         default:
             return res.status(400).send("Method not allowed");
@@ -26,7 +25,6 @@ const getDetalleOrden = async (req, res) => {
 
 const postOrdenDetalle = async (req, res) => {
     const { detalleOrden } = req.body.params
-    console.log(queryPostDetalle(detalleOrden));
     try { 
         const results = await pool.query(queryPostDetalle(detalleOrden));
         return res.status(200).json(results);

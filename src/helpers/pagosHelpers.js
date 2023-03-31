@@ -1,6 +1,5 @@
-import axios from "axios";
 import Consultas from "./consultasHelpers";
-const { verificarProv, verificarOrden, verificarDetalleOrden, cargarOrden, cargarProv, cargarDetallePago } = Consultas;
+const { verificarProv, verificarOrden, verificarDetalleOrden, cargarOrden, cargarProv, cargarDetallePago, cargarOrdenFantasma } = Consultas;
 const codRetVerif = {
     101: "D.G.R. ING.BRUTOS P/PAG. ELECTR.",
     133: "TRIBUTO DE EMERGENCIA MUNICIPAL- TEM",
@@ -70,11 +69,10 @@ function formatearOrdenes(_ordenes, txt) {
         if (txt === 2) _orden = formatearDeudas(_orden);
         ordenes.push(_orden);
     });
-    ordenes = filterPagos(ordenes);
+    ordenes = txt === 1 ? filterPagos(ordenes) : filterDeudas(ordenes);
     return (ordenes);
 }
 
-console.log(parseFloat(" 10,785.95".replace(",", "")));
 
 const formatearPago = (pago) => {
     let _pago = pago;
@@ -92,16 +90,28 @@ const formatearDeudas = (pago) => {
     let _pago = pago;
     _pago.importeRet = parseFloat(pago.importeRet.replace(",", ""));
     _pago.nCuenta = pago.nCuenta.replaceAll("-", "");
+    _pago.fecha = convertirFecha(pago.fecha);
     return _pago;
 }
 
-const filterPagos = (deudas = []) => {
-    /* Se aplica la filtracion a la cuenta de deudas del ente EATT - deudas segun su nro de cuenta */
-    let filterPagos = deudas.filter(({ cuit }) => cuit !== "30709204617");
+const filterPagos = (pagos = []) => {
+    /* Se aplica la filtracion a la cuenta de pagos del ente EATT - pagos segun su nro de cuenta */
+    let filterPagos = pagos.filter(({ cuit }) => cuit !== "30709204617");
     /* filterPagos = deudas.filter(({ cuit }) => cuit.length < 10); */
     /* filterPagos = deudas; */
     console.log(filterPagos);
     return filterPagos;
+}
+const filterDeudas = (deudas = []) => {
+    /* let deudasFiltradas = deudas.filter(({ cuit }) => cuit === "30709204617"); */
+    /* Se aplica la filtracion a la cuenta de deudas del ente EATT - deudas segun su nro de cuenta */
+    let filterDeudas = deudas.filter(({ cuit }) => cuit !== "30709204617");
+    filterDeudas = filterDeudas.filter(({ codRet }) => codRetVerif[codRet]);
+    /* filterDeudas = deudas; */
+    /* console.log("deudas filtradas con el cuit 30709204617");
+    console.log(deudasFiltradas);
+    console.log(filterDeudas); */
+    return filterDeudas;
 }
 
 export const subirPagos = async (pagos) => {
@@ -117,7 +127,7 @@ export const subirPagos = async (pagos) => {
     }
     pagos.forEach(async (pago) => {
         const checkProv = await verificarProv(pago.cuit);
-        const checkOrden = await verificarOrden(pago.nOrden, pago.cuit);
+        const checkOrden = await verificarOrden(pago.nOrden);
         if (!countPagos.ordenesDePago.includes(pago.nOrden)) {
             if (!checkOrden) {
                 if (!checkProv) {
@@ -139,50 +149,31 @@ export const subirPagos = async (pagos) => {
         }
     });
     return countPagos;
-
-    pagos.forEach(async (pago, index) => {
-        /* console.log(codRetVerif[pago.codRet]); */
-        if (codRetVerif[pago.codRet]) {
-            if (pago.codRet !== "000" && pago.cuit < 9999999999) {
-                /* console.log(pago.codRet); */
-                if (!await verificarDetalleOrden(pago.ordenPago, pago.codRet)) {
-                    const resProv = await cargarDetallePago(pago);
-                    countPagos.detalleDePago.push(pago.ordenPago)
-                } else if (await verificarDetalleOrden(pago.ordenPago, pago.codRet)) {
-                    countPagos.pagosDetalleRepetidos.push(pago.ordenPago)
-                } else {
-                    countPagos.pagosDetalleRepetidos.push(pago.ordenPago)
-                    /* countPagos.pagosRepetidos.push(pago.ordenPago) */
-                }
-            }
-        } else {
-            if (pago.codRet !== "000") {
-                countPagos.pagosDetalleOmitidos.push(pago)
-            }
-        }
-    });
-    console.log(countPagos);
 }
 
-export const subirDeudas = (deudas) => {
+export const subirDeudas = async (deudas) => {
     const countDeudas = {
-        proveedores: [],
-        ordenesDePago: [],
-        detalleDePago: [],
-        proveedoresRepetidos: [],
-        pagosDetalleRepetidos: [],
-        pagosRepetidos: [],
-        pagosDetalleOmitidos: [],
-        cantidad: 0
-    }
-
-    deudas.forEach((deuda) => {
-
-    })
+        deudas: [],
+        ordenesDePagoFantasmas: [],
+        deudasRepetidas: [],
+    };
+    const _deudasFilter = await checkDeudas(deudas);
+    _deudasFilter.forEach(async (deuda) => {
+        const checkOrden = await verificarOrden(deuda.nOrden);
+        if (!checkOrden) {
+            await cargarOrdenFantasma(deuda);
+            countDeudas.ordenesDePagoFantasmas.push(deuda.nOrden);
+        };
+    });
+    deudas.forEach(async (deuda) => {
+        const checkDetallePago = await verificarDetalleOrden(deuda.nOrden, deuda.codRet);
+        if (!checkDetallePago) {
+            await cargarDetallePago(deuda);
+        };
+    });
 }
 
 export const checkPagos = (pagos) => {
-    console.log(pagos);
     let _pagos = pagos;
     let _checkPagos = [];
     const busqueda = _pagos.reduce((acc, _pagos) => {
@@ -195,8 +186,30 @@ export const checkPagos = (pagos) => {
         if (element) {
             const filterExist = _pagos.map((_pago, idx) => _pago.nOrden === key && { _pago, index: idx }).filter(Boolean);
             _checkPagos.push(filterExist);
-        }
-    }
+        };
+    };
     console.log(_checkPagos);
     return _checkPagos;
 };
+
+export const checkDeudas = async (deudas) => {
+    const valoresUnicos = {};
+    const _deudasFilter = deudas.filter(deuda => {
+        const valor = deuda.nOrden;
+        const existe = valoresUnicos[valor];
+        valoresUnicos[valor] = true;
+        return !existe;
+    });
+    return _deudasFilter;
+};
+
+const convertirFecha = (fecha) => {
+    let hoy = new Date();
+    let anio = hoy.getFullYear();
+    let fechaCompleta = fecha + "/" + anio;
+    let fechaConvertida = new Date(fechaCompleta.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$2/$1/$3"));
+    let anioConvertido = fechaConvertida.getFullYear();
+    let mesConvertido = ("0" + (fechaConvertida.getMonth() + 1)).slice(-2);
+    let diaConvertido = ("0" + fechaConvertida.getDate()).slice(-2);
+    return anioConvertido + "-" + mesConvertido + "-" + diaConvertido;
+}

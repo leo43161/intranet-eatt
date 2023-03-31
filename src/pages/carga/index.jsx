@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import DropZone from '../../components/Dropzone';
-import { formatearTxt, checkPagos, subirPagos } from '../../helpers/pagosHelpers';
+import { formatearTxt, checkPagos, subirPagos, subirDeudas } from '../../helpers/pagosHelpers';
 import ModalPagos from './ModalPagos';
 
 export default function Carga() {
@@ -13,6 +13,7 @@ export default function Carga() {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
     const handlerPagos = async () => {
         if (pagoFile) {
             let lector = new FileReader();
@@ -20,8 +21,6 @@ export default function Carga() {
                 const result = event.target.result;
                 const _pagos = formatearTxt(result, 1);
                 setPagos(_pagos);
-                console.log(_pagos)
-                return
                 const pagosRepeat = checkPagos(_pagos);
                 if (pagosRepeat.length > 0) {
                     setPagosFitered(pagosRepeat);
@@ -31,7 +30,6 @@ export default function Carga() {
                 setPagosFitered(null);
                 subirPagos(_pagos);
             }
-
             lector.readAsText(pagoFile);
         }
     }
@@ -41,16 +39,7 @@ export default function Carga() {
             lector.onload = function (event) {
                 const result = event.target.result;
                 const _deudas = formatearTxt(result, 2);
-                console.log(_deudas);
-                /* setPagos(_pagos);
-                const pagosRepeat = checkPagos(_pagos);
-                if (pagosRepeat.length > 0) {
-                    setPagosFitered(pagosRepeat);
-                    handleShow();
-                    return;
-                }
-                setPagosFitered(null);
-                subirPagos(_pagos); */
+                subirDeudas(_deudas);
             }
 
             lector.readAsText(deudasFile);
@@ -58,25 +47,7 @@ export default function Carga() {
     }
 
     const handlerOrdenes = () => {
-        if (deudasFile) {
-            let lector = new FileReader();
-            lector.onload = function (event) {
-                const result = event.target.result;
-                const _deudas = formatearTxt(result, 2);
-                console.log(_deudas);
-                /* setPagos(_pagos);
-                const pagosRepeat = checkPagos(_pagos);
-                if (pagosRepeat.length > 0) {
-                    setPagosFitered(pagosRepeat);
-                    handleShow();
-                    return;
-                }
-                setPagosFitered(null);
-                subirPagos(_pagos); */
-            }
-
-            lector.readAsText(deudasFile);
-        }
+        
     }
     return (
         <>
