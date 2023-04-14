@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import DropZone from '../../components/Dropzone';
 import { formatearTxt, checkPagos, subirPagos, subirDeudas } from '../../helpers/pagosHelpers';
+import Swal from 'sweetalert2';
 import ModalPagos from './ModalPagos';
 
 export default function Carga() {
@@ -11,13 +12,14 @@ export default function Carga() {
     const [pagos, setPagos] = useState(null);
     const [deudasFile, setDeudasFile] = useState(null);
     const [show, setShow] = useState(false);
+    const [pagosUpload, setPagosUpload] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const handlerPagos = async () => {
         if (pagoFile) {
             let lector = new FileReader();
-            lector.onload = function (event) {
+            lector.onload = async function (event) {
                 const result = event.target.result;
                 const _pagos = formatearTxt(result, 1);
                 setPagos(_pagos);
@@ -28,26 +30,34 @@ export default function Carga() {
                     return;
                 }
                 setPagosFitered(null);
-                subirPagos(_pagos);
+                setPagosUpload(true);
+                await subirPagos(pagos);
             }
             lector.readAsText(pagoFile);
         }
     }
-    const handlerDeudas = () => {
-        if (deudasFile) {
+    const handlerDeudas = async () => {
+        if (deudasFile && pagosUpload) {
             let lector = new FileReader();
-            lector.onload = function (event) {
+            lector.onload = async function (event) {
                 const result = event.target.result;
                 const _deudas = formatearTxt(result, 2);
-                subirDeudas(_deudas);
+                try {
+                    await subirDeudas(_deudas);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Se han guardado correctamente las deudas',
+                    });
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'A ocurrido un problema al intentar subir las',
+                    });
+                    console.log(error);
+                }
             }
-
             lector.readAsText(deudasFile);
         }
-    }
-
-    const handlerOrdenes = () => {
-        
     }
     return (
         <>
@@ -55,15 +65,11 @@ export default function Carga() {
                 <div className="container d-flex justify-content-center">
                     <div className="col-6 me-3">
                         <Card className="p-4 shadow">
+                            {pagosUpload && <h4 className='position-absolute top-0 end-0 pt-2 pe-3'>Subido</h4>}
                             <h1 className="text-center">Pagos</h1>
                             <h3 className="text-center mb-3">Inserte el archivo txt</h3>
                             <div className="d-flex justify-content-center mb-3" style={{ height: "300px" }}>
                                 <DropZone setState={setPagoFile}></DropZone>
-                            </div>
-                            <div className="d-flex justify-content-center">
-                                {/* <Button variant="success" onClick={handlerPagos} disabled={!pagoFile}>
-                                    <span className="">Subir pagos</span>
-                                </Button> */}
                             </div>
                         </Card>
                     </div>
@@ -74,29 +80,21 @@ export default function Carga() {
                             <div className="d-flex justify-content-center mb-3" style={{ height: "300px" }}>
                                 <DropZone setState={setDeudasFile}></DropZone>
                             </div>
-                            <div className="d-flex justify-content-center">
-                                {/* <Button variant="success" onClick={handlerDeudas} disabled={!deudasFile}>
-                                    <span className="">Subir deudas</span>
-                                </Button> */}
-                            </div>
                         </Card>
                     </div>
                 </div>
                 <div className='d-flex justify-content-center col pt-4'>
-                    <div className='col-6 d-flex justify-content-between'>
-                        <Button variant="success" onClick={handlerPagos} disabled={!pagoFile}>
-                            <span className="">probar pagos</span>
+                    <div className='col-10 d-flex justify-content-around'>
+                        <Button variant="success" size="lg" onClick={() => handlerPagos()} disabled={!(pagoFile)}>
+                            <span className="">Subir Pagos</span>
                         </Button>
-                        <Button variant="success" onClick={handlerOrdenes} disabled={!(deudasFile && pagoFile)}>
-                            <span className="">Subir Ordenes</span>
-                        </Button>
-                        <Button variant="success" onClick={handlerDeudas} disabled={!deudasFile}>
-                            <span className="">probar deudas</span>
+                        <Button variant="success" size="lg" onClick={() => handlerDeudas()} disabled={!(deudasFile && pagosUpload)}>
+                            <span className="">Subir Deudas</span>
                         </Button>
                     </div>
                 </div>
             </div>
-            {pagosFitered && <ModalPagos handleClose={handleClose} show={show} pagosFitered={pagosFitered} pagos={pagos}></ModalPagos>}
+            {pagosFitered && <ModalPagos handleClose={handleClose} show={show} pagosFitered={pagosFitered} pagos={pagos} pagosHandler={setPagosUpload}></ModalPagos>}
         </>
     )
 }

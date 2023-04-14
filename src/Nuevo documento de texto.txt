@@ -1,1 +1,39 @@
 CALL sp_InsertarOrdenPago(6507,'7-1420','2023-02-08','B',13015.00,0,0,1,30708608153,360000200978981,'0251-2');
+
+
+
+SELECT
+    op.IdControl,
+    op.Libramiento,
+    op.codop,
+    op.FechaPago,
+    op.Cuit,
+    prov.NombreP,
+    prov.Domicilio,
+    op.TipoFactura,
+    op.Factura,
+    op.MontoBase,
+    dop.Porcentaje,
+    dop.idcontrol,
+    dop.MontoR,
+    ret.Nombre,
+    round(SUM(CASE WHEN dop.CodRetencion = 101 THEN dop.Porcentaje ELSE 0 END),2) as saretP,
+    round(SUM(CASE WHEN dop.CodRetencion = 101 THEN dop.MontoR ELSE 0 END),2) as SARET,
+    round(SUM(CASE WHEN dop.CodRetencion = 402 THEN dop.MontoR ELSE 0 END),2) as Gan,
+    round(SUM(CASE WHEN dop.CodRetencion = 409 THEN dop.MontoR ELSE 0 END),2) as SS,
+    round(SUM(CASE WHEN dop.CodRetencion = 133 THEN dop.Porcentaje ELSE 0 END),2) as temP,
+	round(SUM(CASE WHEN dop.CodRetencion = 133 THEN dop.MontoR ELSE 0 END),2) as TEM
+FROM
+    ordenpago AS `op`
+    
+INNER JOIN proveedor AS `prov`
+ON op.Cuit = prov.Cuit
+
+INNER JOIN detalleordenpago AS `dop`
+ON op.CodOP = dop.idcontrol
+    
+INNER JOIN retencion AS `ret`
+ON dop.codretencion = ret.codretencion
+
+WHERE op.IdControl != 0
+GROUP BY op.IdControl;

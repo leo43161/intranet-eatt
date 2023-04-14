@@ -6,7 +6,7 @@ import { subirPagos } from '../../helpers/pagosHelpers';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
-export default function ModalPagos({ show, handleClose, pagosFitered, pagos }) {
+export default function ModalPagos({ show, handleClose, pagosFitered, pagos, pagosHandler }) {
     const [pagosDeleted, setPagosDeleted] = useState({});
     useEffect(() => {
         if (pagosFitered) {
@@ -42,9 +42,10 @@ export default function ModalPagos({ show, handleClose, pagosFitered, pagos }) {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 await subirPagos(_pagos);
+                pagosHandler(true);
                 Swal.hideLoading();
-                /* Swal.fire('Pagos guardados!', '', 'success'); */
                 Swal.fire('Pagos guardados!', '', 'success');
+                handleClose();
             } else if (result.isDenied) {
                 Swal.hideLoading()
                 Swal.fire('Ocurrio un error', 'Intentelo de nuevo en unos minutos', 'error')

@@ -120,9 +120,7 @@ export const subirPagos = async (pagos) => {
         ordenesDePago: [],
         detalleDePago: [],
         proveedoresRepetidos: [],
-        pagosDetalleRepetidos: [],
         pagosRepetidos: [],
-        pagosDetalleOmitidos: [],
         cantidad: 0
     }
     pagos.forEach(async (pago) => {
@@ -154,21 +152,25 @@ export const subirPagos = async (pagos) => {
 export const subirDeudas = async (deudas) => {
     const countDeudas = {
         deudas: [],
+        deudasError: [],
         ordenesDePagoFantasmas: [],
+        ordenesDePagoFantasmasError: [],
         deudasRepetidas: [],
     };
     const _deudasFilter = await checkDeudas(deudas);
     _deudasFilter.forEach(async (deuda) => {
         const checkOrden = await verificarOrden(deuda.nOrden);
         if (!checkOrden) {
-            await cargarOrdenFantasma(deuda);
+            const fantasmaCheck = await cargarOrdenFantasma(deuda);
             countDeudas.ordenesDePagoFantasmas.push(deuda.nOrden);
+           if (!fantasmaCheck) countDeudas.ordenesDePagoFantasmasError.push(deuda.nOrden);
         };
     });
     deudas.forEach(async (deuda) => {
         const checkDetallePago = await verificarDetalleOrden(deuda.nOrden, deuda.codRet);
         if (!checkDetallePago) {
-            await cargarDetallePago(deuda);
+           const detalleCheck = await cargarDetallePago(deuda);
+           if (!detalleCheck) countDeudas.deudasError.push(deuda.nOrden);
         };
     });
 }
