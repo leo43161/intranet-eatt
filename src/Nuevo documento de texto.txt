@@ -36,3 +36,28 @@ ON dop.codretencion = ret.codretencion
 
 WHERE op.IdControl != 0
 GROUP BY op.IdControl;
+
+
+{
+    "Id": 1,
+    "Libramiento": 2512,
+    "codop": 6507,
+    "FechaPago": "8/2/2023",
+    "fechaFactura": "2/2/2023",
+    "Cuit": 30708608153,
+    "NombreP": "MAGAL S.R.L.",
+    "Domicilio": "",
+    "TipoFactura": "B",
+    "Factura": "7-1420",
+    "MontoBase": 13015,
+    "Porcentaje": 1,
+    "idcontrol": 6507,
+    "MontoR": 685,
+    "Nombre": "D.G.R. ING.BRUTOS P/PAG. ELECTR.",
+    "saretP": 1,
+    "SARET": 685,
+    "Gan": 0,
+    "SS": 0,
+    "temP": 0,
+    "TEM": 0
+}

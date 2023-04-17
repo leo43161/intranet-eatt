@@ -4,19 +4,41 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import TableExport from 'table-export';
 import ItemTable from '../../components/pagos/ItemTable';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PagosModal from '../../components/pagos/PagosModal';
 import { listPagos } from '../../helpers/listaHelpers';
 
 export default function Pagos() {
     const [show, setShow] = useState(false);
     const [modal, setModal] = useState({});
+    const [pagos, setPagos] = useState([]);
+    const [pagosReload, setPagosReload] = useState(true);
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
     const excelHandler = () => {
-        /* TableExport('table-excel', 'test', 'xls'); */
-        listPagos();
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}_${currentDate.getHours()}-${currentDate.getMinutes()}`;
+        TableExport('table-excel', 'Ordenes '+ formattedDate, 'xls');
     }
+
+    useEffect(() => {
+        if (pagosReload) {
+            consultarPagos();
+            setPagosReload(false);
+            console.log(pagos)
+        }
+    }, [pagosReload]);
+
+    const consultarPagos = async () => {
+        try {
+            const _pagos = await listPagos();
+            setPagos(_pagos);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
     return (
         <div>
             <div className="container">
@@ -64,7 +86,7 @@ export default function Pagos() {
                                 <th>DOMICILIO</th>
                                 <th>TIPO</th>
                                 <th>FACTURA</th>
-                                <th>FECHA</th>
+                                <th>FECHA FACTURA</th>
                                 <th>MONTO</th>
                                 <th>%</th>
                                 <th>SARET</th>
@@ -76,9 +98,7 @@ export default function Pagos() {
                             </tr>
                         </thead>
                         <tbody>
-                            <ItemTable setModal={setModal} handleShow={handleShow}></ItemTable>
-                            <ItemTable setModal={setModal} handleShow={handleShow}></ItemTable>
-                            <ItemTable setModal={setModal} handleShow={handleShow}></ItemTable>
+                            {pagos.map(pago => (<ItemTable setModal={setModal} handleShow={handleShow} pago={pago}></ItemTable>))}
                         </tbody>
                     </Table>
                 </div>
