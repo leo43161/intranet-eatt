@@ -115,6 +115,8 @@ const filterDeudas = (deudas = []) => {
 }
 
 export const subirPagos = async (pagos) => {
+    console.log("Estos son los pagos que se van a subir por que no se estan subiendo las fechas de factura")
+    console.log(pagos);
     const countPagos = {
         proveedores: [],
         ordenesDePago: [],

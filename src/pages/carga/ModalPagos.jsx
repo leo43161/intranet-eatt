@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import OrdenDePago from './OrdenDePago';
-import { subirPagos } from '../../helpers/pagosHelpers';
+import { subirPagos } from '../../helpers/cargaHelpers';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 

@@ -2,6 +2,14 @@ import axios from "axios";
 const Consultas = {};
 const apiUrl = "http://10.15.15.151:3000/api/"
 
+Consultas.listarPagos = async () => {
+    const { data: pagos } = await axios.get(
+        apiUrl + "pagos"
+    );
+    console.log(pagos);
+    return pagos;
+};
+
 Consultas.verificarProv = async (cuit) => {
     const { data: proovedor } = await axios.get(
         apiUrl + "users/proveedor", { params: { cuit } }
@@ -31,6 +39,7 @@ Consultas.cargarOrden = async (orden) => {
         factura: orden.nFactura,
         tipoFactura: orden.tipoFact,
         fechaPago: orden.fechaP,
+        fechaFact: orden.fechafact,
         montoBase: orden.netoProv,
         pagada: 0,
         borrado: 0,
@@ -39,6 +48,7 @@ Consultas.cargarOrden = async (orden) => {
         idCuentaEmisora: orden.ctaEmisora,
         libramiento: orden.libramiento
     }
+    console.log("Esta es la ordern que se prepara para SUBIR")
     console.log(ordenPago);
     const { data: check } = await axios.post(
         apiUrl + "pagos/orden", { params: { ordenPago } }

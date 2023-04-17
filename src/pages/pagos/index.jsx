@@ -6,6 +6,7 @@ import TableExport from 'table-export';
 import ItemTable from '../../components/pagos/ItemTable';
 import { useState } from 'react';
 import PagosModal from '../../components/pagos/PagosModal';
+import { listPagos } from '../../helpers/listaHelpers';
 
 export default function Pagos() {
     const [show, setShow] = useState(false);
@@ -13,7 +14,8 @@ export default function Pagos() {
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
     const excelHandler = () => {
-        TableExport('table-excel', 'test', 'xls');
+        /* TableExport('table-excel', 'test', 'xls'); */
+        listPagos();
     }
     return (
         <div>

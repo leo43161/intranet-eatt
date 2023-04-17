@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import DropZone from '../../components/Dropzone';
-import { formatearTxt, checkPagos, subirPagos, subirDeudas } from '../../helpers/pagosHelpers';
+import { formatearTxt, checkPagos, subirPagos, subirDeudas } from '../../helpers/cargaHelpers';
 import Swal from 'sweetalert2';
 import ModalPagos from './ModalPagos';
 
