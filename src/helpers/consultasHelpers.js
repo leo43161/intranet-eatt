@@ -6,7 +6,6 @@ Consultas.listarPagos = async () => {
     const { data: pagos } = await axios.get(
         apiUrl + "pagos"
     );
-    console.log(pagos);
     return pagos;
 };
 

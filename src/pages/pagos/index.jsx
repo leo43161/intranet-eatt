@@ -10,7 +10,7 @@ import { listPagos } from '../../helpers/listaHelpers';
 
 export default function Pagos() {
     const [show, setShow] = useState(false);
-    const [modal, setModal] = useState({});
+    const [pagoModal, setPagoModal] = useState({});
     const [pagos, setPagos] = useState([]);
     const [pagosReload, setPagosReload] = useState(true);
     const handleShow = () => setShow(true);
@@ -25,7 +25,6 @@ export default function Pagos() {
         if (pagosReload) {
             consultarPagos();
             setPagosReload(false);
-            console.log(pagos)
         }
     }, [pagosReload]);
 
@@ -98,12 +97,12 @@ export default function Pagos() {
                             </tr>
                         </thead>
                         <tbody>
-                            {pagos.map(pago => (<ItemTable setModal={setModal} handleShow={handleShow} pago={pago}></ItemTable>))}
+                            {pagos.map(pago => (<ItemTable key={pago.Id} setPagoModal={setPagoModal} handleShow={handleShow} pago={pago}></ItemTable>))}
                         </tbody>
                     </Table>
                 </div>
             </div>
-            <PagosModal show={show} handleClose={handleClose} modal={modal}></PagosModal>
+            <PagosModal show={show} handleClose={handleClose} pago={pagoModal}></PagosModal>
         </div>
     )
 }

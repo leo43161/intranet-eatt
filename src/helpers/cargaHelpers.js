@@ -6,7 +6,6 @@ const codRetVerif = {
     402: "RET. IMP. GANANCIAS - PROVEEDORES Y CONTRATIS",
     409: "S.G.P. SIST. PENS. JUB. RETENC. PERSONAL"
 }
-
 const FORMAT_DEUDAS = {
     1: "nCuenta",
     2: "nombre",
@@ -39,7 +38,6 @@ const FORMAT_PAGOS = {
     48: "ctaEmisora2",
     49: "ctaEmisora3",
 }
-
 export const formatearTxt = (contenido, txt) => {
     const arrayData = contenido.split(/\r\n|\r|\n/, -1);
     let listaPagos = [];
@@ -53,7 +51,6 @@ export const formatearTxt = (contenido, txt) => {
     listaPagos = formatearOrdenes(listaPagos, txt);
     return listaPagos;
 }
-
 function formatearOrdenes(_ordenes, txt) {
     let ordenes = [];
     const FORMAT = txt === 1 ? FORMAT_PAGOS : FORMAT_DEUDAS;
@@ -72,8 +69,6 @@ function formatearOrdenes(_ordenes, txt) {
     ordenes = txt === 1 ? filterPagos(ordenes) : filterDeudas(ordenes);
     return (ordenes);
 }
-
-
 const formatearPago = (pago) => {
     let _pago = pago;
     _pago.libramiento = pago.codExpEatt.slice(2, -1).replace('460   ', '');
@@ -93,7 +88,6 @@ const formatearDeudas = (pago) => {
     _pago.fecha = convertirFecha(pago.fecha);
     return _pago;
 }
-
 const filterPagos = (pagos = []) => {
     /* Se aplica la filtracion a la cuenta de pagos del ente EATT - pagos segun su nro de cuenta */
     let filterPagos = pagos.filter(({ cuit }) => cuit !== "30709204617");
@@ -113,7 +107,6 @@ const filterDeudas = (deudas = []) => {
     console.log(filterDeudas); */
     return filterDeudas;
 }
-
 export const subirPagos = async (pagos) => {
     console.log("Estos son los pagos que se van a subir por que no se estan subiendo las fechas de factura")
     console.log(pagos);
@@ -150,7 +143,6 @@ export const subirPagos = async (pagos) => {
     });
     return countPagos;
 }
-
 export const subirDeudas = async (deudas) => {
     const countDeudas = {
         deudas: [],
@@ -176,7 +168,6 @@ export const subirDeudas = async (deudas) => {
         };
     });
 }
-
 export const checkPagos = (pagos) => {
     let _pagos = pagos;
     let _checkPagos = [];
@@ -195,7 +186,6 @@ export const checkPagos = (pagos) => {
     console.log(_checkPagos);
     return _checkPagos;
 };
-
 export const checkDeudas = async (deudas) => {
     const valoresUnicos = {};
     const _deudasFilter = deudas.filter(deuda => {
@@ -206,7 +196,6 @@ export const checkDeudas = async (deudas) => {
     });
     return _deudasFilter;
 };
-
 const convertirFecha = (fecha) => {
     let hoy = new Date();
     let anio = hoy.getFullYear();
