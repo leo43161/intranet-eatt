@@ -108,4 +108,20 @@ Consultas.cargarDetallePago = async (orden) => {
     return check;
 };
 
+Consultas.editarDetallePago = async (orden) => {
+    const detalleOrden = {
+        porcentaje: 1,
+        montoR: orden.importeRet,
+        activo: 1,
+        borrado: 0,
+        codRetencion: orden.codRet,
+        idControl: orden.nOrden
+    }
+    const { data: check } = await axios.put(
+        apiUrl + "pagos/detalle", { params: { detalleOrden } }
+    );
+    console.log(check);
+    return check;
+};
+
 export default Consultas;

@@ -1,6 +1,7 @@
 import { pool } from "../../config/db";
 const queryGetAct = (orden, ret) => `CALL sp_VerificarCargaDetalleOrdenPago(${orden},${ret});`;
 const queryPostDetalle = ({ porcentaje, montoR, borrado, activo, codRetencion, idControl }) => `CALL sp_InsertarDetalleOrdenPago(${porcentaje},${montoR},${borrado},${activo},${codRetencion},${idControl});`;
+const queryPutDetalle = ({ IdDOP, porcentaje, montoR, borrado, activo, codRetencion, idControl }) => `CALL sp_ModificarDetalleOrdenPago(${IdDOP},${porcentaje},${montoR},${borrado},${activo},${codRetencion},${idControl});`;
 
 export default async function handler(req, res) {
     switch (req.method) {
@@ -8,6 +9,8 @@ export default async function handler(req, res) {
             return await getDetalleOrden(req, res);
         case "POST":
             return await postOrdenDetalle(req, res);
+        case "PUT":
+            return await putOrdenDetalle(req, res);
         default:
             return res.status(400).send("Method not allowed");
     }
@@ -25,8 +28,18 @@ const getDetalleOrden = async (req, res) => {
 
 const postOrdenDetalle = async (req, res) => {
     const { detalleOrden } = req.body.params
-    try { 
+    try {
         const results = await pool.query(queryPostDetalle(detalleOrden));
+        return res.status(200).json(results);
+    } catch (error) {
+        return res.status(500).json({ error, queryString: queryPostDetalle(detalleOrden) });
+    }
+};
+
+const putOrdenDetalle = async (req, res) => {
+    const { detalleOrden } = req.body.params
+    try {
+        const results = await pool.query(queryPutDetalle(detalleOrden));
         return res.status(200).json(results);
     } catch (error) {
         return res.status(500).json({ error, queryString: queryPostDetalle(detalleOrden) });

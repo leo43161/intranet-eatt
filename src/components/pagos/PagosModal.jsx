@@ -1,13 +1,32 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import { convertirFechaInput } from '../../helpers/listaHelpers';
+import { useState, useEffect } from "react";
 
 export default function PagosModal({ show, handleClose, pago }) {
     const { Id, Libramiento, codop, FechaPago, fechaFactura, Cuit, NombreP, Domicilio, TipoFactura, Factura, MontoBase, saretP, SARET, Gan, SS, temP, TEM } = pago;
-    const convertirFecha = (fecha) => {
-        const [dia, mes, anio] = fecha.split('/');
-        const fechaISO = new Date(anio, mes - 1, dia).toISOString().split('T')[0];
-        return fechaISO;
+    const [editPagos, setEditPagos] = useState({
+        Libramiento: "",
+        FechaPago: "",
+        TipoFactura: "",
+        fechaFactura: "",
+        saretP: "",
+        temP: "",
+    });
+    useEffect(() => {
+        if (pago) setEditPagos({ Libramiento, FechaPago, TipoFactura, fechaFactura, saretP, temP, })
+    }, [pago]);
+
+    const handleChange = (e) => {
+        setEditPagos({
+            ...editPagos,
+            [e.target.name]: e.target.value,
+        });
+    };
+    const handleSubmit = () => {
+        const pagoUpdate = { ...pago, ...editPagos };
+        console.log(pagoUpdate);
     }
     return (
         <>
@@ -24,14 +43,31 @@ export default function PagosModal({ show, handleClose, pago }) {
                         <div className="d-flex justify-content-around align-items-center mb-4">
                             <div className="d-flex align-items-center flex-column">
                                 <span className='fw-bold me-2'>Libramiento: </span>
-                                <span><Form.Control size="sm" type="text" placeholder="Libramiento" defaultValue={Libramiento} /></span>
+                                <span>
+                                    <Form.Control
+                                        name="Libramiento"
+                                        size="sm"
+                                        type="text"
+                                        placeholder="Libramiento"
+                                        defaultValue={Libramiento}
+                                        onChange={handleChange}
+                                    /></span>
                             </div>
                             <div className="d-flex align-items-center flex-column">
                                 <span className='fw-bold'>Numero de Pago: </span><span>{codop}</span>
                             </div>
                             <div className="d-flex align-items-center flex-column">
                                 <span className='fw-bold me-2'>Fecha de pago: </span>
-                                <span><Form.Control size="sm" type="date" defaultValue={FechaPago && convertirFecha(FechaPago)}></Form.Control></span>
+                                <span>
+                                    <Form.Control
+                                        name="FechaPago"
+                                        size="sm"
+                                        type="date"
+                                        defaultValue={FechaPago && convertirFechaInput(FechaPago)}
+                                        onChange={handleChange}
+                                    >
+                                    </Form.Control>
+                                </span>
                             </div>
                         </div>
                         <div className="d-flex justify-content-around align-items-center mb-4">
@@ -49,12 +85,18 @@ export default function PagosModal({ show, handleClose, pago }) {
                             <div className='d-flex flex-column align-items-center'>
                                 <h6 className='fw-bold'>Tipo: </h6>
                                 <span>
-                                    <Form.Select aria-label="Default select example" size="sm" defaultValue={TipoFactura}>
+                                    <Form.Select
+                                        name="TipoFactura"
+                                        aria-label="Default select example"
+                                        size="sm"
+                                        defaultValue={TipoFactura}
+                                        onChange={handleChange}
+                                    >
                                         <option>Tipo</option>
-                                        <option defaultValue="A">A</option>
-                                        <option defaultValue="B">B</option>
-                                        <option defaultValue="C">C</option>
-                                        <option defaultValue="O">O</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="O">O</option>
                                     </Form.Select>
                                 </span>
                             </div>
@@ -65,14 +107,29 @@ export default function PagosModal({ show, handleClose, pago }) {
                             </div>
                             <div className='d-flex flex-column align-items-center'>
                                 <h6 className='fw-bold'>Fecha Facturas: </h6>
-                                <span><Form.Control size="sm" type="date" defaultValue={fechaFactura && convertirFecha(fechaFactura)} /></span>
+                                <span>
+                                    <Form.Control
+                                        name="fechaFactura"
+                                        size="sm"
+                                        type="date"
+                                        defaultValue={fechaFactura && convertirFechaInput(fechaFactura)}
+                                        onChange={handleChange}
+                                    />
+                                </span>
                             </div>
                         </div>
                         <div className="d-flex justify-content-around align-items-center mb-4">
                             <div className='d-flex flex-column align-items-center col-3'>
                                 <div className='d-flex align-items-center mb-2 col-6'>
                                     <h6 className='fw-bold mb-0 me-2'>SARET: </h6>
-                                    <Form.Control size="sm" type="text" defaultValue={saretP} placeholder="%" />
+                                    <Form.Control
+                                        name="saretP"
+                                        size="sm"
+                                        type="text"
+                                        defaultValue={saretP}
+                                        placeholder="%"
+                                        onChange={handleChange}
+                                    />
                                 </div>
                                 <span>${SARET}</span>
                             </div>
@@ -87,14 +144,24 @@ export default function PagosModal({ show, handleClose, pago }) {
                             <div className='d-flex flex-column align-items-center col-3'>
                                 <div className='d-flex align-items-center mb-2 col-6'>
                                     <h6 className='fw-bold mb-0 me-2'>TEM: </h6>
-                                    <Form.Control size="sm" type="text" placeholder="%" defaultValue={temP} />
+                                    <Form.Control
+                                        name="temP"
+                                        size="sm"
+                                        type="text"
+                                        placeholder="%"
+                                        defaultValue={temP}
+                                        onChange={handleChange}
+                                    />
                                 </div>
                                 <span>${TEM}</span>
                             </div>
                         </div>
                         <div className="d-flex justify-content-around align-items-center mb-4">
                             <div className='d-flex flex-column align-items-center'>
-                                <h6 className='fw-bold'>MONTO: </h6><span>${MontoBase}</span>
+                                <h6 className='fw-bold'>MONTO BASE: </h6><span>${MontoBase}</span>
+                            </div>
+                            <div className='d-flex flex-column align-items-center'>
+                                <h6 className='fw-bold'>RETENCIONES: </h6><span>${SARET + Gan + SS + TEM}</span>
                             </div>
                         </div>
                     </div>
@@ -103,7 +170,7 @@ export default function PagosModal({ show, handleClose, pago }) {
                     <Button variant="secondary" onClick={handleClose}>
                         Cerrar
                     </Button>
-                    <Button variant="success" onClick={handleClose}>
+                    <Button variant="success" onClick={handleSubmit}>
                         Editar
                     </Button>
                 </Modal.Footer>
