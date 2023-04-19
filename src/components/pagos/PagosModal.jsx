@@ -3,19 +3,20 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { convertirFechaInput } from '../../helpers/listaHelpers';
 import { useState, useEffect } from "react";
+import { editarPago } from "../../helpers/listaHelpers"
 
 export default function PagosModal({ show, handleClose, pago }) {
     const { Id, Libramiento, codop, FechaPago, fechaFactura, Cuit, NombreP, Domicilio, TipoFactura, Factura, MontoBase, saretP, SARET, Gan, SS, temP, TEM } = pago;
-    const [editPagos, setEditPagos] = useState({
-        Libramiento: "",
-        FechaPago: "",
-        TipoFactura: "",
-        fechaFactura: "",
-        saretP: "",
-        temP: "",
-    });
+    const [editPagos, setEditPagos] = useState({});
     useEffect(() => {
-        if (pago) setEditPagos({ Libramiento, FechaPago, TipoFactura, fechaFactura, saretP, temP, })
+        if (pago) setEditPagos({
+            Libramiento,
+            FechaPago: FechaPago && convertirFechaInput(FechaPago),
+            TipoFactura,
+            fechaFactura: fechaFactura && convertirFechaInput(fechaFactura),
+            saretP,
+            temP
+        })
     }, [pago]);
 
     const handleChange = (e) => {
@@ -26,7 +27,7 @@ export default function PagosModal({ show, handleClose, pago }) {
     };
     const handleSubmit = () => {
         const pagoUpdate = { ...pago, ...editPagos };
-        console.log(pagoUpdate);
+        editarPago(pagoUpdate);
     }
     return (
         <>
@@ -129,6 +130,7 @@ export default function PagosModal({ show, handleClose, pago }) {
                                         defaultValue={saretP}
                                         placeholder="%"
                                         onChange={handleChange}
+                                        disabled={!SARET}
                                     />
                                 </div>
                                 <span>${SARET}</span>
@@ -151,6 +153,7 @@ export default function PagosModal({ show, handleClose, pago }) {
                                         placeholder="%"
                                         defaultValue={temP}
                                         onChange={handleChange}
+                                        disabled={!TEM}
                                     />
                                 </div>
                                 <span>${TEM}</span>

@@ -1,7 +1,7 @@
 import { pool } from "../../config/db";
 const queryGetAct = (orden, ret) => `CALL sp_VerificarCargaDetalleOrdenPago(${orden},${ret});`;
 const queryPostDetalle = ({ porcentaje, montoR, borrado, activo, codRetencion, idControl }) => `CALL sp_InsertarDetalleOrdenPago(${porcentaje},${montoR},${borrado},${activo},${codRetencion},${idControl});`;
-const queryPutDetalle = ({ IdDOP, porcentaje, montoR, borrado, activo, codRetencion, idControl }) => `CALL sp_ModificarDetalleOrdenPago(${IdDOP},${porcentaje},${montoR},${borrado},${activo},${codRetencion},${idControl});`;
+const queryPutDetalle = ({ idDOP, porcentaje, montoR, borrado, activo, codRetencion, idControl }) => `CALL sp_ModificarDetalleOrdenPago(${idDOP},${porcentaje},${montoR},${borrado},${activo},${codRetencion},${idControl});`;
 
 export default async function handler(req, res) {
     switch (req.method) {

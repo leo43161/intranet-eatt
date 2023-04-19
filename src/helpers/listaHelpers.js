@@ -1,5 +1,5 @@
 import Consultas from "./consultasHelpers";
-const { listarPagos } = Consultas;
+const { listarPagos, editarDetallePago } = Consultas;
 
 export const listPagos = async () => {
     const pagos = await listarPagos();
@@ -8,6 +8,30 @@ export const listPagos = async () => {
         pago.fechaFactura = convertirFecha(pago.fechaFactura);
     })
     return pagos;
+}
+
+export const editarPago = async (pago) => {
+    const { Id, Libramiento, codop, FechaPago, fechaFactura, Cuit, NombreP, Domicilio, TipoFactura, Factura, MontoBase, saretId, saretP, SARET, ganId, Gan, ssId, SS, temId, temP, TEM } = pago;
+    console.log(pago);
+    const codRetVerif = {
+        "SARET": { cod: 101, porcent: saretP, id: saretId },
+        "TEM": { cod: 133, porcent: temP, id: temId },
+        "Gan": { cod: 402, porcent: 0, id: ganId },
+        "SS": { cod: 409, porcent: 0, id: ssId }
+    }
+    for (const key in codRetVerif) {
+        if (pago[key]) {
+            const { cod, porcent, id } = codRetVerif[key];
+            const detallePago = {
+                idDOP: id,
+                porcentaje: porcent,
+                montoR: pago[key],
+                cod: cod,
+                idControl: codop
+            }
+            editarDetallePago(detallePago);
+        };
+    }
 }
 
 export const convertirFechaInput = (fecha) => {
