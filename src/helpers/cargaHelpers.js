@@ -1,5 +1,5 @@
 import Consultas from "./consultasHelpers";
-const { verificarProv, verificarOrden, verificarDetalleOrden, cargarOrden, cargarProv, cargarDetallePago, cargarOrdenFantasma } = Consultas;
+const { verificarProv, verificarOrden, verificarDetalleOrden, verificarOrdenFantasma, cargarOrden, cargarProv, cargarDetallePago, cargarOrdenFantasma } = Consultas;
 const codRetVerif = {
     101: "D.G.R. ING.BRUTOS P/PAG. ELECTR.",
     133: "TRIBUTO DE EMERGENCIA MUNICIPAL- TEM",
@@ -116,31 +116,44 @@ export const subirPagos = async (pagos) => {
         detalleDePago: [],
         proveedoresRepetidos: [],
         pagosRepetidos: [],
+        pagosFantasma: [],
         cantidad: 0
     }
     pagos.forEach(async (pago) => {
         const checkProv = await verificarProv(pago.cuit);
         const checkOrden = await verificarOrden(pago.nOrden);
+        const checkOrdenFantasma = await verificarOrdenFantasma(pago.nOrden);
+        console.log(checkOrdenFantasma);
         if (!countPagos.ordenesDePago.includes(pago.nOrden)) {
-            if (!checkOrden) {
-                if (!checkProv) {
-                    if (!countPagos.proveedores.includes(pago.cuit)) {
-                        console.log(pago);
-                        countPagos.proveedores.push(pago.cuit);
-                        const resProv = await cargarProv(pago);
-                        console.log(resProv);
-                    }
-                } else {
-                    countPagos.proveedoresRepetidos.push(pago.cuit);
+            if (!checkProv) {
+                if (!countPagos.proveedores.includes(pago.cuit)) {
+                    console.log(pago);
+                    countPagos.proveedores.push(pago.cuit);
+                    const resProv = await cargarProv(pago);
+                    console.log(resProv);
                 }
-                const resPago = await cargarOrden(pago);
-                countPagos.ordenesDePago.push(pago.nOrden);
-                console.log(resPago);
             } else {
-                countPagos.pagosRepetidos.push(pago.nOrden);
+                countPagos.proveedoresRepetidos.push(pago.cuit);
             }
+
+            if (!checkOrdenFantasma) {
+                if (!checkOrden) {
+                    const resPago = await cargarOrden(pago);
+                    countPagos.ordenesDePago.push(pago.nOrden);
+                    console.log(resPago);
+                    console.log("SE SUBE");
+                } else {
+                    countPagos.pagosRepetidos.push(pago);
+                    console.log("NO ES FANTASMA PERO ESTA REPETIDO");
+                }
+            }else{
+                countPagos.pagosFantasma.push(pago.nOrden);
+                console.log("ES FANTASMA");
+            }
+
         }
     });
+    console.log(countPagos);
     return countPagos;
 }
 export const subirDeudas = async (deudas) => {
@@ -157,14 +170,14 @@ export const subirDeudas = async (deudas) => {
         if (!checkOrden) {
             const fantasmaCheck = await cargarOrdenFantasma(deuda);
             countDeudas.ordenesDePagoFantasmas.push(deuda.nOrden);
-           if (!fantasmaCheck) countDeudas.ordenesDePagoFantasmasError.push(deuda.nOrden);
+            if (!fantasmaCheck) countDeudas.ordenesDePagoFantasmasError.push(deuda.nOrden);
         };
     });
     deudas.forEach(async (deuda) => {
         const checkDetallePago = await verificarDetalleOrden(deuda.nOrden, deuda.codRet);
         if (!checkDetallePago) {
-           const detalleCheck = await cargarDetallePago(deuda);
-           if (!detalleCheck) countDeudas.deudasError.push(deuda.nOrden);
+            const detalleCheck = await cargarDetallePago(deuda);
+            if (!detalleCheck) countDeudas.deudasError.push(deuda.nOrden);
         };
     });
 }

@@ -1,6 +1,6 @@
 import { pool } from "../../config/db";
 const queryGetOrdenVerf = (orden) => `CALL sp_VerificarCargaOrdenPago(${orden});`;
-const queryPostOrden = ({ codOp, factura, fechaPago, fechaFact, tipoFactura, montoBase, pagada, borrado, activo, cuit, idCuentaEmisora, libramiento }) => `CALL sp_InsertarOrdenPago(${codOp},'${factura}','${fechaPago}','${fechaFact}','${tipoFactura ? tipoFactura : "A"}',${montoBase},${pagada},${borrado},${activo},${cuit},${idCuentaEmisora},'${libramiento}');`;
+const queryPostOrden = ({ codOp, factura, fechaPago, fechaFact, tipoFactura, montoBase, pagada, borrado, activo, cuit, idCuentaEmisora, libramiento, fantasma }) => `CALL sp_InsertarOrdenPago(${codOp},'${factura}','${fechaPago}','${fechaFact}','${tipoFactura ? tipoFactura : "A"}',${montoBase},${pagada},${borrado},${activo},${cuit},${idCuentaEmisora},'${libramiento}', ${fantasma});`;
 
 export default async function handler(req, res) {
     switch (req.method) {
@@ -25,7 +25,6 @@ const getOrdenPago = async (req, res) => {
 
 const postOrdenPago = async (req, res) => {
     const { ordenPago } = req.body.params
-    console.log(queryPostOrden(ordenPago));
     try {
         const results = await pool.query(queryPostOrden(ordenPago));
         return res.status(200).json(results);

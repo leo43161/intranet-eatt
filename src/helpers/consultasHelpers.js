@@ -13,7 +13,6 @@ Consultas.verificarProv = async (cuit) => {
     const { data: proovedor } = await axios.get(
         apiUrl + "users/proveedor", { params: { cuit } }
     );
-    console.log(proovedor.length);
     return proovedor.length > 0;
 };
 
@@ -22,6 +21,13 @@ Consultas.verificarOrden = async (orden) => {
         apiUrl + "pagos/orden", { params: { orden } }
     );
     return ordenPago.length > 0;
+};
+
+Consultas.verificarOrdenFantasma = async (orden) => {
+    const { data: ordenPago } = await axios.get(
+        apiUrl + "pagos/orden", { params: { orden } }
+    );
+    return ordenPago[0].fantasma;
 };
 
 Consultas.verificarDetalleOrden = async (orden, ret) => {
@@ -45,10 +51,9 @@ Consultas.cargarOrden = async (orden) => {
         activo: 1,
         cuit: orden.cuit,
         idCuentaEmisora: orden.ctaEmisora,
-        libramiento: orden.libramiento
+        libramiento: orden.libramiento,
+        fantasma: 0
     }
-    console.log("Esta es la ordern que se prepara para SUBIR")
-    console.log(ordenPago);
     const { data: check } = await axios.post(
         apiUrl + "pagos/orden", { params: { ordenPago } }
     );
@@ -68,9 +73,9 @@ Consultas.cargarOrdenFantasma = async (deuda) => {
         activo: 1,
         cuit: 0,
         idCuentaEmisora: deuda.nCuenta,
-        libramiento: ""
+        libramiento: "",
+        fantasma: 1
     }
-    console.log(ordenPago);
     const { data: check } = await axios.post(
         apiUrl + "pagos/orden", { params: { ordenPago } }
     );
@@ -104,7 +109,6 @@ Consultas.cargarDetallePago = async (orden) => {
     const { data: check } = await axios.post(
         apiUrl + "pagos/detalle", { params: { detalleOrden } }
     );
-    console.log(check);
     return check;
 };
 
@@ -121,7 +125,6 @@ Consultas.editarDetallePago = async (orden) => {
     const { data: check } = await axios.put(
         apiUrl + "pagos/detalle", { params: { detalleOrden } }
     );
-    console.log(check);
     return check;
 };
 
