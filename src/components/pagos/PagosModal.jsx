@@ -1,6 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 import { convertirFechaInput } from '../../helpers/listaHelpers';
 import { useState, useEffect } from "react";
 import { editarPago } from "../../helpers/listaHelpers"
@@ -8,8 +9,9 @@ import { editarPago } from "../../helpers/listaHelpers"
 export default function PagosModal({ show, handleClose, pago }) {
     const { Id, Libramiento, codop, FechaPago, fechaFactura, Cuit, NombreP, Domicilio, TipoFactura, Factura, MontoBase, saretP, SARET, Gan, SS, temP, TEM } = pago;
     const [editPagos, setEditPagos] = useState({});
+    const [error, setError] = useState(false);
     useEffect(() => {
-        if (pago) setEditPagos({
+        if (pago && show) setEditPagos({
             Libramiento,
             FechaPago: FechaPago && convertirFechaInput(FechaPago),
             TipoFactura,
@@ -17,7 +19,7 @@ export default function PagosModal({ show, handleClose, pago }) {
             saretP,
             temP
         })
-    }, [pago]);
+    }, [pago, show]);
 
     const handleChange = (e) => {
         setEditPagos({
@@ -27,6 +29,12 @@ export default function PagosModal({ show, handleClose, pago }) {
     };
     const handleSubmit = () => {
         const pagoUpdate = { ...pago, ...editPagos };
+        let _errorAlert = false;
+        for (const key in editPagos) {
+            if (editPagos[key].toString().trim() === "") _errorAlert = true;
+        }
+        setError(_errorAlert);
+        if (_errorAlert) return;
         editarPago(pagoUpdate);
     }
     return (
@@ -167,6 +175,11 @@ export default function PagosModal({ show, handleClose, pago }) {
                                 <h6 className='fw-bold'>RETENCIONES: </h6><span>${SARET + Gan + SS + TEM}</span>
                             </div>
                         </div>
+                        {error ? (
+                            <Alert variant="warning">
+                                Todos los campos tienen que llenarse
+                            </Alert>
+                        ) : null}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

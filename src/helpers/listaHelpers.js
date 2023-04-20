@@ -11,7 +11,7 @@ export const listPagos = async () => {
 }
 
 export const editarPago = async (pago) => {
-    const { Id, Libramiento, codop, FechaPago, fechaFactura, Cuit, NombreP, Domicilio, TipoFactura, Factura, MontoBase, saretId, saretP, SARET, ganId, Gan, ssId, SS, temId, temP, TEM } = pago;
+    const { Id, Libramiento, codop, FechaPago, fechaFactura, Cuit, NombreP, Domicilio, TipoFactura, Factura, MontoBase, saretId, saretP, ganId, ssId, temId, temP } = pago;
     console.log(pago);
     const codRetVerif = {
         "SARET": { cod: 101, porcent: saretP, id: saretId },

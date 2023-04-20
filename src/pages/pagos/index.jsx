@@ -18,7 +18,7 @@ export default function Pagos() {
     const excelHandler = () => {
         const currentDate = new Date();
         const formattedDate = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}_${currentDate.getHours()}-${currentDate.getMinutes()}`;
-        TableExport('table-excel', 'Ordenes '+ formattedDate, 'xls');
+        TableExport('table-excel', 'Ordenes ' + formattedDate, 'xls');
     }
 
     useEffect(() => {
@@ -102,7 +102,7 @@ export default function Pagos() {
                     </Table>
                 </div>
             </div>
-            <PagosModal show={show} handleClose={handleClose} pago={pagoModal}></PagosModal>
+            {pagoModal && <PagosModal show={show} handleClose={handleClose} pago={pagoModal}></PagosModal>}
         </div>
     )
 }
