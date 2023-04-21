@@ -1,5 +1,5 @@
 import Consultas from "./consultasHelpers";
-const { listarPagos, editarDetallePago } = Consultas;
+const { listarPagos, editarDetallePago, editarOrdenPago } = Consultas;
 
 export const listPagos = async () => {
     const pagos = await listarPagos();
@@ -11,7 +11,7 @@ export const listPagos = async () => {
 }
 
 export const editarPago = async (pago) => {
-    const { Id, Libramiento, codop, FechaPago, fechaFactura, Cuit, NombreP, Domicilio, TipoFactura, Factura, MontoBase, saretId, saretP, ganId, ssId, temId, temP } = pago;
+    const { codop, saretId, saretP, ganId, ssId, temId, temP } = pago;
     console.log(pago);
     const codRetVerif = {
         "SARET": { cod: 101, porcent: saretP, id: saretId },
@@ -32,6 +32,7 @@ export const editarPago = async (pago) => {
             editarDetallePago(detallePago);
         };
     }
+    await editarOrdenPago(pago);
 }
 
 export const convertirFechaInput = (fecha) => {

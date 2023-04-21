@@ -5,11 +5,12 @@ import Alert from 'react-bootstrap/Alert';
 import { convertirFechaInput } from '../../helpers/listaHelpers';
 import { useState, useEffect } from "react";
 import { editarPago } from "../../helpers/listaHelpers"
+import Swal from 'sweetalert2';
 
-export default function PagosModal({ show, handleClose, pago }) {
+export default function PagosModal({ show, handleClose, pago, setPagosReload }) {
     const { Id, Libramiento, codop, FechaPago, fechaFactura, Cuit, NombreP, Domicilio, TipoFactura, Factura, MontoBase, saretP, SARET, Gan, SS, temP, TEM } = pago;
     const [editPagos, setEditPagos] = useState({});
-    const [error, setError] = useState(false);
+    const [error, setError] = useState({ error: false, msg: "" });
     useEffect(() => {
         if (pago && show) setEditPagos({
             Libramiento,
@@ -31,11 +32,40 @@ export default function PagosModal({ show, handleClose, pago }) {
         const pagoUpdate = { ...pago, ...editPagos };
         let _errorAlert = false;
         for (const key in editPagos) {
-            if (editPagos[key].toString().trim() === "") _errorAlert = true;
+            if (editPagos[key].toString().trim() === "") {
+                setError({ error: true, msg: "Todos los campos tienen que llenarse" });
+                _errorAlert = true;
+            };
+            if (key === "Libramiento" || key === "saretP" || key === "temP") {
+                if (parseFloat(editPagos[key]) > 2147483647) {
+                    _errorAlert = true;
+                    setError({ error: true, msg: "Los valores no deben ser mayores a 2147483647" });
+                }
+            }
         }
-        setError(_errorAlert);
         if (_errorAlert) return;
-        editarPago(pagoUpdate);
+        setError({ error: false, msg: "" });
+        Swal.fire({
+            icon: 'warning',
+            title: 'Estas seguro que quiere descartar las ordenes de pago seleccionadas?',
+            showCancelButton: true,
+            confirmButtonText: 'Continuar',
+            cancelButtonText: 'Cancelar'
+        }).then(async (result) => {
+            Swal.showLoading();
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                await editarPago(pagoUpdate);
+                setPagosReload(true);
+                Swal.hideLoading();
+                Swal.fire('Pago editado!', '', 'success');
+                handleClose();
+            } else if (result.isDenied) {
+                Swal.hideLoading();
+                setPagosReload(true);
+                Swal.fire('Ocurrio un error', 'Intentelo de nuevo en unos minutos', 'error')
+            }
+        });
     }
     return (
         <>
@@ -175,9 +205,9 @@ export default function PagosModal({ show, handleClose, pago }) {
                                 <h6 className='fw-bold'>RETENCIONES: </h6><span>${SARET + Gan + SS + TEM}</span>
                             </div>
                         </div>
-                        {error ? (
+                        {error.error ? (
                             <Alert variant="warning">
-                                Todos los campos tienen que llenarse
+                                {error.msg}
                             </Alert>
                         ) : null}
                     </div>

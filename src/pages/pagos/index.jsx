@@ -102,7 +102,7 @@ export default function Pagos() {
                     </Table>
                 </div>
             </div>
-            {pagoModal && <PagosModal show={show} handleClose={handleClose} pago={pagoModal}></PagosModal>}
+            {pagoModal && <PagosModal show={show} handleClose={handleClose} pago={pagoModal} setPagosReload={setPagosReload}></PagosModal>}
         </div>
     )
 }

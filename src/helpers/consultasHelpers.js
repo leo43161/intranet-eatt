@@ -99,7 +99,7 @@ Consultas.cargarProv = async (prov) => {
 
 Consultas.cargarDetallePago = async (orden) => {
     const detalleOrden = {
-        porcentaje: 1,
+        porcentaje: 0,
         montoR: orden.importeRet,
         activo: 1,
         borrado: 0,
@@ -124,6 +124,29 @@ Consultas.editarDetallePago = async (orden) => {
     }
     const { data: check } = await axios.put(
         apiUrl + "pagos/detalle", { params: { detalleOrden } }
+    );
+    return check;
+};
+
+Consultas.editarOrdenPago = async (orden) => {
+    const ordenPago = {
+        idControl: orden.Id,
+        codOp: orden.codop,
+        factura: orden.Factura,
+        tipoFactura: orden.TipoFactura,
+        fechaPago: orden.FechaPago,
+        fechaFact: orden.fechaFactura,
+        montoBase: orden.MontoBase,
+        pagada: 0,
+        borrado: 0,
+        activo: 1,
+        cuit: orden.Cuit,
+        idCuentaEmisora: orden.IdCuentaEmisora,
+        libramiento: orden.Libramiento,
+        fantasma: 0
+    }
+    const { data: check } = await axios.put(
+        apiUrl + "pagos/orden", { params: { ordenPago } }
     );
     return check;
 };
