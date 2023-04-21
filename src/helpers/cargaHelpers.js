@@ -1,5 +1,5 @@
 import Consultas from "./consultasHelpers";
-const { verificarProv, verificarOrden, verificarDetalleOrden, verificarOrdenFantasma, cargarOrden, cargarProv, cargarDetallePago, cargarOrdenFantasma } = Consultas;
+const { verificarProv, verificarOrden, verificarDetalleOrden, verificarOrdenFantasma, cargarOrden, cargarProv, cargarDetallePago, cargarOrdenFantasma, actualizarPagosFantasmas } = Consultas;
 const codRetVerif = {
     101: "D.G.R. ING.BRUTOS P/PAG. ELECTR.",
     133: "TRIBUTO DE EMERGENCIA MUNICIPAL- TEM",
@@ -108,8 +108,6 @@ const filterDeudas = (deudas = []) => {
     return filterDeudas;
 }
 export const subirPagos = async (pagos) => {
-    console.log("Estos son los pagos que se van a subir por que no se estan subiendo las fechas de factura")
-    console.log(pagos);
     const countPagos = {
         proveedores: [],
         ordenesDePago: [],
@@ -127,10 +125,8 @@ export const subirPagos = async (pagos) => {
         if (!countPagos.ordenesDePago.includes(pago.nOrden)) {
             if (!checkProv) {
                 if (!countPagos.proveedores.includes(pago.cuit)) {
-                    console.log(pago);
                     countPagos.proveedores.push(pago.cuit);
                     const resProv = await cargarProv(pago);
-                    console.log(resProv);
                 }
             } else {
                 countPagos.proveedoresRepetidos.push(pago.cuit);
@@ -140,15 +136,13 @@ export const subirPagos = async (pagos) => {
                 if (!checkOrden) {
                     const resPago = await cargarOrden(pago);
                     countPagos.ordenesDePago.push(pago.nOrden);
-                    console.log(resPago);
-                    console.log("SE SUBE");
                 } else {
                     countPagos.pagosRepetidos.push(pago);
-                    console.log("NO ES FANTASMA PERO ESTA REPETIDO");
                 }
-            }else{
-                countPagos.pagosFantasma.push(pago.nOrden);
-                console.log("ES FANTASMA");
+            } else {
+                const idControl = checkOrdenFantasma.IdControl;
+                const resPago = await actualizarPagosFantasmas(idControl, pago);
+                countPagos.pagosFantasma.push(resPago.nOrden);
             }
 
         }

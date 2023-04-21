@@ -27,7 +27,7 @@ Consultas.verificarOrdenFantasma = async (orden) => {
     const { data: ordenPago } = await axios.get(
         apiUrl + "pagos/orden", { params: { orden } }
     );
-    return ordenPago[0].fantasma;
+    return ordenPago.length > 0 ? ordenPago[0].fantasma && ordenPago[0] : false;
 };
 
 Consultas.verificarDetalleOrden = async (orden, ret) => {
@@ -124,6 +124,29 @@ Consultas.editarDetallePago = async (orden) => {
     }
     const { data: check } = await axios.put(
         apiUrl + "pagos/detalle", { params: { detalleOrden } }
+    );
+    return check;
+};
+
+Consultas.actualizarPagosFantasmas = async (idControl, orden) => {
+    const ordenPago = {
+        idControl,
+        codOp: orden.nOrden,
+        factura: orden.nFactura,
+        tipoFactura: orden.tipoFact,
+        fechaPago: orden.fechaP,
+        fechaFact: orden.fechafact,
+        montoBase: orden.netoProv,
+        pagada: 0,
+        borrado: 0,
+        activo: 1,
+        cuit: orden.cuit,
+        idCuentaEmisora: orden.ctaEmisora,
+        libramiento: orden.libramiento,
+        fantasma: 0
+    }
+    const { data: check } = await axios.put(
+        apiUrl + "pagos/orden", { params: { ordenPago } }
     );
     return check;
 };
