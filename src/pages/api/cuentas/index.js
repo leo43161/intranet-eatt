@@ -1,10 +1,10 @@
 import { pool } from "../../config/db";
-const queryGetPagos = (cuenta) => `CALL sp_ListarPagos(${cuenta});`;
+const queryGetCuentas = () => `CALL sp_ListarCuentas();`;
 
 export default async function handler(req, res) {
     switch (req.method) {
         case "GET":
-            return await getOrdenesDePago(req, res);
+            return await getCuentasEmisoras(req, res);
         case "POST":
             return await postOrdenDetalle(req, res);
         default:
@@ -12,18 +12,11 @@ export default async function handler(req, res) {
     }
 }
 
-const getOrdenesDePago = async (req, res) => {
-    console.log(req);
-    const { cuenta } = req.query;
-    console.log(queryGetPagos(cuenta));
+const getCuentasEmisoras = async (req, res) => {
     try {
-        const results = await pool.query(queryGetPagos(cuenta));
+        const results = await pool.query(queryGetCuentas());
         return res.status(200).json(results[0]);
     } catch (error) {
         return res.status(500).json({ error });
     }
-};
-
-const postOrdenDetalle = async (req, res) => {
-
 };

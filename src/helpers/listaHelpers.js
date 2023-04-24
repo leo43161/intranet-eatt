@@ -1,13 +1,19 @@
 import Consultas from "./consultasHelpers";
-const { listarPagos, editarDetallePago, editarOrdenPago } = Consultas;
+const { listarPagos,listarCuentas, editarDetallePago, editarOrdenPago } = Consultas;
 
-export const listPagos = async () => {
-    const pagos = await listarPagos();
+export const listPagos = async (cuenta) => {
+    console.log(cuenta);
+    const pagos = await listarPagos(cuenta);
     pagos.map(pago => {
         pago.FechaPago = convertirFecha(pago.FechaPago);
         pago.fechaFactura = convertirFecha(pago.fechaFactura);
     })
     return pagos;
+}
+
+export const listCuentas = async () => {
+    const cuentas = await listarCuentas();
+    return cuentas;
 }
 
 export const editarPago = async (pago) => {

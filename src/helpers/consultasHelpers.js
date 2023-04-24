@@ -2,9 +2,17 @@ import axios from "axios";
 const Consultas = {};
 const apiUrl = "http://10.15.15.151:3000/api/"
 
-Consultas.listarPagos = async () => {
+Consultas.listarCuentas = async () => {
+    const { data: cuentas } = await axios.get(
+        apiUrl + "cuentas"
+    );
+    return cuentas;
+};
+
+Consultas.listarPagos = async (cuenta) => {
+    console.log(cuenta);
     const { data: pagos } = await axios.get(
-        apiUrl + "pagos"
+        apiUrl + "pagos", { params: { cuenta } }
     );
     return pagos;
 };

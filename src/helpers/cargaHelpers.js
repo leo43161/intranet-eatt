@@ -46,8 +46,6 @@ export const formatearTxt = (contenido, txt) => {
         listaPagos.push(pago);
     })
     listaPagos.pop();
-    /* console.log(arrayData); */
-    console.log(listaPagos);
     listaPagos = formatearOrdenes(listaPagos, txt);
     return listaPagos;
 }

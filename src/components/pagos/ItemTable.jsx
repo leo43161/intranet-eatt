@@ -33,6 +33,7 @@ export default function ItemTable({ setPagoModal, handleShow, pago }) {
             <td>{temId}</td>
             <td>{temP}</td>
             <td>${TEM}</td>
+            <td>${SARET + Gan + SS + TEM}</td>
         </tr>
     )
 }

@@ -6,13 +6,19 @@ import TableExport from 'table-export';
 import ItemTable from '../../components/pagos/ItemTable';
 import { useEffect, useState } from 'react';
 import PagosModal from '../../components/pagos/PagosModal';
-import { listPagos } from '../../helpers/listaHelpers';
+import { listPagos, listCuentas } from '../../helpers/listaHelpers';
 
 export default function Pagos() {
     const [show, setShow] = useState(false);
+
     const [pagoModal, setPagoModal] = useState({});
+
     const [pagos, setPagos] = useState([]);
     const [pagosReload, setPagosReload] = useState(true);
+
+    const [cuentas, setCuentas] = useState([]);
+    const [cuenta, setCuenta] = useState();
+
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
     const excelHandler = () => {
@@ -23,34 +29,78 @@ export default function Pagos() {
 
     useEffect(() => {
         if (pagosReload) {
-            consultarPagos();
+            consultarCuentas();
+            consultarPagos(cuenta);
             setPagosReload(false);
         }
     }, [pagosReload]);
 
-    const consultarPagos = async () => {
+    const consultarPagos = async (cuenta) => {
         try {
-            const _pagos = await listPagos();
+            const _pagos = await listPagos(cuenta);
             setPagos(_pagos);
         } catch (error) {
             console.log(error);
         }
     }
 
+    const consultarCuentas = async () => {
+        try {
+            const _cuentas = await listCuentas();
+            setCuentas(_cuentas);
+            if (!cuenta) {
+                setCuenta(_cuentas[0].IdCuentaEmisora);
+                setPagosReload(true);
+            };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handlerCuenta = (e) => {
+        const valueSelect = e.target.value;
+        setCuenta(valueSelect);
+        setPagosReload(true);
+    }
 
     return (
         <div>
             <div className="container">
                 <div className="my-3">
+                    <div className="card">
+                        <div className="d-flex align-items-center justify-content-between px-3 py-2">
+                            <div className="d-flex align-items-center col-7">
+                                <div className="me-2 col">Cueta Emisora:</div>
+                                <div className="col-9">
+                                    <Form.Select
+                                        name="TipoFactura"
+                                        onChange={handlerCuenta}
+                                        defaultValue={cuenta}
+                                    >
+                                        {cuentas.map(({ IdCuentaEmisora, NombreC }) => (
+                                            <option value={IdCuentaEmisora} >{IdCuentaEmisora} - {NombreC}</option>
+                                        ))}
+                                    </Form.Select>
+                                </div>
+                            </div>
+                            <div className="col-4 d-flex justify-content-around">
+                                <Button variant="success" onClick={excelHandler} >
+                                    <span className="">Descargar Excel</span>
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="my-3">
                     <Form>
                         <ListGroup horizontal>
-                            <ListGroup.Item className='col-md-5 col-lg-4 col-12 d-flex align-items-center'>
+                            <ListGroup.Item className='col-md-5 col-12 d-flex align-items-center'>
                                 <p className="m-0 me-2">Orden de pago:</p>
                                 <div className="col">
                                     <Form.Control type="email" placeholder="Inserte orden de pago" />
                                 </div>
                             </ListGroup.Item>
-                            <ListGroup.Item className='col-md-4 col-lg-5 col-12 d-flex align-items-center justify-content-around'>
+                            <ListGroup.Item className='col-md-5 col-12 d-flex align-items-center justify-content-around'>
                                 <div className="d-flex align-items-center">
                                     <p className="m-0 me-2">Desde:</p>
                                     <Form.Control type="date" placeholder="desde" />
@@ -60,11 +110,8 @@ export default function Pagos() {
                                     <Form.Control type="date" placeholder="hasta" />
                                 </div>
                             </ListGroup.Item>
-                            <ListGroup.Item className='col-md-3 col-lg-3 col-12 d-flex align-items-center justify-content-around'>
-                                <Button variant="success" onClick={excelHandler} >
-                                    <span className="">Descargar Excel</span>
-                                </Button>
-                                <Button variant="primary">
+                            <ListGroup.Item className='col-md-2 col-12 d-flex justify-content-around'>
+                                <Button className="w-100" variant="primary">
                                     <span className="">Filtrar</span>
                                 </Button>
                             </ListGroup.Item>
@@ -94,6 +141,7 @@ export default function Pagos() {
                                 <th>ID</th>
                                 <th>%</th>
                                 <th>TEM</th>
+                                <th>MONTO RETENCIONES</th>
                             </tr>
                         </thead>
                         <tbody>
