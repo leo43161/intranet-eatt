@@ -69,8 +69,8 @@ export default function Pagos() {
                 <div className="my-3">
                     <div className="card">
                         <div className="d-flex align-items-center justify-content-between px-3 py-2">
-                            <div className="d-flex align-items-center col-7">
-                                <div className="me-2 col">Cueta Emisora:</div>
+                            <div className="d-flex align-items-center justify-content-between col-7">
+                                <div className="me-2 col h5 m-0">Cueta Emisora:</div>
                                 <div className="col-9">
                                     <Form.Select
                                         name="TipoFactura"
@@ -83,8 +83,8 @@ export default function Pagos() {
                                     </Form.Select>
                                 </div>
                             </div>
-                            <div className="col-4 d-flex justify-content-around">
-                                <Button variant="success" onClick={excelHandler} >
+                            <div className="col d-flex justify-content-around ps-4">
+                                <Button className="col-8" variant="success" onClick={excelHandler} >
                                     <span className="">Descargar Excel</span>
                                 </Button>
                             </div>
