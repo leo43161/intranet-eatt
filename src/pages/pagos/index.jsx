@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Table from 'react-bootstrap/Table';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
@@ -7,8 +8,11 @@ import ItemTable from '../../components/pagos/ItemTable';
 import { useEffect, useState } from 'react';
 import PagosModal from '../../components/pagos/PagosModal';
 import { listPagos, listCuentas } from '../../helpers/listaHelpers';
+import { useRef } from "react";
+const GeneratePDF = dynamic(() => import("../../components/GeneratePDF"), { ssr: false });
 
 export default function Pagos() {
+    const ref = useRef();
     const [show, setShow] = useState(false);
 
     const [pagoModal, setPagoModal] = useState({});
@@ -84,9 +88,16 @@ export default function Pagos() {
                                 </div>
                             </div>
                             <div className="col d-flex justify-content-around ps-4">
-                                <Button className="col-8" variant="success" onClick={excelHandler} >
+                                <Button className="col-12" variant="success" onClick={excelHandler} >
                                     <span className="">Descargar Excel</span>
                                 </Button>
+                            </div>
+                            <div className="col d-flex justify-content-around ps-4">
+                                <GeneratePDF ret={"ret1"}>
+                                    <Button className="col" variant="success" >
+                                        <span className="">Descargar PDF</span>
+                                    </Button>
+                                </GeneratePDF>
                             </div>
                         </div>
                     </div>

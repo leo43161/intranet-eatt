@@ -8,8 +8,8 @@ export default function ItemTable({ setPagoModal, handleShow, pago }) {
         handleShow(true)
         setPagoModal(pago);
     }
-    console.log(pago);
-    return (
+
+    return (<>
         <tr className="align-middle">
             <td className="text-center">
                 <Button variant="success" onClick={() => handleModal(pago)}>
@@ -64,5 +64,6 @@ export default function ItemTable({ setPagoModal, handleShow, pago }) {
             </td>
             <td>${SARET + Gan + SS + TEM}</td>
         </tr>
+    </>
     )
 }
