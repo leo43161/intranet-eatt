@@ -1,13 +1,13 @@
 import React from "react";
 import jsPDF from 'jspdf';
-import { ret1HTML, ret2HTML, ret3HTML, ret4HTML } from '../helpers/pdfsHelpers';
+import { gananciasHTML, temHTML, ssHTML, saretHTML } from '../helpers/pdfsHelpers';
 
 const GeneratePdf = ({ ret, children }) => {
     const retenciones = {
-        "ret1": { config: { scale: 0.6072186836518046, hoja: "letter", margin: 30 }, html: ret1HTML },
-        "ret2": { config: { scale: 0.6072186836518046, hoja: "letter", margin: 30 }, html: ret2HTML },
-        "ret3": { config: { scale: 0.6072186836518046, hoja: "letter", margin: 30 }, html: ret3HTML },
-        "ret4": { config: { scale: 0.42644922164566346, hoja: "a4", margin: 10 }, html: ret4HTML },
+        "Gan": { config: { scale: 0.6072, hoja: "letter", margin: 30 }, html: gananciasHTML },
+        "TEM": { config: { scale: 0.54, hoja: "letter", margin: 30 }, html: temHTML },
+        "SS": { config: { scale: 0.6072, hoja: "letter", margin: 30 }, html: ssHTML },
+        "SARET": { config: { scale: 0.4264, hoja: "a4", margin: 10 }, html: saretHTML },
     }
     const generatePdf = () => {
         const { config: { scale, hoja, margin }, html } = retenciones[ret];

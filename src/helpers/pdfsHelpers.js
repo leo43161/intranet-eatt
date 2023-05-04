@@ -1,4 +1,4 @@
-export const ret1HTML = ({ cuit }) => `
+export const gananciasHTML = ({ cuit }) => `
 <div class="" id="maintable" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; width: 1349px;">
             <div class="d-flex">
                 <div class="col-8">
@@ -134,10 +134,498 @@ export const ret1HTML = ({ cuit }) => `
 
         </div>
 `;
-export const ret2HTML = () => `
-
+export const temHTML = () => `
+<div class="" id="maintable" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; width: 1349px;">
+            <div class="d-flex" style="margin-bottom: 90px;">
+                <div class="col-12">
+                    <div class="col-10">
+                        <div class="d-flex">
+                            <div class="col-2"></div>
+                            <div class="col-4 ps-2 fw-bold">LIB 1159 - CARTAGO SRL</div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="col-1 border border-dark d-flex justify-content-center align-items-center">
+                                <h3 class="mb-0 fw-bold">DIM</h3>
+                            </div>
+                            <div
+                                class="col-1 border border-start-0 border-dark d-flex justify-content-center align-items-center">
+                                <img class="col-6" src="img/logo-tem.jpg" alt="">
+                            </div>
+                            <div class="col-4 border border-start-0 border-dark fw-bold">
+                                <div class="text-center">Municipalidad de S. M. de Tucumán</div>
+                                <div class="text-center border-top border-bottom border-dark">Direccion de Ingresos
+                                    Municipales</div>
+                                <div class="text-center">24 de Septiembre N° 334</div>
+                            </div>
+                            <div class="col-2 border border-start-0 border-dark text-center">
+                                <p class="m-0">
+                                    T.E.M
+                                    <br>
+                                    y
+                                    <br>
+                                    P. y P.
+                                </p>
+                            </div>
+                            <div class="col-3 text-center border border-start-0 border-dark">
+                                <p class="m-0">
+                                    F. A. R. Nº 15
+                                    <br>
+                                    Nº
+                                    <br>
+                                    1050-00006925
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center border border-top-0 border-dark col-11">
+                            <h3 class="fw-bold m-0">CONSTANCIA DE RETENCION</h3>
+                        </div>
+                        <div class="border border-top-0 border-dark col-11 d-flex">
+                            <div style="font-size: 12px;"
+                                class="col py-3 border-end border-dark text-center d-flex justify-content-center align-items-center">
+                                AGENTE DE RETENCION</div>
+                            <div style="font-size: 12px;" class="col border-end border-dark d-flex align-items-end">Nº
+                                C.U.I.T. 30-70920461-7</div>
+                            <div style="font-size: 12px;" class="col border-end border-dark d-flex align-items-end">Nº
+                                AGENTE 1050</div>
+                            <div style="font-size: 12px;"
+                                class="col border-end border-dark d-flex align-items-end justify-content-center">MES 12
+                            </div>
+                            <div style="font-size: 12px;" class="col d-flex align-items-end justify-content-center">AÑO
+                                2022</div>
+                        </div>
+                        <div style="font-size: 12px;"
+                            class="border border-top-0 border-dark col-11 d-flex align-items-end pt-3">
+                            ORGANISMO, ENTIDAD O RAZON SOCIAL: ENTE AUTARQUICO TUCUMAN TURISMO
+                        </div>
+                        <div style="font-size: 12px;"
+                            class="border border-top-0 border-dark col-11 d-flex align-items-end pt-3">
+                            DOMICILIO : 24 de SEPTIEMBRE 484 - S.M.T
+                        </div>
+                        <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
+                            <div class="col-3 py-3 border-end border-dark text-center d-flex justify-content-center">
+                                CONTRIBUYENTE</div>
+                            <div class="col-3 border-end border-dark text-center d-flex flex-column align-self-stretch">
+                                <div>COMPROB. ORIGEN</div>
+                                <div class="border-top border-dark flex-fill">03-0815</div>
+                            </div>
+                            <div class="col d-flex align-items-end justify-content-center">33-71015416-9</div>
+                        </div>
+                        <div style="font-size: 12px;"
+                            class="border border-top-0 border-dark col-11 d-flex align-items-end pt-3">
+                            DOMICILIO: RUTA PROV CALLE PUB SIN NUM - TAFI DEL VALLE
+                        </div>
+                        <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center fw-bold">TRIBUTO
+                            </div>
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center fw-bold">MONTO
+                                IMPONIBLE</div>
+                            <div class="col-2 border-end border-dark text-center d-flex justify-content-center fw-bold">ALICUOTA
+                            </div>
+                            <div class="col-4 text-center d-flex justify-content-center fw-bold">TRIBUTO</div>
+                        </div>
+                        <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center">T. E. M.
+                            </div>
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-between px-1">
+                                <span>$</span>
+                                <span>240.000,00</span>
+                            </div>
+                            <div class="col-2 border-end border-dark text-center d-flex justify-content-center">1,250%
+                            </div>
+                            <div class="col-4 text-center d-flex">
+                                <div class="col-4 border-end border-dark"></div>
+                                <div class="col-8 text-end fw-bold">$ 3.000,00</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center"></div>
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-between px-1">
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="col-2 border-end border-dark text-center d-flex justify-content-center">%</div>
+                            <div class="col-4 text-center d-flex">
+                                <div class="col-4 border-end border-dark"></div>
+                                <div class="col-8 text-end"></div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
+                            <div class="col border-end border-dark d-flex align-items-end justify-content-center pt-5">
+                                SELLO Y FIRMA</div>
+                            <div class="col">
+                                <div class="d-flex">
+                                    <div
+                                        class="col-4 border-end border-bottom border-dark text-center d-flex justify-content-center">
+                                        TOTAL RETENIDO
+                                    </div>
+                                    <div class="col-8 text-center d-flex">
+                                        <div class="col-4 border-bottom border-end border-dark"></div>
+                                        <div class="col-8 border-bottom border-dark text-end fw-bold">$ 3.000,00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
+                            <div class="col-2 text-center border-end border-dark">
+                                <p>7/12/2022</p>
+                                <span>FECHA DE PAGO</span>
+                            </div>
+                            <div class="col d-flex justify-content-center align-items-center">
+                                SON PESOS: TRES MIL .-
+                            </div>
+                        </div>
+                        <div style="font-size: 12px;"
+                            class="border border-top-0 border-dark col-11 d-flex justify-content-center">
+                            <p>1 - Contribuyente</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="col-12">
+                    <div class="col-10">
+                        <div class="d-flex">
+                            <div class="col-2"></div>
+                            <div class="col-4 ps-2 fw-bold">LIB 1159 - CARTAGO SRL</div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="col-1 border border-dark d-flex justify-content-center align-items-center">
+                                <h3 class="mb-0 fw-bold">DIM</h3>
+                            </div>
+                            <div
+                                class="col-1 border border-start-0 border-dark d-flex justify-content-center align-items-center">
+                                <img class="col-6" src="img/logo-tem.jpg" alt="">
+                            </div>
+                            <div class="col-4 border border-start-0 border-dark fw-bold">
+                                <div class="text-center">Municipalidad de S. M. de Tucumán</div>
+                                <div class="text-center border-top border-bottom border-dark">Direccion de Ingresos
+                                    Municipales</div>
+                                <div class="text-center">24 de Septiembre N° 334</div>
+                            </div>
+                            <div class="col-2 border border-start-0 border-dark text-center">
+                                <p class="m-0">
+                                    T.E.M
+                                    <br>
+                                    y
+                                    <br>
+                                    P. y P.
+                                </p>
+                            </div>
+                            <div class="col-3 text-center border border-start-0 border-dark">
+                                <p class="m-0">
+                                    F. A. R. Nº 15
+                                    <br>
+                                    Nº
+                                    <br>
+                                    1050-00006925
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center border border-top-0 border-dark col-11">
+                            <h3 class="fw-bold m-0">CONSTANCIA DE RETENCION</h3>
+                        </div>
+                        <div class="border border-top-0 border-dark col-11 d-flex">
+                            <div style="font-size: 12px;"
+                                class="col py-3 border-end border-dark text-center d-flex justify-content-center align-items-center">
+                                AGENTE DE RETENCION</div>
+                            <div style="font-size: 12px;" class="col border-end border-dark d-flex align-items-end">Nº
+                                C.U.I.T. 30-70920461-7</div>
+                            <div style="font-size: 12px;" class="col border-end border-dark d-flex align-items-end">Nº
+                                AGENTE 1050</div>
+                            <div style="font-size: 12px;"
+                                class="col border-end border-dark d-flex align-items-end justify-content-center">MES 12
+                            </div>
+                            <div style="font-size: 12px;" class="col d-flex align-items-end justify-content-center">AÑO
+                                2022</div>
+                        </div>
+                        <div style="font-size: 12px;"
+                            class="border border-top-0 border-dark col-11 d-flex align-items-end pt-3">
+                            ORGANISMO, ENTIDAD O RAZON SOCIAL: ENTE AUTARQUICO TUCUMAN TURISMO
+                        </div>
+                        <div style="font-size: 12px;"
+                            class="border border-top-0 border-dark col-11 d-flex align-items-end pt-3">
+                            DOMICILIO : 24 de SEPTIEMBRE 484 - S.M.T
+                        </div>
+                        <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
+                            <div class="col-3 py-3 border-end border-dark text-center d-flex justify-content-center">
+                                CONTRIBUYENTE</div>
+                            <div class="col-3 border-end border-dark text-center d-flex flex-column align-self-stretch">
+                                <div>COMPROB. ORIGEN</div>
+                                <div class="border-top border-dark flex-fill">03-0815</div>
+                            </div>
+                            <div class="col d-flex align-items-end justify-content-center">33-71015416-9</div>
+                        </div>
+                        <div style="font-size: 12px;"
+                            class="border border-top-0 border-dark col-11 d-flex align-items-end pt-3">
+                            DOMICILIO: RUTA PROV CALLE PUB SIN NUM - TAFI DEL VALLE
+                        </div>
+                        <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center">TRIBUTO
+                            </div>
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center">MONTO
+                                IMPONIBLE</div>
+                            <div class="col-2 border-end border-dark text-center d-flex justify-content-center">ALICUOTA
+                            </div>
+                            <div class="col-4 text-center d-flex justify-content-center">TRIBUTO</div>
+                        </div>
+                        <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center">T. E. M.
+                            </div>
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-between px-1">
+                                <span>$</span>
+                                <span>240.000,00</span>
+                            </div>
+                            <div class="col-2 border-end border-dark text-center d-flex justify-content-center">1,250%
+                            </div>
+                            <div class="col-4 text-center d-flex">
+                                <div class="col-4 border-end border-dark"></div>
+                                <div class="col-8 text-end">$ 3.000,00</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center">P. y P.</div>
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-between px-1">
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="col-2 border-end border-dark text-center d-flex justify-content-center">%</div>
+                            <div class="col-4 text-center d-flex">
+                                <div class="col-4 border-end border-dark">2</div>
+                                <div class="col-8 text-end">$ 0,00</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
+                            <div class="col border-end border-dark d-flex align-items-end justify-content-center pt-5">
+                                SELLO Y FIRMA</div>
+                            <div class="col">
+                                <div class="d-flex">
+                                    <div
+                                        class="col-4 border-end border-bottom border-dark text-center d-flex justify-content-center">
+                                        TOTAL RETENIDO
+                                    </div>
+                                    <div class="col-8 text-center d-flex">
+                                        <div class="col-4 border-bottom border-end border-dark">1+2</div>
+                                        <div class="col-8 border-bottom border-dark text-end">$ 3.000,00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
+                            <div class="col-2 text-center border-end border-dark">
+                                <p>7/12/2022</p>
+                                <span>FECHA DE PAGO</span>
+                            </div>
+                            <div class="col d-flex justify-content-center align-items-center">
+                                SON PESOS: TRES MIL .-
+                            </div>
+                        </div>
+                        <div style="font-size: 12px;"
+                            class="border border-top-0 border-dark col-11 d-flex justify-content-center">
+                            <p>2 - Agente de Retencion</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 `
-export const ret4HTML = () => `
+export const ssHTML = () => `
+<div class="" id="maintable" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; width: 1349px;">
+            <div class="d-flex">
+                <div class="col-8 border border-dark">
+                    <div class="border-bottom border-dark">
+                        <div class="d-flex">
+                            <div class="col-4 text-center py-1 border-end border-dark">
+                                <img src="img/AFIP-LOGO.jpg" class="img-fluid col-9" alt="">
+                                <h3 class="fw-bold mb-0">F.2004</h3>
+                            </div>
+                            <div class="col d-flex justify-content-center">
+                                <div class="d-flex flex-column align-items-center justify-content-center col-9">
+                                    <h4 class="text-center">CERTIFICADO DE RETENCIÓN/ PERCEPCIÓN de la SEGURIDAD SOCIAL
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-bottom border-dark">
+                        <div class="d-flex py-1">
+                            <div class="col-1">
+
+                            </div>
+                            <div class="col-5">
+                                <h6 class="mb-0 fw-bold">Certificado AFIP N°</h6>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="mb-0">3070920461720220000000527 (348d)</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-bottom border-dark">
+                        <div class="d-flex py-1">
+                            <div class="col-1">
+
+                            </div>
+                            <div class="col-5">
+                                <h6 class="mb-0 fw-bold">Fecha Retención/Percepción</h6>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="mb-0">06/12/2022</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-1">
+                        <div class="border-bottom border-dark">
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold">
+                                    A -
+                                </div>
+                                <div class="col-5">
+                                    <h6 class="mb-0 fw-bold">Datos del Agente de Retención/Percepción</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h5 class="mb-0"></h5>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold"></div>
+                                <div class="col-5">
+                                    <h6 class="mb-0">Apellido y Nombres o Denominación</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="mb-0">ENTE AUTARQUICO TUCUMAN TURISMO</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold"></div>
+                                <div class="col-5">
+                                    <h6 class="mb-0">CUIT N°</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="mb-0">30709204617</h6>
+                                </div>
+                            </div>
+
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold">
+                                    B -
+                                </div>
+                                <div class="col-5">
+                                    <h6 class="mb-0 fw-bold">Datos del Sujeto Retenido/Percibido</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h5 class="mb-0"></h5>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold"></div>
+                                <div class="col-5">
+                                    <h6 class="mb-0">Apellido y Nombres o Denominación</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="mb-0">ARAOZ LUCIANA</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold"></div>
+                                <div class="col-5">
+                                    <h6 class="mb-0">CUIT/CUIL/CDI</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="mb-0">27170420832</h6>
+                                </div>
+                            </div>
+
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold">
+                                    C -
+                                </div>
+                                <div class="col-5">
+                                    <h6 class="mb-0 fw-bold">Datos de la Retención/Percepción practicada</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h5 class="mb-0"></h5>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold"></div>
+                                <div class="col-5">
+                                    <h6 class="mb-0">Impuesto</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="mb-0">353-RETENCIONES CONTRIB.SEG.SOCIAL</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold"></div>
+                                <div class="col-5">
+                                    <h6 class="mb-0">Régimen</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="mb-0">755-RETENCIÓN GENERAL DE CONTRIBUCIONES</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold"></div>
+                                <div class="col-5">
+                                    <h6 class="mb-0">Comprobante que origina la retención/
+                                        percepción</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="mb-0">FACTURA-00004-00000198</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold"></div>
+                                <div class="col-5">
+                                    <h6 class="mb-0">Monto del comprobante
+                                        que origina la retención/percepción</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="mb-0">531530.90</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold"></div>
+                                <div class="col-5">
+                                    <h6 class="mb-0">Monto de la Retención/Percepción</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="mb-0">5315.30</h6>
+                                </div>
+                            </div>
+
+                            <div class="d-flex">
+                                <div class="col-1 text-center fw-bold">
+                                    D -
+                                </div>
+                                <div class="col-5">
+                                    <h6 class="mb-0 fw-bold">Otros datos a incluir en el certificado</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h5 class="mb-0"></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center py-2 px-2 border-bottom border-dark">
+                            <p class="mb-0">El presente certificado se expide sobre la base de los datos declarados y aportados por
+                                el agente de retención/percepción
+                                a la fecha de impresión de la presente consulta, el cual podría ser pasible de
+                                modificaciones por el agente en cuestión.
+                            </p>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between" style="height: 100px;">
+                            <h6 class="fw-bold text-center">Conserve este Certificado como comprobante de Retención/Percepción</h6>
+                            <div class="d-flex justify-content-evenly">
+                                <div>Emisión: 13/12/2022</div>
+                                <div>Impresión: 16/12/2022</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+`
+export const saretHTML = () => `
 <div class="d-flex position-relative" id="maintable-3" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; width: 1349px;">
 <img src="img/0.jpg" style="width: 1349px;" alt="">
 <div id="agente-1">

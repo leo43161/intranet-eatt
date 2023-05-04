@@ -1,6 +1,8 @@
+import dynamic from "next/dynamic";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPen, faPrint } from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
+const GeneratePDF = dynamic(() => import("../../components/GeneratePDF"), { ssr: false });
 
 export default function ItemTable({ setPagoModal, handleShow, pago }) {
     const { Id, Libramiento, codop, FechaPago, fechaFactura, Cuit, NombreP, Domicilio, TipoFactura, Factura, MontoBase, saretP, SARET, Gan, SS, temId, temP, TEM } = pago;
@@ -31,25 +33,31 @@ export default function ItemTable({ setPagoModal, handleShow, pago }) {
             <td>
                 <div className="d-flex justify-content-between align-items-center">
                     <span>${SARET}</span>
-                    {SARET && <Button className="ms-2" size="sm" variant="success" onClick={(pago = {}) => handleModal(pago)}>
-                        <FontAwesomeIcon size="1x" icon={faPrint} />
-                    </Button>}
+                    {SARET ? <GeneratePDF ret="SARET">
+                        <Button className="ms-2" size="sm" variant="success">
+                            <FontAwesomeIcon size="1x" icon={faPrint} />
+                        </Button>
+                    </GeneratePDF> : null}
                 </div>
             </td>
             <td>
                 <div className="d-flex justify-content-between align-items-center">
                     <span>${Gan}</span>
-                    {Gan ? <Button className="ms-2" size="sm" variant="success" onClick={(pago = {}) => handleModal(pago)}>
-                        <FontAwesomeIcon size="1x" icon={faPrint} />
-                    </Button> : null}
+                    {Gan ? <GeneratePDF ret="Gan">
+                        <Button className="ms-2" size="sm" variant="success">
+                            <FontAwesomeIcon size="1x" icon={faPrint} />
+                        </Button>
+                    </GeneratePDF> : null}
                 </div>
             </td>
             <td>
                 <div className="d-flex justify-content-between align-items-center">
                     <span>${SS}</span>
-                    {SS ? <Button className="ms-2" size="sm" variant="success" onClick={(pago = {}) => handleModal(pago)}>
-                        <FontAwesomeIcon size="1x" icon={faPrint} />
-                    </Button> : null}
+                    {SS ? <GeneratePDF ret="SS">
+                        <Button className="ms-2" size="sm" variant="success">
+                            <FontAwesomeIcon size="1x" icon={faPrint} />
+                        </Button>
+                    </GeneratePDF> : null}
                 </div>
             </td>
             <td>{temId}</td>
@@ -57,9 +65,11 @@ export default function ItemTable({ setPagoModal, handleShow, pago }) {
             <td>
                 <div className="d-flex justify-content-between align-items-center">
                     <span>${TEM}</span>
-                    {TEM ? <Button className="ms-2" size="sm" variant="success" onClick={(pago = {}) => handleModal(pago)}>
-                        <FontAwesomeIcon size="1x" icon={faPrint} />
-                    </Button> : null}
+                    {TEM ? <GeneratePDF ret="TEM">
+                        <Button className="ms-2" size="sm" variant="success">
+                            <FontAwesomeIcon size="1x" icon={faPrint} />
+                        </Button>
+                    </GeneratePDF> : null}
                 </div>
             </td>
             <td>${SARET + Gan + SS + TEM}</td>
