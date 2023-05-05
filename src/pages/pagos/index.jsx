@@ -30,7 +30,7 @@ export default function Pagos() {
     useEffect(() => {
         if (pagosReload) {
             consultarCuentas();
-            consultarPagos(cuenta);
+            if (cuenta) consultarPagos(cuenta);
             setPagosReload(false);
         }
     }, [pagosReload]);
@@ -77,8 +77,8 @@ export default function Pagos() {
                                         onChange={handlerCuenta}
                                         defaultValue={cuenta}
                                     >
-                                        {cuentas.map(({ IdCuentaEmisora, NombreC }) => (
-                                            <option value={IdCuentaEmisora} >{IdCuentaEmisora} - {NombreC}</option>
+                                        {cuentas.map(({ IdCuentaEmisora, NombreC }, index) => (
+                                            <option key={index} value={IdCuentaEmisora} >{IdCuentaEmisora} - {NombreC}</option>
                                         ))}
                                     </Form.Select>
                                 </div>
