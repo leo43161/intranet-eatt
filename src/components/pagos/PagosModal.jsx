@@ -90,7 +90,8 @@ export default function PagosModal({ show, handleClose, pago, setPagosReload }) 
                                         placeholder="Libramiento"
                                         defaultValue={Libramiento}
                                         onChange={handleChange}
-                                    /></span>
+                                    />
+                                </span>
                             </div>
                             <div className="d-flex align-items-center flex-column">
                                 <span className='fw-bold'>Numero de Pago: </span><span>{codop}</span>
