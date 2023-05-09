@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 export default function ProvModal({ show, handleClose, proveedor, setProvReload }) {
   const [editPagos, setEditPagos] = useState({});
   const [error, setError] = useState({ error: false, msg: "" });
+  console.log(proveedor);
   return (
     <>
       <Modal show={show} onHide={handleClose} size="lg">

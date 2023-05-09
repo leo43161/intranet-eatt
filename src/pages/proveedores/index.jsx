@@ -1,17 +1,38 @@
+import Consultas from '../../helpers/consultasHelpers';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPen, faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useState } from 'react';
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect } from 'react';
 import ProvModal from '../../components/proveedores/ProvModal';
+import ItemTable from '../../components/proveedores/ItemTable';
 
 export default function index() {
+  const { listarProv } = Consultas;
   const [show, setShow] = useState(false);
   const [provModal, setProvModal] = useState({});
+
   const [proveedores, setProveedores] = useState([]);
   const [provReload, setProvReload] = useState(true);
+
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+
+  useEffect(() => {
+    if (provReload) {
+      consultarProv();
+      setProvReload(false);
+    }
+  }, [provReload]);
+
+  const consultarProv = async () => {
+    try {
+      const _proveedores = await listarProv();
+      setProveedores(_proveedores);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -35,7 +56,6 @@ export default function index() {
               <thead>
                 <tr>
                   <th>Opciones</th>
-                  <th>ID</th>
                   <th>RAZON SOCIAL</th>
                   <th>CUIT</th>
                   <th>DOMICILIO</th>
@@ -47,27 +67,9 @@ export default function index() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="align-middle">
-                  <td className="text-center">
-                    <div className='d-flex'>
-                      <Button variant="success" onClick={() => handleShow()}>
-                        <FontAwesomeIcon size="1x" icon={faPen} />
-                      </Button>
-                      <Button className='ms-2' variant="danger" onClick={() => console.log("Editar")}>
-                        <FontAwesomeIcon size="1x" icon={faTrash} />
-                      </Button>
-                    </div>
-                  </td>
-                  <td>1</td>
-                  <td className='text-nowrap'>Ramon Nolasco</td>
-                  <td>25435157894</td>
-                  <td className='text-nowrap'>BOULEVARD 9 DE JULIO 435</td>
-                  <td>YERBA BUENA</td>
-                  <td>Tucumán</td>
-                  <td>4107</td>
-                  <td>tucumanturismo@gmail.com</td>
-                  <td>3816495164</td>
-                </tr>
+                {proveedores.map((proveedor, index) => (
+                    <ItemTable key={index} handleShow={handleShow} prov={proveedor} setProvModal={setProvModal}></ItemTable>
+                ))}
               </tbody>
             </Table>
           </div>

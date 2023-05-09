@@ -10,11 +10,17 @@ Consultas.listarCuentas = async () => {
 };
 
 Consultas.listarPagos = async (cuenta) => {
-    console.log(cuenta);
     const { data: pagos } = await axios.get(
         apiUrl + "pagos", { params: { cuenta } }
     );
     return pagos;
+};
+
+Consultas.listarProv = async () => {
+    const { data: prov } = await axios.get(
+        apiUrl + "users/proveedor"
+    );
+    return prov; 
 };
 
 Consultas.verificarProv = async (cuit) => {
