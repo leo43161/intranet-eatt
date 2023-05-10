@@ -18,14 +18,14 @@ Consultas.listarPagos = async (cuenta) => {
 
 Consultas.listarProv = async () => {
     const { data: prov } = await axios.get(
-        apiUrl + "users/proveedor"
+        apiUrl + "proveedores"
     );
     return prov; 
 };
 
 Consultas.verificarProv = async (cuit) => {
     const { data: proovedor } = await axios.get(
-        apiUrl + "users/proveedor", { params: { cuit } }
+        apiUrl + "proveedores", { params: { cuit } }
     );
     return proovedor.length > 0;
 };
@@ -106,7 +106,7 @@ Consultas.cargarProv = async (prov) => {
         email: ""
     }
     const { data: check } = await axios.post(
-        apiUrl + "users/proveedor", { params: { proveedor } }
+        apiUrl + "proveedores", { params: { proveedor } }
     );
     return check;
 };
