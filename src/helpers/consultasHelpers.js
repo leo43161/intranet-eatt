@@ -20,7 +20,7 @@ Consultas.listarProv = async () => {
     const { data: prov } = await axios.get(
         apiUrl + "proveedores"
     );
-    return prov; 
+    return prov;
 };
 
 Consultas.verificarProv = async (cuit) => {
