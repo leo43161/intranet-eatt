@@ -16,7 +16,7 @@ export default function ItemTable({ handleShow, prov, setProvModal }) {
                         <Button variant="success" onClick={() => handleModal(prov)}>
                             <FontAwesomeIcon size="1x" icon={faPen} />
                         </Button>
-                        <Button className='ms-2' variant="danger" onClick={() => console.log("Editar")}>
+                        <Button className='ms-2' variant="danger" onClick={() => console.log("Eliminar")}>
                             <FontAwesomeIcon size="1x" icon={faTrash} />
                         </Button>
                     </div>

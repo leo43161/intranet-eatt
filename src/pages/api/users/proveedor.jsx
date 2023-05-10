@@ -17,7 +17,6 @@ export default async function handler(req, res) {
 
 const getProveedor = async (req, res) => {
     const { cuit } = req.query
-    console.log(queryGetProv(cuit));
     try {
         const results = await pool.query(queryGetProv(cuit));
         return res.status(200).json(results[0]);
@@ -28,10 +27,7 @@ const getProveedor = async (req, res) => {
 
 const getProveedores = async (req, res) => {
     try {
-        console.log("pasa por aqui");
-        console.log(queryGetProveedores());
         const results = await pool.query(queryGetProveedores());
-        console.log(results);
         return res.status(200).json(results[0]);
     } catch (error) {
         return res.status(500).json({ error });
@@ -44,7 +40,6 @@ const postProveedor = async (req, res) => {
         const results = await pool.query(queryPostProv(proveedor));
         return res.status(200).json(results);
     } catch (error) {
-        console.log(queryPostProv(proveedor))
         return res.status(500).json({ error });
     }
 };
