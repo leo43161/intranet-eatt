@@ -1,5 +1,5 @@
 import Consultas from "./consultasHelpers";
-const { verificarProv, verificarOrden, verificarDetalleOrden, verificarOrdenFantasma, cargarOrden, cargarProv, cargarDetallePago, cargarOrdenFantasma, actualizarPagosFantasmas } = Consultas;
+const { verificarProv, verificarOrden, verificarDetalleOrden, verificarOrdenFantasma, cargarOrden, cargarProv, cargarDetallePago, cargarOrdenFantasma, actualizarPagosFantasmas, cargarUserProv } = Consultas;
 const codRetVerif = {
     101: "D.G.R. ING.BRUTOS P/PAG. ELECTR.",
     133: "TRIBUTO DE EMERGENCIA MUNICIPAL- TEM",
@@ -106,6 +106,7 @@ const filterDeudas = (deudas = []) => {
     return filterDeudas;
 }
 export const subirPagos = async (pagos) => {
+    console.log(pagos);
     const countPagos = {
         proveedores: [],
         ordenesDePago: [],
@@ -127,20 +128,21 @@ export const subirPagos = async (pagos) => {
                     const resProv = await cargarProv(pago);
                 }
             } else {
-                countPagos.proveedoresRepetidos.push(pago.cuit);
+                /* const resUserPago = await cargarUserProv(pago); */
+                countPagos.proveedoresRepetidos.push(pago);
             }
 
             if (!checkOrdenFantasma) {
                 if (!checkOrden) {
                     const resPago = await cargarOrden(pago);
-                    countPagos.ordenesDePago.push(pago.nOrden);
+                    countPagos.ordenesDePago.push(pago);
                 } else {
                     countPagos.pagosRepetidos.push(pago);
                 }
             } else {
                 const idControl = checkOrdenFantasma.IdControl;
                 const resPago = await actualizarPagosFantasmas(idControl, pago);
-                countPagos.pagosFantasma.push(resPago.nOrden);
+                countPagos.pagosFantasma.push(resPago);
             }
 
         }

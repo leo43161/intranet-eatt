@@ -61,3 +61,5 @@ GROUP BY op.IdControl;
     "temP": 0,
     "TEM": 0
 }
+
+CALL sp_InsertarUsuario(30657865725,'30657865725','GASNOR S.A.','','','30657865725',1,5);

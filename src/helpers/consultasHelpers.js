@@ -111,6 +111,23 @@ Consultas.cargarProv = async (prov) => {
     return check;
 };
 
+Consultas.cargarUserProv = async (userProv) => {
+    const _userProv = {
+        cuit: userProv.cuit,
+        nombreU: userProv.cuit,
+        nombre: userProv.razonSocial,
+        password: userProv.cuit,
+        apellido: "",
+        activo: 1,
+        tipo: 5,
+        email: ""
+    }
+    const { data: check } = await axios.post(
+        apiUrl + "users", { params: { _userProv } }
+    );
+    return check;
+};
+
 Consultas.cargarDetallePago = async (orden) => {
     const detalleOrden = {
         porcentaje: 0,
