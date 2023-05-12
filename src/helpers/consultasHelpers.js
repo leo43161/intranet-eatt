@@ -30,6 +30,13 @@ Consultas.verificarProv = async (cuit) => {
     return proovedor.length > 0;
 };
 
+Consultas.verificarUserProv = async (cuit) => {
+    const { data: proovedor } = await axios.get(
+        apiUrl + "users", { params: { cuit } }
+    );
+    return proovedor.length > 0;
+};
+
 Consultas.verificarOrden = async (orden) => {
     const { data: ordenPago } = await axios.get(
         apiUrl + "pagos/orden", { params: { orden } }
@@ -50,7 +57,7 @@ Consultas.verificarDetalleOrden = async (orden, ret) => {
     );
     return detalleOrden.length > 0;
 };
-
+ 
 Consultas.cargarOrden = async (orden) => {
     /* ACTUALIZAR LOS DATOS PARA PODER SUBIR LA ORDEN DE PAGO */
     const ordenPago = {

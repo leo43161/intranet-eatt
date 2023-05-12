@@ -1,5 +1,5 @@
 import Consultas from "./consultasHelpers";
-const { verificarProv, verificarOrden, verificarDetalleOrden, verificarOrdenFantasma, cargarOrden, cargarProv, cargarDetallePago, cargarOrdenFantasma, actualizarPagosFantasmas, cargarUserProv } = Consultas;
+const { verificarProv, verificarOrden, verificarDetalleOrden, verificarOrdenFantasma, cargarOrden, cargarProv, cargarDetallePago, cargarOrdenFantasma, actualizarPagosFantasmas, cargarUserProv, verificarUserProv } = Consultas;
 const codRetVerif = {
     101: "D.G.R. ING.BRUTOS P/PAG. ELECTR.",
     133: "TRIBUTO DE EMERGENCIA MUNICIPAL- TEM",
@@ -106,7 +106,6 @@ const filterDeudas = (deudas = []) => {
     return filterDeudas;
 }
 export const subirPagos = async (pagos) => {
-    console.log(pagos);
     const countPagos = {
         proveedores: [],
         ordenesDePago: [],
@@ -118,17 +117,20 @@ export const subirPagos = async (pagos) => {
     }
     pagos.forEach(async (pago) => {
         const checkProv = await verificarProv(pago.cuit);
+        const checkUserProv = await verificarUserProv(pago.cuit);
         const checkOrden = await verificarOrden(pago.nOrden);
         const checkOrdenFantasma = await verificarOrdenFantasma(pago.nOrden);
-        console.log(checkOrdenFantasma);
         if (!countPagos.ordenesDePago.includes(pago.nOrden)) {
             if (!checkProv) {
                 if (!countPagos.proveedores.includes(pago.cuit)) {
                     countPagos.proveedores.push(pago.cuit);
                     const resProv = await cargarProv(pago);
+                    const resUserPago = await cargarUserProv(pago);
                 }
             } else {
-                /* const resUserPago = await cargarUserProv(pago); */
+                if (!checkUserProv) {
+                    const resUserPago = await cargarUserProv(pago);
+                }
                 countPagos.proveedoresRepetidos.push(pago);
             }
 
