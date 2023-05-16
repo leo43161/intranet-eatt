@@ -5,7 +5,7 @@ import Alert from 'react-bootstrap/Alert';
 import { convertirFechaInput } from '../../helpers/listaHelpers';
 import { useState, useEffect } from "react";
 import { editarPago } from "../../helpers/listaHelpers"
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'; 
 
 export default function PagosModal({ show, handleClose, pago, setPagosReload }) {
     const { Id, Libramiento, codop, FechaPago, fechaFactura, Cuit, NombreP, Domicilio, TipoFactura, Factura, MontoBase, saretP, SARET, Gan, SS, temP, TEM } = pago;

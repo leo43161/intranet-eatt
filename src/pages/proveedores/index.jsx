@@ -75,7 +75,7 @@ export default function index() {
           </div>
         </section>
       </div>
-      {provModal && <ProvModal show={show} handleClose={handleClose} proveedor={provModal} setPagosReload={setProvReload}></ProvModal>}
+      {provModal && <ProvModal show={show} handleClose={handleClose} proveedor={provModal} setProvReload={setProvReload}></ProvModal>}
     </>
   )
 }

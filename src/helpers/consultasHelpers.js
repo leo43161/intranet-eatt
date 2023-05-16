@@ -166,6 +166,13 @@ Consultas.editarDetallePago = async (orden) => {
     return check;
 };
 
+Consultas.editarProveedor = async (proveedor) => {
+    const { data: check } = await axios.put(
+        apiUrl + "proveedores", { params: { proveedor } }
+    );
+    return check;
+};
+
 Consultas.editarOrdenPago = async (orden) => {
     const ordenPago = {
         idControl: orden.Id,

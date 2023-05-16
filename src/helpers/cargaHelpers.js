@@ -106,6 +106,8 @@ const filterDeudas = (deudas = []) => {
     return filterDeudas;
 }
 export const subirPagos = async (pagos) => {
+    console.log("Estas son las ordenes de pago");
+    console.log(pagos)
     const countPagos = {
         proveedores: [],
         ordenesDePago: [],
