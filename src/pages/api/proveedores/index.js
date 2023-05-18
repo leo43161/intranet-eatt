@@ -1,7 +1,7 @@
 import { pool } from "../../config/db";
 const queryGetProv = (cuit) => `CALL sp_VerificarCargaProveedor(${cuit});`;
 const queryGetProveedores = () => `CALL sp_ListarProv();`;
-const queryPostProv = ({ cuit, nombreP, domicilio, telefono, email }) => `CALL sp_ModificarProveedor(${cuit},'${nombreP}','${domicilio}','${telefono}','${email}');`;
+const queryPostProv = ({ cuit, nombreP, domicilio, localidad, provincia, cp, telefono, email }) => `CALL sp_InsertarProveedor(${cuit},'${nombreP}','${domicilio}','${localidad}','${provincia}',${cp !== "" ? cp : "NULL"},'${telefono}','${email}');`;
 const queryPutProv = ({ Cuit, password, NombreP, Domicilio, localidad, provincia, cp, Telefono, email, borrado, activo }) => `CALL sp_ModificarProveedor(${Cuit},'${password}','${NombreP}','${Domicilio}','${localidad}','${provincia}',${cp !== "" ? cp : "NULL"},'${Telefono}','${email}',${borrado},${activo});`;
 
 export default async function handler(req, res) {
@@ -49,10 +49,11 @@ const putProveedor = async (req, res) => {
 
 const postProveedor = async (req, res) => {
     const { proveedor } = req.body.params
+    console.log(queryPostProv(proveedor));
     try {
         const results = await pool.query(queryPostProv(proveedor));
         return res.status(200).json(results);
     } catch (error) {
-        return res.status(500).json({ error });
+        return res.status(500).json({ error, query:queryPostProv(proveedor) });
     }
 };

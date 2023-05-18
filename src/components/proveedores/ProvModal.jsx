@@ -1,17 +1,33 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 import { useState, useEffect } from "react";
 import Consultas from "../../helpers/consultasHelpers";
 import Swal from 'sweetalert2';
 
-export default function ProvModal({ show, handleClose, proveedor, setProvReload }) {
-  const { editarProveedor } = Consultas;
+export default function ProvModal({ show, handleClose, proveedor, setProvReload, addProv }) {
+  const { editarProveedor, crearProv, verificarProv, crearUserProv } = Consultas;
   const { Cuit, Domicilio, NombreP, Telefono, cp, email, localidad, provincia, password } = proveedor;
   const [editProv, setEditProv] = useState({});
+
   const [error, setError] = useState({ error: false, msg: "" });
   useEffect(() => {
-    if (proveedor && show) setEditProv(proveedor);
+    if (!addProv) { setEditProv(proveedor) } else {
+      setEditProv({
+        Cuit: null,
+        NombreP: "",
+        Domicilio: "",
+        localidad: "",
+        provincia: "",
+        cp: null,
+        Telefono: "",
+        email: "",
+        borrado: 0,
+        activo: 1,
+        password: ""
+      })
+    };
   }, [proveedor, show]);
 
   const handleChange = (e) => {
@@ -21,24 +37,25 @@ export default function ProvModal({ show, handleClose, proveedor, setProvReload 
     });
   };
 
-  const handlerSubmit = () => {
-    const provUpdate = { ...proveedor, ...editProv };
+  const handlerSubmit = async () => {
+    const provUpdate = !addProv ? { ...proveedor, ...editProv } : editProv;
     let _errorAlert = false;
+    let _errorsKeys = "";
+    const checkProv = await verificarProv(provUpdate.Cuit);
     for (const key in provUpdate) {
-      if (key === "NombreP" || key === "password") {
-        if (editProv[key].trim() === "") {
-          _errorAlert = true;
-          setError({ error: true, msg: "Los valores requeridos no pueden estar vacios" });
-        }
+      if (key === "NombreP" || key === "password" || key === "Cuit") {
+        if (!editProv[key] || editProv[key].toString().trim() === "") { _errorsKeys += " " + key, _errorAlert = true; }
       }
     }
-
-    if (_errorAlert) return;
+    if (_errorAlert) {
+      setError({ error: true, msg: "Los valores requeridos no pueden estar vacios:" + _errorsKeys });
+      return;
+    };
+    if (checkProv) { return setError({ error: true, msg: "El proveedor ya existe" }) };
     setError({ error: false, msg: "" });
-    console.log(provUpdate);
     Swal.fire({
       icon: 'warning',
-      title: 'Estas seguro que quiere descartar las ordenes de pago seleccionadas?',
+      title: 'Estas seguro que quiere subir el proveedor con los campos cargados?',
       showCancelButton: true,
       confirmButtonText: 'Continuar',
       cancelButtonText: 'Cancelar'
@@ -46,11 +63,13 @@ export default function ProvModal({ show, handleClose, proveedor, setProvReload 
       Swal.showLoading();
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        await editarProveedor(provUpdate);
-        console.log("Se edito el pago")
+        if (addProv) {
+          await crearProv(provUpdate)
+          await crearUserProv(provUpdate)
+        } else { await editarProveedor(provUpdate) };
         setProvReload(true);
         Swal.hideLoading();
-        Swal.fire('Pago editado!', '', 'success');
+        Swal.fire(addProv ? 'Pago creado!' : "Pago editado!", '', 'success');
         handleClose();
       } else if (result.isDenied) {
         Swal.hideLoading();
@@ -65,14 +84,17 @@ export default function ProvModal({ show, handleClose, proveedor, setProvReload 
       <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>
-            <div>
-              <span className='fw-bold'>Editar Proovedor - Cuit: {Cuit}</span>
+            <div className='d-flex'>
+              <span className='fw-bold me-2'>Editar Proovedor - Cuit: {Cuit}</span>
+              {addProv && <div>
+                <Form.Control type="number" onChange={handleChange} name="Cuit" defaultValue={Cuit} placeholder="ej: 3451816807" />
+              </div>}
             </div>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
-            <Form>
+            <Form className='mb-2'>
               <div className='d-flex justify-content-between'>
                 <Form.Group className="mb-3 col pe-3" controlId="razonSocial">
                   <Form.Label>Razon Social</Form.Label>
@@ -117,6 +139,11 @@ export default function ProvModal({ show, handleClose, proveedor, setProvReload 
                 </Form.Group>
               </div>
             </Form>
+            {error.error ? (
+              <Alert variant="warning">
+                {error.msg}
+              </Alert>
+            ) : null}
           </div>
         </Modal.Body>
         <Modal.Footer>
@@ -124,7 +151,7 @@ export default function ProvModal({ show, handleClose, proveedor, setProvReload 
             Cerrar
           </Button>
           <Button variant="success" onClick={handlerSubmit}>
-            Editar
+            {addProv ? "Añadir" : "Editar"}
           </Button>
         </Modal.Footer>
       </Modal>

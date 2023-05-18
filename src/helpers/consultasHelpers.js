@@ -108,12 +108,50 @@ Consultas.cargarProv = async (prov) => {
         cuit: prov.cuit,
         nombreP: prov.razonSocial,
         domicilio: "",
+        localidad: "",
+        provincia: "",
+        cp: "",
         activo: 1,
         telefono: "",
         email: ""
     }
     const { data: check } = await axios.post(
         apiUrl + "proveedores", { params: { proveedor } }
+    );
+    return check;
+};
+
+Consultas.crearProv = async (prov) => {
+    const proveedor = {
+        cuit: prov.Cuit,
+        nombreP: prov.NombreP,
+        domicilio: prov.Domicilio,
+        localidad: prov.localidad,
+        provincia: prov.provincia,
+        cp: prov.cp,
+        activo: 1,
+        telefono: prov.Telefono,
+        email: prov.email
+    }
+    const { data: check } = await axios.post(
+        apiUrl + "proveedores", { params: { proveedor } }
+    );
+    return check;
+};
+
+Consultas.crearUserProv = async (userProv) => {
+    const _userProv = {
+        cuit: userProv.Cuit,
+        nombreU: userProv.Cuit,
+        nombre: userProv.NombreP,
+        password: userProv.password,
+        apellido: "",
+        activo: 1,
+        tipo: 5,
+        email: userProv.email
+    }
+    const { data: check } = await axios.post(
+        apiUrl + "users", { params: { _userProv } }
     );
     return check;
 };

@@ -11,11 +11,16 @@ export default function index() {
   const { listarProv } = Consultas;
   const [show, setShow] = useState(false);
   const [provModal, setProvModal] = useState({});
+  const [addProv, setAddProv] = useState(false);
 
   const [proveedores, setProveedores] = useState([]);
   const [provReload, setProvReload] = useState(true);
 
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true);
+    setAddProv(false);
+    setProvModal({});
+  };
   const handleClose = () => setShow(false);
 
   useEffect(() => {
@@ -43,7 +48,7 @@ export default function index() {
               <div className=""></div>
               <div><h4 className="m-0">Proveedores</h4></div>
               <div className="">
-                <Button variant="primary" onClick={() => handleShow()}>
+                <Button variant="primary" onClick={() => { handleShow(), setAddProv(true) }}>
                   <FontAwesomeIcon size="1x" icon={faPlus} />
                 </Button>
               </div>
@@ -68,14 +73,14 @@ export default function index() {
               </thead>
               <tbody>
                 {proveedores.map((proveedor, index) => (
-                    <ItemTable key={index} handleShow={handleShow} prov={proveedor} setProvModal={setProvModal}></ItemTable>
+                  <ItemTable key={index} handleShow={handleShow} prov={proveedor} setProvModal={setProvModal}></ItemTable>
                 ))}
               </tbody>
             </Table>
           </div>
         </section>
       </div>
-      {provModal && <ProvModal show={show} handleClose={handleClose} proveedor={provModal} setProvReload={setProvReload}></ProvModal>}
+      {provModal && <ProvModal show={show} handleClose={handleClose} proveedor={provModal} setProvReload={setProvReload} addProv={addProv}></ProvModal>}
     </>
   )
 }
