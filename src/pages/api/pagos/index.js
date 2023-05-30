@@ -13,9 +13,7 @@ export default async function handler(req, res) {
 }
 
 const getOrdenesDePago = async (req, res) => {
-    console.log(req);
     const { cuenta } = req.query;
-    console.log(queryGetPagos(cuenta));
     try {
         const results = await pool.query(queryGetPagos(cuenta));
         return res.status(200).json(results[0]);

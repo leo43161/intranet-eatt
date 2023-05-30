@@ -1,0 +1,21 @@
+{
+    "roles": [
+        {
+            "id": 1,
+            "rol": "admin",
+            "rutas": [
+                "/"
+            ]
+        },
+        {
+            "id": 5,
+            "rol": "proveedor",
+            "rutas": [
+                "/",
+                "/proveedores",
+                "/carga",
+                "/pagos"
+            ]
+        }
+    ]
+}

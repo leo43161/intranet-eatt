@@ -7,19 +7,20 @@ export default function loginHandler(req, res) {
         const token = jwt.sign({
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
             usuario: "leo",
-            nombre: 'proveedor'
+            rol: 1,
+            nombre: 'admin'
         }, 'secret');
 
-        const serialized = serialize('myTokenName', token, {
+        const serialized = serialize('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
+            path: '/',
             [recordar ? 'maxAge' : 'expires']: recordar ? (1000 * 60 * 60 * 24 * 30) : 0,
-            path: '/'
         });
 
         res.setHeader('Set-Cookie', serialized);
-        return res.json('login satisfactorio');
+        return res.json({ token });
     }
     return res.status(401).json({ error: "Invalid password and user" })
 }

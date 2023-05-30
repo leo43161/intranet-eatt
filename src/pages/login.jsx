@@ -27,9 +27,9 @@ export default function Login() {
       "http://10.15.15.151:3000/api/" + "auth/login", { _usuario }
     );
     console.log(response);
-    /* if (response.status === 200) {
-      router.push("/");
-    } */
+    if (response.status === 200) {
+      /* router.push("/"); */
+    }
   }
   return (
     <div className="login">
