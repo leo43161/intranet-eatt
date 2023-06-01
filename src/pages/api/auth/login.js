@@ -7,7 +7,7 @@ export default function loginHandler(req, res) {
         const token = jwt.sign({
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
             usuario: "leo",
-            rol: 1,
+            rol: 5,
             nombre: 'admin'
         }, 'secret');
 
