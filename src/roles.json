@@ -8,16 +8,37 @@
                 "/proveedores",
                 "/carga",
                 "/pagos"
-            ]
+            ],
+            "secciones": "All"
         },
         {
-            "id": 5,
-            "rol": "proveedor",
+            "id": 2,
+            "rol": "retenciones",
             "rutas": [
                 "/",
                 "/proveedores",
                 "/carga",
                 "/pagos"
+            ],
+            "secciones": [
+                {
+                    "nombre": "Carga",
+                    "icono": "faFileLines",
+                    "ruta": "/carga",
+                    "titulo": "Cargar digedoc"
+                },
+                {
+                    "nombre": "Pagos",
+                    "icono": "faBook",
+                    "ruta": "/pagos",
+                    "titulo": "Pagos registrados"
+                },
+                {
+                    "nombre": "Proveedores",
+                    "icono": "faUserTie",
+                    "ruta": "/proveedores",
+                    "titulo": "Proveedores"
+                }
             ]
         }
     ]

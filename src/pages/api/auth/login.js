@@ -7,7 +7,7 @@ export default function loginHandler(req, res) {
         const token = jwt.sign({
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
             usuario: "leo",
-            rol: 5,
+            rol: 2,
             nombre: 'admin'
         }, 'secret');
 
@@ -20,7 +20,10 @@ export default function loginHandler(req, res) {
         });
 
         res.setHeader('Set-Cookie', serialized);
-        return res.json({ token });
+        return res.json({
+            usuario: "leo",
+            rol: 2,
+        });
     }
     return res.status(401).json({ error: "Invalid password and user" })
 }

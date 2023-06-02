@@ -14,7 +14,6 @@ export default function Header() {
             await axios.post('/api/auth/logout');
             router.push("/login");
         } catch (error) {
-            console.log(error);
             router.push("/login");
         }
     }

@@ -28,6 +28,16 @@ export default function Login() {
     );
     console.log(response);
     if (response.status === 200) {
+      const { usuario, rol } = response.data;
+      // Crear un objeto con los datos a guardar
+      const data = {
+        usuario,
+        rol
+      };
+      // Convertir el objeto a JSON
+      const jsonData = JSON.stringify(data);
+      // Guardar el JSON en el Local Storage
+      localStorage.setItem('userData', jsonData);
       router.push("/");
     }
   }
