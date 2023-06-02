@@ -12,6 +12,7 @@ export default function Header() {
     const logout = async () => {
         try {
             await axios.post('/api/auth/logout');
+            localStorage.removeItem('userData');
             router.push("/login");
         } catch (error) {
             router.push("/login");
