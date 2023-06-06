@@ -7,12 +7,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
 
-export default function Header() {
+export default function Header({ setLoggedReload }) {
     const router = useRouter();
     const logout = async () => {
         try {
             await axios.post('/api/auth/logout');
-            localStorage.removeItem('userData');
+            setLoggedReload(true);
             router.push("/login");
         } catch (error) {
             router.push("/login");

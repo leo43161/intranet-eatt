@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { jwtVerify } from 'jose'
-import rolesJson from './roles.json'
+import { jwtVerify } from 'jose';
+import rolesJson from './roles.json';
 
 export async function middleware(request) {
     const jwt = request.cookies.get("token");

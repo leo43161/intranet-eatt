@@ -1,11 +1,11 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import Card from 'react-bootstrap/Card';
+import { login } from '../helpers/authHelpers';
 
-export default function Login() {
+export default function Login({ setLoggedReload }) {
   const [usuario, setUser] = useState({
     usuario: "",
     password: "",
@@ -23,28 +23,16 @@ export default function Login() {
     e.preventDefault();
     const _usuario = { ...usuario, recordar };
     console.log(_usuario);
-    const response = await axios.post(
-      "http://10.15.15.151:3000/api/" + "auth/login", { _usuario }
-    );
-    console.log(response);
-    if (response.status === 200) {
-      const { usuario, rol } = response.data;
-      // Crear un objeto con los datos a guardar
-      const data = {
-        usuario,
-        rol
-      };
-      // Convertir el objeto a JSON
-      const jsonData = JSON.stringify(data);
-      // Guardar el JSON en el Local Storage
-      localStorage.setItem('userData', jsonData);
+    const response = await login(_usuario);
+    if (response) {
+      setLoggedReload(true);
       router.push("/");
     }
   }
   return (
     <div className="login">
       <div className="d-flex justify-content-center align-items-center">
-        <div className="col-4">
+        <div className="col-lg-4 col-md-10 pt-5">
           <div style={{ marginTop: '40px' }}>
             <Card className='shadow'>
               <Card.Body>

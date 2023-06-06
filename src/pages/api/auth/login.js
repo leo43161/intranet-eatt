@@ -1,10 +1,37 @@
-import jwt from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import { serialize } from "cookie";
-export default function loginHandler(req, res) {
-    const { usuario, password, recordar } = req.body._usuario;
+
+export default async function handler(req, res) {
+    switch (req.method) {
+        case "GET":
+            return await getLogin(req, res);
+        case "POST":
+            return loginHandler(req, res);
+        case "PUT":
+            return await putOrdenDetalle(req, res);
+        default:
+            return res.status(400).send("Method not allowed");
+    }
+}
+
+const getLogin = (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'Token not found' });
+    }
+    try {
+        verify(token, 'secret');
+        return res.status(200).json('login confirmed');
+    } catch (error) {
+        return res.status(401).json({ error: 'Token not found' });
+    }
+}
+
+const loginHandler = (req, res) => {
+    const { usuario, password, recordar } = req.body.usuario;
     if (usuario === "leo" && password === 'admin') {
         console.log("Se hizo el login");
-        const token = jwt.sign({
+        const token = sign({
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
             usuario: "leo",
             rol: 2,
