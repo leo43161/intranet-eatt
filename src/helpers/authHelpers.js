@@ -1,7 +1,18 @@
 import axios from 'axios'
+import rolesJson from "../roles.json"
 
-export const getRoles = (req, res) => {
-
+export const getRoles = () => {
+    if (typeof window !== 'undefined') {
+        const userDataJSON = localStorage.getItem('userData');
+        if (userDataJSON) {
+            const { rol } = JSON.parse(userDataJSON);
+            const _roles = rolesJson.roles;
+            const { secciones } = _roles.find((r) => r.id === rol);
+            return secciones;
+        } else {
+            return [];
+        }
+    }
 }
 
 export const loginVerify = async () => {
