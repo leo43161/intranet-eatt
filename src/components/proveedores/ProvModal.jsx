@@ -51,7 +51,7 @@ export default function ProvModal({ show, handleClose, proveedor, setProvReload,
       setError({ error: true, msg: "Los valores requeridos no pueden estar vacios:" + _errorsKeys });
       return;
     };
-    if (checkProv) { return setError({ error: true, msg: "El proveedor ya existe" }) };
+    if (checkProv && addProv) { return setError({ error: true, msg: "El proveedor ya existe" }) };
     setError({ error: false, msg: "" });
     Swal.fire({
       icon: 'warning',
