@@ -1,5 +1,7 @@
 import { sign, verify } from "jsonwebtoken";
 import { serialize } from "cookie";
+import { pool } from "../../config/db";
+const queryPostLogin = (nombre, password) => `CALL sp_VerificarLogin('${nombre}', '${password}');`;/* NO FUNCIONA */
 
 export default async function handler(req, res) {
     switch (req.method) {
@@ -27,30 +29,41 @@ const getLogin = (req, res) => {
     }
 }
 
-const loginHandler = (req, res) => {
+/*
+Consultaaaaaa paaaraaa el logiiin
+SELECT NombreU, roles_s.IdRoles AS "rol" FROM usuario INNER JOIN usuario_roles AS roles_s ON roles_s.IdUsuario = usuario.IdUsuario WHERE NombreU = "Leo123" AND password = "43161301"; 
+*/
+
+const loginHandler = async (req, res) => {
     const { usuario, password, recordar } = req.body.usuario;
-    if (usuario === "leo" && password === 'admin') {
-        console.log("Se hizo el login");
-        const token = sign({
-            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
-            usuario: "leo",
-            rol: 2,
-            nombre: 'admin'
-        }, 'secret');
+    try {
+        const results = await pool.query(queryPostLogin(usuario, password));
+        if (results[0].length > 0) {
+            const { user, rol } = results[0][0];
+            const token = sign({
+                exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
+                usuario: user,
+                rol,
+            }, 'secret');
 
-        const serialized = serialize('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            path: '/',
-            [recordar ? 'maxAge' : 'expires']: recordar ? (1000 * 60 * 60 * 24 * 30) : 0,
-        });
+            const serialized = serialize('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                path: '/',
+                [recordar ? 'maxAge' : 'expires']: recordar ? (1000 * 60 * 60 * 24 * 30) : 0,
+            });
 
-        res.setHeader('Set-Cookie', serialized);
-        return res.json({
-            usuario: "leo",
-            rol: 2,
-        });
+            res.setHeader('Set-Cookie', serialized);
+            return res.status(200).json({
+                usuario: user,
+                rol,
+            });
+        } else {
+            return res.status(401).json({ error: "Invalid password and user" })
+        }
+    } catch (error) {
+        return res.status(500).json({ error });
     }
-    return res.status(401).json({ error: "Invalid password and user" })
+    return;
 }

@@ -1,4 +1,5 @@
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -10,10 +11,10 @@ export default function Login({ setLoggedReload }) {
     usuario: "",
     password: "",
   })
-  const [recordar, setRecordar] = useState(false)
+  const [recordar, setRecordar] = useState(false);
+  const [msjError, setMsjError] = useState("");
   const router = useRouter();
   const handleChange = (e) => {
-    console.log(e.target.checked);
     setUser({
       ...usuario,
       [e.target.name]: e.target.value
@@ -22,11 +23,13 @@ export default function Login({ setLoggedReload }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const _usuario = { ...usuario, recordar };
-    console.log(_usuario);
     const response = await login(_usuario);
-    if (response) {
+    if (response.login) {
       setLoggedReload(true);
       router.push("/");
+    } else {
+      setMsjError(response.msg);
+      return;
     }
   }
   return (
@@ -48,6 +51,9 @@ export default function Login({ setLoggedReload }) {
                     <Form.Label>Contraseña</Form.Label>
                     <Form.Control onChange={handleChange} name="password" type="password" placeholder="********" />
                   </Form.Group>
+                  {msjError !== "" && <Alert key='danger' variant='danger'>
+                    {msjError}
+                  </Alert>}
                   <Form.Group className="mb-3" controlId="recordarme">
                     <Form.Check type="checkbox" onChange={(e) => setRecordar(e.target.checked)} name='recordar' checked={recordar} label="Recordarme" />
                   </Form.Group>

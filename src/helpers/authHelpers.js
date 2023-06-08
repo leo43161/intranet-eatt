@@ -55,12 +55,15 @@ export const login = async (usuario) => {
             };
             const jsonData = JSON.stringify(data);
             localStorage.setItem('userData', jsonData);
-            return true;
-        } else {
-            return false;
+            return { login: true, msg: "Logueado" };
+        } else if (response.status === 401) {
+            return { login: false, msg: "Contraseña o usuario incorrecto" };
         }
     } catch (error) {
-        console.log(error);
-        return false;
+        if (error.response.status === 401) {
+            return { login: false, msg: "Contraseña o usuario incorrecto" };
+        }else{
+            return { login: false, msg: "Hubo un error con la consulta, intente mas tarde" };
+        }
     }
 }

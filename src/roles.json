@@ -9,7 +9,26 @@
                 "/carga",
                 "/pagos"
             ],
-            "secciones": "All"
+            "secciones": [
+                {
+                    "nombre": "Carga",
+                    "icono": "faFileLines",
+                    "ruta": "/carga",
+                    "titulo": "Cargar digedoc"
+                },
+                {
+                    "nombre": "Pagos",
+                    "icono": "faBook",
+                    "ruta": "/pagos",
+                    "titulo": "Pagos registrados"
+                },
+                {
+                    "nombre": "Proveedores",
+                    "icono": "faUserTie",
+                    "ruta": "/proveedores",
+                    "titulo": "Proveedores"
+                }
+            ]
         },
         {
             "id": 2,
