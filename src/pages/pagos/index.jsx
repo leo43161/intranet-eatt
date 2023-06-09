@@ -7,6 +7,7 @@ import ItemTable from '../../components/pagos/ItemTable';
 import { useEffect, useState } from 'react';
 import PagosModal from '../../components/pagos/PagosModal';
 import { listPagos, listCuentas } from '../../helpers/listaHelpers';
+import FilterPagos from '../../components/pagos/FilterPagos';
 
 export default function Pagos() {
     const [show, setShow] = useState(false);
@@ -92,31 +93,7 @@ export default function Pagos() {
                     </div>
                 </div>
                 <div className="my-3">
-                    <Form>
-                        <ListGroup horizontal>
-                            <ListGroup.Item className='col-md-5 col-12 d-flex align-items-center'>
-                                <p className="m-0 me-2">Orden de pago:</p>
-                                <div className="col">
-                                    <Form.Control type="email" placeholder="Inserte orden de pago" />
-                                </div>
-                            </ListGroup.Item>
-                            <ListGroup.Item className='col-md-5 col-12 d-flex align-items-center justify-content-around'>
-                                <div className="d-flex align-items-center">
-                                    <p className="m-0 me-2">Desde:</p>
-                                    <Form.Control type="date" placeholder="desde" />
-                                </div>
-                                <div className="d-flex align-items-center">
-                                    <p className="m-0 mx-2">Hasta:</p>
-                                    <Form.Control type="date" placeholder="hasta" />
-                                </div>
-                            </ListGroup.Item>
-                            <ListGroup.Item className='col-md-2 col-12 d-flex justify-content-around'>
-                                <Button className="w-100" variant="primary">
-                                    <span className="">Filtrar</span>
-                                </Button>
-                            </ListGroup.Item>
-                        </ListGroup>
-                    </Form>
+                    <FilterPagos pagos={pagos}></FilterPagos>
                 </div>
                 <div className="table-responsive">
                     <Table striped bordered hover id='table-excel'>
