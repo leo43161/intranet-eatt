@@ -35,7 +35,7 @@ export default function Login({ setLoggedReload }) {
   return (
     <div className="login">
       <div className="d-flex justify-content-center align-items-center">
-        <div className="col-lg-4 col-md-10 pt-5">
+        <div className="col-lg-4 col-md-10 pt-4">
           <div style={{ marginTop: '40px' }}>
             <Card className='shadow'>
               <Card.Body>

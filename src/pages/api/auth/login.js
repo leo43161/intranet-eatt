@@ -29,11 +29,6 @@ const getLogin = (req, res) => {
     }
 }
 
-/*
-Consultaaaaaa paaaraaa el logiiin
-SELECT NombreU, roles_s.IdRoles AS "rol" FROM usuario INNER JOIN usuario_roles AS roles_s ON roles_s.IdUsuario = usuario.IdUsuario WHERE NombreU = "Leo123" AND password = "43161301"; 
-*/
-
 const loginHandler = async (req, res) => {
     const { usuario, password, recordar } = req.body.usuario;
     try {
@@ -65,5 +60,4 @@ const loginHandler = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ error });
     }
-    return;
 }
