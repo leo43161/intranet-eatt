@@ -9,7 +9,7 @@ import { listPagos, listCuentas } from '../../helpers/listaHelpers';
 import FilterPagos from '../../components/pagos/FilterPagos';
 
 export default function Pagos() {
-    const [filters, setFilters] = useState({ fechaInicio: "", fechaFin: "", ordenPago: "" });
+    const [filters, setFilters] = useState({ fechaInicio: "", fechaFin: "", ordenPago: "", fantasma: true });
 
     const [show, setShow] = useState(false);
 
@@ -41,6 +41,7 @@ export default function Pagos() {
         try {
             const _pagos = await listPagos(cuenta);
             setPagos(_pagos);
+            console.log(_pagos);
         } catch (error) {
             console.log(error);
         }

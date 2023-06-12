@@ -1,14 +1,24 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
+import ToggleButton from 'react-bootstrap/ToggleButton';
 import Button from 'react-bootstrap/Button';
 import { listPagos } from '../../helpers/listaHelpers';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faGhost, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export default function FilterPagos({ setPagos, cuenta, setFilters, filters }) {
     const filterChanges = (e) => {
-        setFilters({
-            ...filters,
-            [e.target.name]: e.target.value,
-        })
+        if (e.target.name === "fantasma") {
+            setFilters({
+                ...filters,
+                [e.target.name]: e.target.checked,
+            })
+        } else {
+            setFilters({
+                ...filters,
+                [e.target.name]: e.target.value,
+            })
+        }
     }
     const filterHandler = async () => {
         let _pagos = await consultarPagos(cuenta);
@@ -34,6 +44,11 @@ export default function FilterPagos({ setPagos, cuenta, setFilters, filters }) {
                 const valorInput = ordenPago.toLowerCase();
                 return codOp.includes(valorInput);
             });
+        }
+        console.log(!filters.fantasma);
+        if (!filters.fantasma) {
+            console.log(_pagos);
+            _pagos = _pagos.filter(pago => pago.fantasma === 0);
         }
         setPagos(_pagos);
     }
@@ -64,9 +79,14 @@ export default function FilterPagos({ setPagos, cuenta, setFilters, filters }) {
                         <Form.Control type="date" value={filters.fechaFin} name="fechaFin" onChange={filterChanges} placeholder="hasta" />
                     </div>
                 </ListGroup.Item>
-                <ListGroup.Item className='col-md-2 col-12 d-flex justify-content-around'>
+                <ListGroup.Item className='col-md-1 col-12 d-flex justify-content-around'>
+                    <ToggleButton name="fantasma" id="fantasma" type="checkbox" className="w-100" variant="outline-secondary" onChange={filterChanges} onClick={filterChanges} checked={filters.fantasma}>
+                        <span className=""><FontAwesomeIcon size="1x" icon={faGhost} /></span>
+                    </ToggleButton>
+                </ListGroup.Item>
+                <ListGroup.Item className='col-md-1 col-12 d-flex justify-content-around'>
                     <Button className="w-100" variant="primary" onClick={filterHandler}>
-                        <span className="">Filtrar</span>
+                        <span className=""><FontAwesomeIcon size="1x" icon={faMagnifyingGlass} /></span>
                     </Button>
                 </ListGroup.Item>
             </ListGroup>
