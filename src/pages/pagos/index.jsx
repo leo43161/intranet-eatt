@@ -1,5 +1,4 @@
 import Table from 'react-bootstrap/Table';
-import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import TableExport from 'table-export';
@@ -10,6 +9,8 @@ import { listPagos, listCuentas } from '../../helpers/listaHelpers';
 import FilterPagos from '../../components/pagos/FilterPagos';
 
 export default function Pagos() {
+    const [filters, setFilters] = useState({ fechaInicio: "", fechaFin: "", ordenPago: "" });
+
     const [show, setShow] = useState(false);
 
     const [pagoModal, setPagoModal] = useState({});
@@ -93,7 +94,7 @@ export default function Pagos() {
                     </div>
                 </div>
                 <div className="my-3">
-                    <FilterPagos pagos={pagos}></FilterPagos>
+                    <FilterPagos cuenta={cuenta} setPagos={setPagos} filters={filters} setFilters={setFilters} ></FilterPagos>
                 </div>
                 <div className="table-responsive">
                     <Table striped bordered hover id='table-excel'>
