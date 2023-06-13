@@ -2,4 +2,5 @@
     height: 100vh;
     background: rgb(70, 157, 184);
     background: linear-gradient(90deg, rgba(70, 157, 184, 1) 0%, rgba(0, 154, 202, 1) 50%, rgba(93, 210, 246, 1) 100%);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }

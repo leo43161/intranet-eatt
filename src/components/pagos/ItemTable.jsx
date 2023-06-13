@@ -33,7 +33,7 @@ export default function ItemTable({ setPagoModal, handleShow, pago }) {
             <td>
                 <div className="d-flex justify-content-between align-items-center">
                     <span>${SARET}</span>
-                    {SARET ? <GeneratePDF ret="SARET">
+                    {SARET ? <GeneratePDF pago={pago} ret="SARET">
                         <Button className="ms-2" size="sm" variant="success">
                             <FontAwesomeIcon size="1x" icon={faPrint} />
                         </Button>
@@ -43,21 +43,21 @@ export default function ItemTable({ setPagoModal, handleShow, pago }) {
             <td>
                 <div className="d-flex justify-content-between align-items-center">
                     <span>${Gan}</span>
-                    {Gan ? <GeneratePDF ret="Gan">
+                    {/* Gan ? <GeneratePDF pago={pago} ret="Gan">
                         <Button className="ms-2" size="sm" variant="success">
                             <FontAwesomeIcon size="1x" icon={faPrint} />
                         </Button>
-                    </GeneratePDF> : null}
+                    </GeneratePDF> : null */}
                 </div>
             </td>
             <td>
                 <div className="d-flex justify-content-between align-items-center">
                     <span>${SS}</span>
-                    {SS ? <GeneratePDF ret="SS">
+                    {/* SS ? <GeneratePDF pago={pago} ret="SS">
                         <Button className="ms-2" size="sm" variant="success">
                             <FontAwesomeIcon size="1x" icon={faPrint} />
                         </Button>
-                    </GeneratePDF> : null}
+                    </GeneratePDF> : null */}
                 </div>
             </td>
             <td>{temId}</td>
@@ -65,7 +65,7 @@ export default function ItemTable({ setPagoModal, handleShow, pago }) {
             <td>
                 <div className="d-flex justify-content-between align-items-center">
                     <span>${TEM}</span>
-                    {TEM ? <GeneratePDF ret="TEM">
+                    {TEM ? <GeneratePDF pago={pago} ret="TEM">
                         <Button className="ms-2" size="sm" variant="success">
                             <FontAwesomeIcon size="1x" icon={faPrint} />
                         </Button>

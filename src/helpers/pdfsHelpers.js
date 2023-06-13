@@ -1,3 +1,4 @@
+import { NumerosALetras } from 'numero-a-letras';
 export const gananciasHTML = ({ cuit }) => `
 <div class="" id="maintable" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; width: 1349px;">
             <div class="d-flex">
@@ -625,8 +626,8 @@ export const ssHTML = () => `
 
         </div>
 `
-export const saretHTML = () => `
-<div class="d-flex position-relative" id="maintable-3" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; width: 1349px;">
+export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, TipoFactura, Factura, SARET, saretP }) => `
+<div class="d-flex position-relative" id="maintable-3" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; width: 1349px; word-spacing: 0.25em;">
 <img src="img/0.jpg" style="width: 1349px;" alt="">
 <div id="agente-1">
     <p style="position: absolute; top: 130px; left: 170px;" id="denominacion">ENTE AUTARQUICO TUCUMAN
@@ -637,18 +638,17 @@ export const saretHTML = () => `
     <p style="position: absolute; top: 200px; left: 160px;" id="obligacion">30-70920461-7</p>
     <p style="position: absolute; top: 200px; left: 385px;" id="mes">12</p>
     <p style="position: absolute; top: 200px; left: 540px;" id="año">2022</p>
-    <p style="position: absolute; top: 255px; left: 200px;" id="razon-social">ARAOZ LUCIANA</p>
-    <p style="position: absolute; top: 300px; left: 160px;" id="cuit-dni">27-17042083-2</p>
-    <p style="position: absolute; top: 350px; left: 45px;" id="domicilio-fiscal">AV ACONQUIJA 2163</p>
-    <p style="position: absolute; top: 395px; left: 45px;" id="localidad">AV YB</p>
-    <p style="position: absolute; top: 395px; left: 345px;" id="provincia">TUCUMAN</p>
-    <p style="position: absolute; top: 495px; left: 40px;" id="num-comprobante">B / 0004-00000200</p>
+    <p style="position: absolute; top: 255px; left: 200px;" id="razon-social">${NombreP}</p>
+    <p style="position: absolute; top: 300px; left: 160px;" id="cuit-dni">${cuitFormat(Cuit)}</p>
+    <p style="position: absolute; top: 350px; left: 45px;" id="domicilio-fiscal">${Domicilio}</p>
+    <p style="position: absolute; top: 395px; left: 45px;" id="localidad">${localidad}</p>
+    <p style="position: absolute; top: 395px; left: 345px;" id="provincia">${provincia}</p>
+    <p style="position: absolute; top: 495px; left: 40px;" id="num-comprobante">${TipoFactura} / ${facturaFormat(Factura)}</p>
     <p style="position: absolute; top: 495px; left: 210px;" id="monto-retencion">$310.023,60</p>
-    <p style="position: absolute; top: 495px; left: 400px;" id="porcentaje">3,5%</p>
-    <p style="position: absolute; top: 495px; left: 530px;" id="importe-retenido">$10.850,83</p>
-    <p style="position: absolute; top: 610px; left: 530px;" id="importe-depositar">$10.850,83</p>
-    <p style="position: absolute; top: 650px; left: 190px;" id="importe-letras">DIEZ MIL OCHOCIENTOS
-        CINCUENTA CON 83/100</p>
+    <p style="position: absolute; top: 495px; left: 400px;" id="porcentaje">${saretP}%</p>
+    <p style="position: absolute; top: 495px; left: 530px;" id="importe-retenido">$${SARET}</p>
+    <p style="position: absolute; top: 610px; left: 530px;" id="importe-depositar">$${SARET}</p>
+    <p style="position: absolute; top: 650px; left: 190px; text-transform: uppercase;" id="importe-letras">${NumerosALetras(SARET)}</p>
 </div>
 <div id="agente-2">
     <p style="position: absolute; top: 130px; left: 855px;" id="denominacion">ENTE AUTARQUICO TUCUMAN
@@ -659,18 +659,17 @@ export const saretHTML = () => `
     <p style="position: absolute; top: 200px; left: 840px;" id="obligacion">30-70920461-7</p>
     <p style="position: absolute; top: 200px; left: 1075px;" id="mes">12</p>
     <p style="position: absolute; top: 200px; left: 1230px;" id="año">2022</p>
-    <p style="position: absolute; top: 255px; left: 890px;" id="razon-social">ARAOZ LUCIANA</p>
-    <p style="position: absolute; top: 300px; left: 850px;" id="cuit-dni">27-17042083-2</p>
-    <p style="position: absolute; top: 350px; left: 730px;" id="domicilio-fiscal">AV ACONQUIJA 2163</p>
-    <p style="position: absolute; top: 395px; left: 730px;" id="localidad">AV YB</p>
-    <p style="position: absolute; top: 395px; left: 1030px;" id="provincia">TUCUMAN</p>
-    <p style="position: absolute; top: 495px; left: 725px;" id="num-comprobante">B / 0004-00000200</p>
+    <p style="position: absolute; top: 255px; left: 890px;" id="razon-social">${NombreP}</p>
+    <p style="position: absolute; top: 300px; left: 850px;" id="cuit-dni">${cuitFormat(Cuit)}</p>
+    <p style="position: absolute; top: 350px; left: 730px;" id="domicilio-fiscal">${Domicilio}</p>
+    <p style="position: absolute; top: 395px; left: 730px;" id="localidad">${localidad}</p>
+    <p style="position: absolute; top: 395px; left: 1030px;" id="provincia">${provincia}</p>
+    <p style="position: absolute; top: 495px; left: 725px;" id="num-comprobante">${TipoFactura} / ${facturaFormat(Factura)}</p>
     <p style="position: absolute; top: 495px; left: 895px;" id="monto-retencion">$310.023,60</p>
-    <p style="position: absolute; top: 495px; left: 1090px;" id="porcentaje">3,5%</p>
-    <p style="position: absolute; top: 495px; left: 1215px;" id="importe-retenido">$10.850,83</p>
-    <p style="position: absolute; top: 610px; left: 1215px;" id="importe-depositar">$10.850,83</p>
-    <p style="position: absolute; top: 650px; left: 875px;" id="importe-letras">DIEZ MIL OCHOCIENTOS
-        CINCUENTA CON 83/100</p>
+    <p style="position: absolute; top: 495px; left: 1090px;" id="porcentaje">${saretP}%</p>
+    <p style="position: absolute; top: 495px; left: 1215px;" id="importe-retenido">$${SARET}</p>
+    <p style="position: absolute; top: 610px; left: 1215px;" id="importe-depositar">$${SARET}</p>
+    <p style="position: absolute; top: 650px; left: 875px; text-transform: uppercase;" id="importe-letras">${NumerosALetras(SARET)}</p>
 </div>
 <div id="agente-3">
     <p style="position: absolute; top: 1081px; left: 170px;" id="denominacion">ENTE AUTARQUICO TUCUMAN
@@ -681,18 +680,17 @@ export const saretHTML = () => `
     <p style="position: absolute; top: 1152px; left: 160px;" id="obligacion">30-70920461-7</p>
     <p style="position: absolute; top: 1152px; left: 385px;" id="mes">12</p>
     <p style="position: absolute; top: 1152px; left: 540px;" id="año">2022</p>
-    <p style="position: absolute; top: 1207px; left: 200px;" id="razon-social">ARAOZ LUCIANA</p>
-    <p style="position: absolute; top: 1252px; left: 160px;" id="cuit-dni">27-17042083-2</p>
-    <p style="position: absolute; top: 1302px; left: 45px;" id="domicilio-fiscal">AV ACONQUIJA 2163</p>
-    <p style="position: absolute; top: 1347px; left: 45px;" id="localidad">AV YB</p>
-    <p style="position: absolute; top: 1347px; left: 345px;" id="provincia">TUCUMAN</p>
-    <p style="position: absolute; top: 1447px; left: 40px;" id="num-comprobante">B / 0004-00000200</p>
+    <p style="position: absolute; top: 1207px; left: 200px;" id="razon-social">${NombreP}</p>
+    <p style="position: absolute; top: 1252px; left: 160px;" id="cuit-dni">${cuitFormat(Cuit)}</p>
+    <p style="position: absolute; top: 1302px; left: 45px;" id="domicilio-fiscal">${Domicilio}</p>
+    <p style="position: absolute; top: 1347px; left: 45px;" id="localidad">${localidad}</p>
+    <p style="position: absolute; top: 1347px; left: 345px;" id="provincia">${provincia}</p>
+    <p style="position: absolute; top: 1447px; left: 40px;" id="num-comprobante">${TipoFactura} / ${facturaFormat(Factura)}</p>
     <p style="position: absolute; top: 1447px; left: 210px;" id="monto-retencion">$310.023,60</p>
-    <p style="position: absolute; top: 1447px; left: 400px;" id="porcentaje">3,5%</p>
-    <p style="position: absolute; top: 1447px; left: 530px;" id="importe-retenido">$10.850,83</p>
-    <p style="position: absolute; top: 1562px; left: 530px;" id="importe-depositar">$10.850,83</p>
-    <p style="position: absolute; top: 1602px; left: 190px;" id="importe-letras">DIEZ MIL OCHOCIENTOS
-        CINCUENTA CON 83/100</p>
+    <p style="position: absolute; top: 1447px; left: 400px;" id="porcentaje">${saretP}%</p>
+    <p style="position: absolute; top: 1447px; left: 530px;" id="importe-retenido">$${SARET}</p>
+    <p style="position: absolute; top: 1562px; left: 530px;" id="importe-depositar">$${SARET}</p>
+    <p style="position: absolute; top: 1602px; left: 190px; text-transform: uppercase;" id="importe-letras">${NumerosALetras(SARET)}</p>
 </div>
 <div id="agente-4">
     <p style="position: absolute; top: 1081px; left: 855px;" id="denominacion">ENTE AUTARQUICO TUCUMAN
@@ -703,18 +701,40 @@ export const saretHTML = () => `
     <p style="position: absolute; top: 1152px; left: 845px;" id="obligacion">30-70920461-7</p>
     <p style="position: absolute; top: 1152px; left: 1070px;" id="mes">12</p>
     <p style="position: absolute; top: 1152px; left: 1225px;" id="año">2022</p>
-    <p style="position: absolute; top: 1207px; left: 885px;" id="razon-social">ARAOZ LUCIANA</p>
-    <p style="position: absolute; top: 1252px; left: 845px;" id="cuit-dni">27-17042083-2</p>
-    <p style="position: absolute; top: 1302px; left: 730px;" id="domicilio-fiscal">AV ACONQUIJA 2163</p>
-    <p style="position: absolute; top: 1347px; left: 730px;" id="localidad">AV YB</p>
-    <p style="position: absolute; top: 1347px; left: 1030px;" id="provincia">TUCUMAN</p>
-    <p style="position: absolute; top: 1447px; left: 725px;" id="num-comprobante">B / 0004-00000200</p>
+    <p style="position: absolute; top: 1207px; left: 885px;" id="razon-social">${NombreP}</p>
+    <p style="position: absolute; top: 1252px; left: 845px;" id="cuit-dni">${cuitFormat(Cuit)}</p>
+    <p style="position: absolute; top: 1302px; left: 730px;" id="domicilio-fiscal">${Domicilio}</p>
+    <p style="position: absolute; top: 1347px; left: 730px;" id="localidad">${localidad}</p>
+    <p style="position: absolute; top: 1347px; left: 1030px;" id="provincia">${provincia}</p>
+    <p style="position: absolute; top: 1447px; left: 725px;" id="num-comprobante">${TipoFactura} / ${facturaFormat(Factura)}</p>
     <p style="position: absolute; top: 1447px; left: 895px;" id="monto-retencion">$310.023,60</p>
-    <p style="position: absolute; top: 1447px; left: 1085px;" id="porcentaje">3,5%</p>
-    <p style="position: absolute; top: 1447px; left: 1215px;" id="importe-retenido">$10.850,83</p>
-    <p style="position: absolute; top: 1562px; left: 1215px;" id="importe-depositar">$10.850,83</p>
-    <p style="position: absolute; top: 1602px; left: 875px;" id="importe-letras">DIEZ MIL OCHOCIENTOS
-        CINCUENTA CON 83/100</p>
+    <p style="position: absolute; top: 1447px; left: 1085px;" id="porcentaje">${saretP}%</p>
+    <p style="position: absolute; top: 1447px; left: 1215px;" id="importe-retenido">$${SARET}</p>
+    <p style="position: absolute; top: 1562px; left: 1215px;" id="importe-depositar">$${SARET}</p>
+    <p style="position: absolute; top: 1602px; left: 875px; text-transform: uppercase;" id="importe-letras">${NumerosALetras(SARET)}</p>
 </div>
 </div>
 `;
+
+const cuitFormat = (cuit) => {
+    const _cuit = String(cuit);
+    const prefijo = _cuit.slice(0, 2);
+    const dni = _cuit.slice(2, 10);
+    const sufijo = _cuit.slice(10);
+
+    return `${prefijo}-${dni}-${sufijo}`;
+}
+
+const facturaFormat = (factura) => {
+    console.log(factura);
+    const parts = factura.split('-');
+    const firstPart = parts[0].trim();
+    const secondPart = parts[1].trim();
+    // Formatear las partes con ceros a la izquierda
+    const formattedFirstPart = firstPart.padStart(4, '0');
+    const formattedSecondPart = secondPart.padStart(8, '0');
+    // Construir el número en el nuevo formato
+    const formattedNumber = `${formattedFirstPart}-${formattedSecondPart}`
+
+    return formattedNumber;
+}

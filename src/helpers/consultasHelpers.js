@@ -2,6 +2,13 @@ import axios from "axios";
 const Consultas = {};
 const apiUrl = "http://10.15.15.151:3000/api/"
 
+Consultas.traerProv = async (cuit) => {
+    const { data: proovedor } = await axios.get(
+        apiUrl + "proveedores", { params: { cuit } }
+    );
+    return proovedor[0];
+};
+
 Consultas.listarCuentas = async () => {
     const { data: cuentas } = await axios.get(
         apiUrl + "cuentas"
