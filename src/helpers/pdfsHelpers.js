@@ -135,14 +135,14 @@ export const gananciasHTML = ({ cuit }) => `
 
         </div>
 `;
-export const temHTML = () => `
+export const temHTML = ({ Libramiento, NombreP, temId, Factura, Cuit, Domicilio, MontoBase, temP, TEM, FechaPago }) => `
 <div class="" id="maintable" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; width: 1349px;">
             <div class="d-flex" style="margin-bottom: 90px;">
                 <div class="col-12">
                     <div class="col-10">
                         <div class="d-flex">
                             <div class="col-2"></div>
-                            <div class="col-4 ps-2 fw-bold">LIB 1159 - CARTAGO SRL</div>
+                            <div class="col-6 ps-2 fw-bold">LIB ${Libramiento} - <span style="word-spacing: 0.7em;">${NombreP}<span/> </div>
                         </div>
                         <div class="d-flex">
                             <div class="col-1 border border-dark d-flex justify-content-center align-items-center">
@@ -173,7 +173,7 @@ export const temHTML = () => `
                                     <br>
                                     Nº
                                     <br>
-                                    1050-00006925
+                                    1050-${idTemFormat(temId)}
                                 </p>
                             </div>
                         </div>
@@ -207,13 +207,13 @@ export const temHTML = () => `
                                 CONTRIBUYENTE</div>
                             <div class="col-3 border-end border-dark text-center d-flex flex-column align-self-stretch">
                                 <div>COMPROB. ORIGEN</div>
-                                <div class="border-top border-dark flex-fill">03-0815</div>
+                                <div class="border-top border-dark flex-fill">${Factura}</div>
                             </div>
-                            <div class="col d-flex align-items-end justify-content-center">33-71015416-9</div>
+                            <div class="col d-flex align-items-end justify-content-center">${Cuit}</div>
                         </div>
                         <div style="font-size: 12px;"
                             class="border border-top-0 border-dark col-11 d-flex align-items-end pt-3">
-                            DOMICILIO: RUTA PROV CALLE PUB SIN NUM - TAFI DEL VALLE
+                            DOMICILIO: ${Domicilio}
                         </div>
                         <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
                             <div class="col-3 border-end border-dark text-center d-flex justify-content-center fw-bold">TRIBUTO
@@ -229,13 +229,13 @@ export const temHTML = () => `
                             </div>
                             <div class="col-3 border-end border-dark text-center d-flex justify-content-between px-1">
                                 <span>$</span>
-                                <span>240.000,00</span>
+                                <span>${MontoBase}</span>
                             </div>
-                            <div class="col-2 border-end border-dark text-center d-flex justify-content-center">1,250%
+                            <div class="col-2 border-end border-dark text-center d-flex justify-content-center">${temP}%
                             </div>
                             <div class="col-4 text-center d-flex">
                                 <div class="col-4 border-end border-dark"></div>
-                                <div class="col-8 text-end fw-bold">$ 3.000,00</div>
+                                <div class="col-8 text-end fw-bold">$ ${TEM}</div>
                             </div>
                         </div>
                         <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
@@ -261,18 +261,18 @@ export const temHTML = () => `
                                     </div>
                                     <div class="col-8 text-center d-flex">
                                         <div class="col-4 border-bottom border-end border-dark"></div>
-                                        <div class="col-8 border-bottom border-dark text-end fw-bold">$ 3.000,00</div>
+                                        <div class="col-8 border-bottom border-dark text-end fw-bold">$ ${TEM}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
                             <div class="col-2 text-center border-end border-dark">
-                                <p>7/12/2022</p>
+                                <p>${FechaPago}</p>
                                 <span>FECHA DE PAGO</span>
                             </div>
                             <div class="col d-flex justify-content-center align-items-center">
-                                SON PESOS: TRES MIL .-
+                                ${NumerosALetras(TEM)} .-
                             </div>
                         </div>
                         <div style="font-size: 12px;"
@@ -287,7 +287,7 @@ export const temHTML = () => `
                     <div class="col-10">
                         <div class="d-flex">
                             <div class="col-2"></div>
-                            <div class="col-4 ps-2 fw-bold">LIB 1159 - CARTAGO SRL</div>
+                            <div class="col-6 ps-2 fw-bold">LIB ${Libramiento} - <span style="word-spacing: 0.7em;">${NombreP}<span/></div>
                         </div>
                         <div class="d-flex">
                             <div class="col-1 border border-dark d-flex justify-content-center align-items-center">
@@ -318,7 +318,7 @@ export const temHTML = () => `
                                     <br>
                                     Nº
                                     <br>
-                                    1050-00006925
+                                    1050-${idTemFormat(temId)}
                                 </p>
                             </div>
                         </div>
@@ -352,47 +352,47 @@ export const temHTML = () => `
                                 CONTRIBUYENTE</div>
                             <div class="col-3 border-end border-dark text-center d-flex flex-column align-self-stretch">
                                 <div>COMPROB. ORIGEN</div>
-                                <div class="border-top border-dark flex-fill">03-0815</div>
+                                <div class="border-top border-dark flex-fill">${Factura}</div>
                             </div>
-                            <div class="col d-flex align-items-end justify-content-center">33-71015416-9</div>
+                            <div class="col d-flex align-items-end justify-content-center">${Cuit}</div>
                         </div>
                         <div style="font-size: 12px;"
                             class="border border-top-0 border-dark col-11 d-flex align-items-end pt-3">
-                            DOMICILIO: RUTA PROV CALLE PUB SIN NUM - TAFI DEL VALLE
+                            DOMICILIO: ${Domicilio}
                         </div>
                         <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
-                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center">TRIBUTO
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center fw-bold">TRIBUTO
                             </div>
-                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center">MONTO
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center fw-bold">MONTO
                                 IMPONIBLE</div>
-                            <div class="col-2 border-end border-dark text-center d-flex justify-content-center">ALICUOTA
+                            <div class="col-2 border-end border-dark text-center d-flex justify-content-center fw-bold">ALICUOTA
                             </div>
-                            <div class="col-4 text-center d-flex justify-content-center">TRIBUTO</div>
+                            <div class="col-4 text-center d-flex justify-content-center fw-bold">TRIBUTO</div>
                         </div>
                         <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
                             <div class="col-3 border-end border-dark text-center d-flex justify-content-center">T. E. M.
                             </div>
                             <div class="col-3 border-end border-dark text-center d-flex justify-content-between px-1">
                                 <span>$</span>
-                                <span>240.000,00</span>
+                                <span>${MontoBase}</span>
                             </div>
-                            <div class="col-2 border-end border-dark text-center d-flex justify-content-center">1,250%
+                            <div class="col-2 border-end border-dark text-center d-flex justify-content-center">${temP}%
                             </div>
                             <div class="col-4 text-center d-flex">
                                 <div class="col-4 border-end border-dark"></div>
-                                <div class="col-8 text-end">$ 3.000,00</div>
+                                <div class="col-8 text-end fw-bold">$ ${TEM}</div>
                             </div>
                         </div>
                         <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
-                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center">P. y P.</div>
+                            <div class="col-3 border-end border-dark text-center d-flex justify-content-center"></div>
                             <div class="col-3 border-end border-dark text-center d-flex justify-content-between px-1">
                                 <span></span>
                                 <span></span>
                             </div>
                             <div class="col-2 border-end border-dark text-center d-flex justify-content-center">%</div>
                             <div class="col-4 text-center d-flex">
-                                <div class="col-4 border-end border-dark">2</div>
-                                <div class="col-8 text-end">$ 0,00</div>
+                                <div class="col-4 border-end border-dark"></div>
+                                <div class="col-8 text-end"></div>
                             </div>
                         </div>
                         <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
@@ -405,19 +405,19 @@ export const temHTML = () => `
                                         TOTAL RETENIDO
                                     </div>
                                     <div class="col-8 text-center d-flex">
-                                        <div class="col-4 border-bottom border-end border-dark">1+2</div>
-                                        <div class="col-8 border-bottom border-dark text-end">$ 3.000,00</div>
+                                        <div class="col-4 border-bottom border-end border-dark"></div>
+                                        <div class="col-8 border-bottom border-dark text-end fw-bold">$ ${TEM}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div style="font-size: 12px;" class="border border-top-0 border-dark col-11 d-flex">
                             <div class="col-2 text-center border-end border-dark">
-                                <p>7/12/2022</p>
+                                <p>${FechaPago}</p>
                                 <span>FECHA DE PAGO</span>
                             </div>
                             <div class="col d-flex justify-content-center align-items-center">
-                                SON PESOS: TRES MIL .-
+                                ${NumerosALetras(TEM)} .-
                             </div>
                         </div>
                         <div style="font-size: 12px;"
@@ -626,7 +626,7 @@ export const ssHTML = () => `
 
         </div>
 `
-export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, TipoFactura, Factura, SARET, saretP }) => `
+export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, TipoFactura, Factura, SARET, saretP, MontoBase }) => `
 <div class="d-flex position-relative" id="maintable-3" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; width: 1349px; word-spacing: 0.25em;">
 <img src="img/0.jpg" style="width: 1349px;" alt="">
 <div id="agente-1">
@@ -643,8 +643,8 @@ export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, Tipo
     <p style="position: absolute; top: 350px; left: 45px;" id="domicilio-fiscal">${Domicilio}</p>
     <p style="position: absolute; top: 395px; left: 45px;" id="localidad">${localidad}</p>
     <p style="position: absolute; top: 395px; left: 345px;" id="provincia">${provincia}</p>
-    <p style="position: absolute; top: 495px; left: 40px;" id="num-comprobante">${TipoFactura} / ${facturaFormat(Factura)}</p>
-    <p style="position: absolute; top: 495px; left: 210px;" id="monto-retencion">$310.023,60</p>
+    <p style="position: absolute; top: 495px; left: 40px;" id="num-comprobante">${TipoFactura} / ${facturaFormatSARET(Factura)}</p>
+    <p style="position: absolute; top: 495px; left: 210px;" id="monto-retencion">$${MontoBase}</p>
     <p style="position: absolute; top: 495px; left: 400px;" id="porcentaje">${saretP}%</p>
     <p style="position: absolute; top: 495px; left: 530px;" id="importe-retenido">$${SARET}</p>
     <p style="position: absolute; top: 610px; left: 530px;" id="importe-depositar">$${SARET}</p>
@@ -664,7 +664,7 @@ export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, Tipo
     <p style="position: absolute; top: 350px; left: 730px;" id="domicilio-fiscal">${Domicilio}</p>
     <p style="position: absolute; top: 395px; left: 730px;" id="localidad">${localidad}</p>
     <p style="position: absolute; top: 395px; left: 1030px;" id="provincia">${provincia}</p>
-    <p style="position: absolute; top: 495px; left: 725px;" id="num-comprobante">${TipoFactura} / ${facturaFormat(Factura)}</p>
+    <p style="position: absolute; top: 495px; left: 725px;" id="num-comprobante">${TipoFactura} / ${facturaFormatSARET(Factura)}</p>
     <p style="position: absolute; top: 495px; left: 895px;" id="monto-retencion">$310.023,60</p>
     <p style="position: absolute; top: 495px; left: 1090px;" id="porcentaje">${saretP}%</p>
     <p style="position: absolute; top: 495px; left: 1215px;" id="importe-retenido">$${SARET}</p>
@@ -685,7 +685,7 @@ export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, Tipo
     <p style="position: absolute; top: 1302px; left: 45px;" id="domicilio-fiscal">${Domicilio}</p>
     <p style="position: absolute; top: 1347px; left: 45px;" id="localidad">${localidad}</p>
     <p style="position: absolute; top: 1347px; left: 345px;" id="provincia">${provincia}</p>
-    <p style="position: absolute; top: 1447px; left: 40px;" id="num-comprobante">${TipoFactura} / ${facturaFormat(Factura)}</p>
+    <p style="position: absolute; top: 1447px; left: 40px;" id="num-comprobante">${TipoFactura} / ${facturaFormatSARET(Factura)}</p>
     <p style="position: absolute; top: 1447px; left: 210px;" id="monto-retencion">$310.023,60</p>
     <p style="position: absolute; top: 1447px; left: 400px;" id="porcentaje">${saretP}%</p>
     <p style="position: absolute; top: 1447px; left: 530px;" id="importe-retenido">$${SARET}</p>
@@ -706,7 +706,7 @@ export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, Tipo
     <p style="position: absolute; top: 1302px; left: 730px;" id="domicilio-fiscal">${Domicilio}</p>
     <p style="position: absolute; top: 1347px; left: 730px;" id="localidad">${localidad}</p>
     <p style="position: absolute; top: 1347px; left: 1030px;" id="provincia">${provincia}</p>
-    <p style="position: absolute; top: 1447px; left: 725px;" id="num-comprobante">${TipoFactura} / ${facturaFormat(Factura)}</p>
+    <p style="position: absolute; top: 1447px; left: 725px;" id="num-comprobante">${TipoFactura} / ${facturaFormatSARET(Factura)}</p>
     <p style="position: absolute; top: 1447px; left: 895px;" id="monto-retencion">$310.023,60</p>
     <p style="position: absolute; top: 1447px; left: 1085px;" id="porcentaje">${saretP}%</p>
     <p style="position: absolute; top: 1447px; left: 1215px;" id="importe-retenido">$${SARET}</p>
@@ -725,7 +725,7 @@ const cuitFormat = (cuit) => {
     return `${prefijo}-${dni}-${sufijo}`;
 }
 
-const facturaFormat = (factura) => {
+const facturaFormatSARET = (factura) => {
     console.log(factura);
     const parts = factura.split('-');
     const firstPart = parts[0].trim();
@@ -737,4 +737,20 @@ const facturaFormat = (factura) => {
     const formattedNumber = `${formattedFirstPart}-${formattedSecondPart}`
 
     return formattedNumber;
+}
+
+const idTemFormat = (id) => {
+    const formatteId = id.toString().padStart(8, '0');
+    return formatteId;
+}
+
+function getMes() {
+    var fecha = new Date();
+    var numeroMes = fecha.getMonth() + 1;
+    return numeroMes;
+}
+function getAnio() {
+    var fecha = new Date();
+    var anio = fecha.getFullYear();
+    return anio;
 }
