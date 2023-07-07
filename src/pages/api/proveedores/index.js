@@ -1,4 +1,4 @@
-import { pool } from "../../config/db";
+import { pool } from "../../../config/db";
 const queryGetProv = (cuit) => `CALL sp_VerificarCargaProveedor(${cuit});`;
 const queryGetProveedores = () => `CALL sp_ListarProv();`;
 const queryPostProv = ({ cuit, nombreP, domicilio, localidad, provincia, cp, telefono, email }) => `CALL sp_InsertarProveedor(${cuit},'${nombreP}','${domicilio}','${localidad}','${provincia}',${cp !== "" ? cp : "NULL"},'${telefono}','${email}');`;

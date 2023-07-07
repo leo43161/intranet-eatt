@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import ProvModal from '../../components/proveedores/ProvModal';
 import ItemTable from '../../components/proveedores/ItemTable';
 
-export default function index() {
+export default function Proovedores() {
   const { listarProv } = Consultas;
   const [show, setShow] = useState(false);
   const [provModal, setProvModal] = useState({});

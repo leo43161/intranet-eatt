@@ -1,9 +1,14 @@
+import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 
-export default function OrdenDePago({ pago: { _pago, index }, handleChange, idx }) {
+export default function OrdenDePago({ pago, handleChange, idx }) {
+    if (!pago) {
+        return null; // O cualquier otro componente o mensaje de carga
+    }
+    const { _pago, index } = pago;
     const { fechaP, razonSocial, netoProv, fechafact, nFactura, nOrden } = _pago;
-
+    console.log(pago)
     return (
         <>
             <Card className="mb-2" key={idx}>

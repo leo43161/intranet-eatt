@@ -1,4 +1,4 @@
-import { pool } from "../../config/db";
+import { pool } from "../../../config/db";
 const queryGetPagos = (cuenta) => `CALL sp_ListarPagos(${cuenta});`;
 
 export default async function handler(req, res) {

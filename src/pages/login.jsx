@@ -28,6 +28,7 @@ export default function Login({ setLoggedReload }) {
       setLoggedReload(true);
       router.push("/");
     } else {
+      console.log("Login failed");
       setMsjError(response.msg);
       return;
     }

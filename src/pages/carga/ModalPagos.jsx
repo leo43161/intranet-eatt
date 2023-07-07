@@ -59,7 +59,7 @@ export default function ModalPagos({ show, handleClose, pagosFitered, pagos, pag
                     <Modal.Title>Selecciona los pagos a descartar</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {pagosFitered.map((pagos, idx) => {
+                    {pagosFitered ? pagosFitered.map((pagos, idx) => {
                         return (
                             <Alert variant={"danger"} key={idx}>
                                 <h4 className="mb-3">Orden de pago: {pagos[0]._pago.nOrden}</h4>
@@ -68,7 +68,7 @@ export default function ModalPagos({ show, handleClose, pagosFitered, pagos, pag
                                 </div>))}
                             </Alert>
                         )
-                    })}
+                    }) : null}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" onClick={handleClose}>

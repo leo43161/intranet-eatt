@@ -1,8 +1,7 @@
 import { sign, verify } from "jsonwebtoken";
 import { serialize } from "cookie";
-import { pool } from "../../config/db";
-const queryPostLogin = (nombre, password) => `CALL sp_VerificarLogin('${nombre}', '${password}');`;/* NO FUNCIONA */
-
+import { pool } from "../../../config/db";
+const queryPostLogin = (nombre, password) => `CALL sp_VerificarLogin('${nombre}', '${password}');`;
 export default async function handler(req, res) {
     switch (req.method) {
         case "GET":
@@ -40,19 +39,17 @@ const loginHandler = async (req, res) => {
                 usuario: user,
                 rol,
             }, 'secret');
-
             const serialized = serialize('token', token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
+                secure: false /* process.env.NODE_ENV !== 'production' */,
                 sameSite: 'strict',
                 path: '/',
                 [recordar ? 'maxAge' : 'expires']: recordar ? (1000 * 60 * 60 * 24 * 30) : 0,
             });
-
             res.setHeader('Set-Cookie', serialized);
             return res.status(200).json({
                 usuario: user,
-                rol,
+                rol
             });
         } else {
             return res.status(401).json({ error: "Invalid password and user" })

@@ -1,4 +1,4 @@
-import { pool } from "../../config/db";
+import { pool } from "../../../config/db";
 const queryGetAct = (orden, ret) => `CALL sp_VerificarCargaDetalleOrdenPago(${orden},${ret});`;
 const queryPostDetalle = ({ porcentaje, montoR, borrado, activo, codRetencion, idControl }) => `CALL sp_InsertarDetalleOrdenPago(${porcentaje},${montoR},${borrado},${activo},${codRetencion},${idControl});`;
 const queryPutDetalle = ({ idDOP, porcentaje, montoR, borrado, activo, codRetencion, idControl }) => `CALL sp_ModificarDetalleOrdenPago(${idDOP},${porcentaje},${montoR},${borrado},${activo},${codRetencion},${idControl});`;

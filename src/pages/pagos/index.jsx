@@ -62,6 +62,7 @@ export default function Pagos() {
 
     const handlerCuenta = (e) => {
         const valueSelect = e.target.value;
+        setFilters({ fechaInicio: "", fechaFin: "", ordenPago: "", fantasma: true });
         setCuenta(valueSelect);
         setPagosReload(true);
     }

@@ -1,4 +1,4 @@
-import { pool } from "../../config/db";
+import { pool } from "../../../config/db";
 const queryGetProv = (id) => `CALL sp_VerificarCargaUser ESTO NO EXISTE(${id});`;/* NO FUNCIONA */
 const queryGetUserCuit = (cuit) => `CALL sp_VerificarCargaUserCuit(${cuit});`;/* NO FUNCIONA */
 const queryGetProveedores = () => `CALL sp_ListarProv  ESTO NO EXISTE();`;/* NO FUNCIONA */
