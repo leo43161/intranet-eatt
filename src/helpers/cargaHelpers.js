@@ -7,17 +7,17 @@ const codRetVerif = {
     409: "S.G.P. SIST. PENS. JUB. RETENC. PERSONAL"
 }
 const FORMAT_DEUDAS = {
-    1: "nCuenta",
-    2: "nombre",
-    28: "retencion",
-    32: "nOrden",
-    34: "fecha",
-    35: "nCompromiso",
-    37: "codRet",
-    38: "recursoEstado",
-    39: "tipoRet",
+    2: "nCuenta",
+    3: "nombre",
+    4: "retencion",
+    6: "importeRet",
+    14: "nOrden",
+    16: "fecha",
+    18: "nCompromiso",
+    19: "codRet",
+    22: "recursoEstado",
+    24: "tipoRet",
     40: "cuit",
-    45: "importeRet",
 }
 const FORMAT_PAGOS = {
     0: "nCuenta",
@@ -52,7 +52,7 @@ export const formatearTxt = (contenido, txt) => {
 function formatearOrdenes(_ordenes, txt) {
     let ordenes = [];
     const FORMAT = txt === 1 ? FORMAT_PAGOS : FORMAT_DEUDAS;
-    console.log(_ordenes)
+    console.log(_ordenes);
     _ordenes.forEach((orden) => {
         let _orden = {};
         for (const key in orden) {
@@ -60,6 +60,8 @@ function formatearOrdenes(_ordenes, txt) {
                 _orden[FORMAT[key]] = orden[key];
             }
         }
+        /* Verificar las facturas */
+        /* console.log(_orden); */
         if (txt === 1) _orden = formatearPago(_orden);
         if (txt === 2) _orden = formatearDeudas(_orden);
         ordenes.push(_orden);
@@ -83,7 +85,7 @@ const formatearDeudas = (pago) => {
     let _pago = pago;
     _pago.importeRet = parseFloat(pago.importeRet.replace(",", ""));
     _pago.nCuenta = pago.nCuenta.replaceAll("-", "");
-    _pago.fecha = convertirFecha(pago.fecha);
+    _pago.fecha = _pago.fecha.slice(0, 4) + "-" + _pago.fecha.slice(4, 6) + "-" + _pago.fecha.slice(6, 8);
     return _pago;
 }
 const filterPagos = (pagos = []) => {
@@ -91,7 +93,6 @@ const filterPagos = (pagos = []) => {
     let filterPagos = pagos.filter(({ cuit }) => cuit !== "30709204617");
     /* filterPagos = deudas.filter(({ cuit }) => cuit.length < 10); */
     /* filterPagos = deudas; */
-    console.log(filterPagos);
     return filterPagos;
 }
 const filterDeudas = (deudas = []) => {
@@ -151,7 +152,6 @@ export const subirPagos = async (pagos) => {
 
         }
     });
-    console.log(countPagos);
     return countPagos;
 }
 export const subirDeudas = async (deudas) => {
@@ -194,7 +194,6 @@ export const checkPagos = (pagos) => {
             _checkPagos.push(filterExist);
         };
     };
-    console.log(_checkPagos);
     return _checkPagos;
 };
 export const checkDeudas = async (deudas) => {
@@ -215,5 +214,6 @@ const convertirFecha = (fecha) => {
     let anioConvertido = fechaConvertida.getFullYear();
     let mesConvertido = ("0" + (fechaConvertida.getMonth() + 1)).slice(-2);
     let diaConvertido = ("0" + fechaConvertida.getDate()).slice(-2);
+
     return anioConvertido + "-" + mesConvertido + "-" + diaConvertido;
 }

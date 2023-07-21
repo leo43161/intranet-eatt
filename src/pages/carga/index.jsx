@@ -31,7 +31,7 @@ export default function Carga() {
                 }
                 setPagosFitered(null);
                 setPagosUpload(true);
-                await subirPagos(pagos);
+                await subirPagos(_pagos);
             }
             lector.readAsText(pagoFile);
         }

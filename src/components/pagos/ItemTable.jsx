@@ -72,7 +72,7 @@ export default function ItemTable({ setPagoModal, handleShow, pago }) {
                     </GeneratePDF> : null}
                 </div>
             </td>
-            <td>${SARET + Gan + SS + TEM}</td>
+            <td>${(SARET + Gan + SS + TEM)}</td>
         </tr>
     </>
     )

@@ -5,7 +5,7 @@ import Alert from 'react-bootstrap/Alert';
 import { convertirFechaInput } from '../../helpers/listaHelpers';
 import { useState, useEffect } from "react";
 import { editarPago } from "../../helpers/listaHelpers"
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
 
 export default function PagosModal({ show, handleClose, pago, setPagosReload }) {
     const { Id, Libramiento, codop, FechaPago, fechaFactura, Cuit, NombreP, Domicilio, TipoFactura, Factura, MontoBase, saretP, SARET, Gan, SS, temP, TEM } = pago;
@@ -142,8 +142,16 @@ export default function PagosModal({ show, handleClose, pago, setPagosReload }) 
                             </div>
                             <div className='d-flex flex-column align-items-center'>
                                 <h6 className='fw-bold'>Factura: </h6>
-                                {/* <span><Form.Control size="sm" type="text" placeholder="Factura" defaultValue={Factura} /></span> */}
-                                <span>{Factura}</span>
+                                <span>
+                                    <Form.Control
+                                        size="sm"
+                                        type="text"
+                                        name="Factura"
+                                        placeholder="Factura"
+                                        defaultValue={Factura}
+                                        onChange={handleChange}
+                                    />
+                                </span>
                             </div>
                             <div className='d-flex flex-column align-items-center'>
                                 <h6 className='fw-bold'>Fecha Facturas: </h6>
@@ -203,7 +211,7 @@ export default function PagosModal({ show, handleClose, pago, setPagosReload }) 
                                 <h6 className='fw-bold'>MONTO BASE: </h6><span>${MontoBase}</span>
                             </div>
                             <div className='d-flex flex-column align-items-center'>
-                                <h6 className='fw-bold'>RETENCIONES: </h6><span>${SARET + Gan + SS + TEM}</span>
+                                <h6 className='fw-bold'>RETENCIONES: </h6><span> $${(SARET + Gan + SS + TEM).toFixed(2)} </span>
                             </div>
                         </div>
                         {error.error ? (
