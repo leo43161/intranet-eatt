@@ -211,7 +211,7 @@ export default function PagosModal({ show, handleClose, pago, setPagosReload }) 
                                 <h6 className='fw-bold'>MONTO BASE: </h6><span>${MontoBase}</span>
                             </div>
                             <div className='d-flex flex-column align-items-center'>
-                                <h6 className='fw-bold'>RETENCIONES: </h6><span> $${(SARET + Gan + SS + TEM).toFixed(2)} </span>
+                                <h6 className='fw-bold'>RETENCIONES: </h6><span> ${(SARET + Gan + SS + TEM).toFixed(2)} </span>
                             </div>
                         </div>
                         {error.error ? (

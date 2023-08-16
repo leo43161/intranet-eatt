@@ -6,6 +6,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from 'react';
 import ProvModal from '../../components/proveedores/ProvModal';
 import ItemTable from '../../components/proveedores/ItemTable';
+import axios from 'axios';
 
 export default function Proovedores() {
   const { listarProv } = Consultas;
@@ -45,7 +46,8 @@ export default function Proovedores() {
         <header className="container mb-3">
           <div className="card">
             <div className="d-flex justify-content-between align-items-center p-2">
-              <div className=""></div>
+              <div className="">
+              </div>
               <div><h4 className="m-0">Proveedores</h4></div>
               <div className="">
                 <Button variant="primary" onClick={() => { handleShow(), setAddProv(true) }}>

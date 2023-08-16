@@ -1,6 +1,6 @@
 import mysql from 'serverless-mysql';
 
-const pool = mysql({
+const poolLocal = mysql({
     config: {
         host: 'localhost',
         user: "root",
@@ -8,5 +8,13 @@ const pool = mysql({
         database: "intraneteatt",
     },
 });
-
-export { pool };
+const poolRemote = mysql({
+    config: {
+        host: 'tucumanturismo.gob.ar',
+        port: 3306,
+        database: "intraneteatt",
+        user: "adminintranet",
+        password: "admin159753+",
+    },
+});
+export { poolLocal, poolRemote };

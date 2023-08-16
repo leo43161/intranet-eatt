@@ -1,4 +1,5 @@
-import { pool } from "../../../config/db";
+import { poolRemote, poolLocal } from "../../../config/db";
+import { exectQueryGlobal } from "../../../helpers/dbHelpers";
 const queryGetProv = (cuit) => `CALL sp_VerificarCargaProveedor(${cuit});`;
 const queryGetProveedores = () => `CALL sp_ListarProv();`;
 const queryPostProv = ({ cuit, nombreP, domicilio, localidad, provincia, cp, telefono, email }) => `CALL sp_InsertarProveedor(${cuit},'${nombreP}','${domicilio}','${localidad}','${provincia}',${cp !== "" ? cp : "NULL"},'${telefono}','${email}');`;
@@ -21,7 +22,7 @@ export default async function handler(req, res) {
 const getProveedor = async (req, res) => {
     const { cuit } = req.query
     try {
-        const results = await pool.query(queryGetProv(cuit));
+        const results = await poolLocal.query(queryGetProv(cuit));
         return res.status(200).json(results[0]);
     } catch (error) {
         return res.status(500).json({ error });
@@ -30,7 +31,7 @@ const getProveedor = async (req, res) => {
 
 const getProveedores = async (req, res) => {
     try {
-        const results = await pool.query(queryGetProveedores());
+        const results = await poolLocal.query(queryGetProveedores());
         return res.status(200).json(results[0]);
     } catch (error) {
         return res.status(500).json({ error });
@@ -40,7 +41,7 @@ const getProveedores = async (req, res) => {
 const putProveedor = async (req, res) => {
     const { proveedor } = req.body.params;
     try {
-        const results = await pool.query(queryPutProv(proveedor));
+        const results = await exectQueryGlobal(queryPutProv(proveedor));
         return res.status(200).json(results);
     } catch (error) {
         return res.status(500).json({ error, queryString: queryPutProv(proveedor) });
@@ -51,9 +52,9 @@ const postProveedor = async (req, res) => {
     const { proveedor } = req.body.params
     console.log(queryPostProv(proveedor));
     try {
-        const results = await pool.query(queryPostProv(proveedor));
+        const results = await exectQueryGlobal(queryPostProv(proveedor));
         return res.status(200).json(results);
     } catch (error) {
-        return res.status(500).json({ error, query:queryPostProv(proveedor) });
+        return res.status(500).json({ error, query: queryPostProv(proveedor) });
     }
 };

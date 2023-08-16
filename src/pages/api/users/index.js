@@ -1,4 +1,5 @@
-import { pool } from "../../../config/db";
+import { poolLocal } from "../../../config/db";
+import { exectQueryGlobal } from "../../../helpers/dbHelpers";
 const queryGetProv = (id) => `CALL sp_VerificarCargaUser ESTO NO EXISTE(${id});`;/* NO FUNCIONA */
 const queryGetUserCuit = (cuit) => `CALL sp_VerificarCargaUserCuit(${cuit});`;/* NO FUNCIONA */
 const queryGetProveedores = () => `CALL sp_ListarProv  ESTO NO EXISTE();`;/* NO FUNCIONA */
@@ -20,7 +21,7 @@ const getUser = async (req, res) => {
     const { cuit, id } = req.query;
     const query = cuit ? queryGetUserCuit(cuit) : queryGetProv(id);
     try {
-        const results = await pool.query(query)
+        const results = await poolLocal.query(query)
         return res.status(200).json(results[0]);
     } catch (error) {
         return res.status(500).json({ error });
@@ -29,7 +30,7 @@ const getUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
     try {
-        const results = await pool.query(queryGetProveedores());
+        const results = await poolLocal.query(queryGetProveedores());
         return res.status(200).json(results[0]);
     } catch (error) {
         return res.status(500).json({ error });
@@ -39,7 +40,7 @@ const getUsers = async (req, res) => {
 const postUser = async (req, res) => {
     const { _userProv } = req.body.params
     try {
-        const results = await pool.query(queryPostUser(_userProv));
+        const results = await exectQueryGlobal(queryPostUser(_userProv));
         return res.status(200).json(results);
     } catch (error) {
         return res.status(500).json({ error });

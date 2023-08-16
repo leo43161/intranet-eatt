@@ -1,6 +1,6 @@
 import { sign, verify } from "jsonwebtoken";
 import { serialize } from "cookie";
-import { pool } from "../../../config/db";
+import { poolRemote } from "../../../config/db";
 const queryPostLogin = (nombre, password) => `CALL sp_VerificarLogin('${nombre}', '${password}');`;
 export default async function handler(req, res) {
     switch (req.method) {
@@ -31,7 +31,7 @@ const getLogin = (req, res) => {
 const loginHandler = async (req, res) => {
     const { usuario, password, recordar } = req.body.usuario;
     try {
-        const results = await pool.query(queryPostLogin(usuario, password));
+        const results = await poolRemote.query(queryPostLogin(usuario, password));
         if (results[0].length > 0) {
             const { user, rol } = results[0][0];
             const token = sign({

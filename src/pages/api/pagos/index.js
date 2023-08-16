@@ -1,4 +1,4 @@
-import { pool } from "../../../config/db";
+import { poolRemote } from "../../../config/db";
 const queryGetPagos = (cuenta) => `CALL sp_ListarPagos(${cuenta});`;
 
 export default async function handler(req, res) {
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 const getOrdenesDePago = async (req, res) => {
     const { cuenta } = req.query;
     try {
-        const results = await pool.query(queryGetPagos(cuenta));
+        const results = await poolRemote.query(queryGetPagos(cuenta));
         return res.status(200).json(results[0]);
     } catch (error) {
         return res.status(500).json({ error });
