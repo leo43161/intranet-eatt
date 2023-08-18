@@ -7,7 +7,8 @@
                 "/",
                 "/proveedores",
                 "/carga",
-                "/pagos"
+                "/pagos",
+                "/eventos"
             ],
             "secciones": [
                 {
@@ -27,6 +28,12 @@
                     "icono": "faUserTie",
                     "ruta": "/proveedores",
                     "titulo": "Proveedores"
+                },
+                {
+                    "nombre": "Eventos",
+                    "icono": "faCalendarDays",
+                    "ruta": "/eventos",
+                    "titulo": "Eventos"
                 }
             ]
         },

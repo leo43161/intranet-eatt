@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBook, faFileLines, faUserTie } from "@fortawesome/free-solid-svg-icons";
+import { faBook, faFileLines, faUserTie, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import Link from 'next/link'
 export default function HomeButton({ seccion }) {
     const { titulo, icono, ruta } = seccion
-    const icons = { faBook, faFileLines, faUserTie };
+    const icons = { faBook, faFileLines, faUserTie, faCalendarDays };
     return (
         <div className="col">
             <Link className="text-dark text-decoration-none" href={ruta}>
