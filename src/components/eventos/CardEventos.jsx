@@ -16,7 +16,7 @@ export default function CardEventos() {
                 </div>
             </div>
             <div>
-                <div class="btn-group w-100" role="group" aria-label="Basic example">
+                <div className="btn-group w-100" role="group" aria-label="Basic example">
                     <ToggleButton
                         id="toggle-check"
                         type="checkbox"
