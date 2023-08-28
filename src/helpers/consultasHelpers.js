@@ -1,6 +1,6 @@
 import axios from "axios";
 const Consultas = {};
-const apiUrl = "http://10.15.15.151:3000/api/"
+const apiUrl = process.env.urlServer + "api/"
 
 Consultas.traerProv = async (cuit) => {
     const { data: proovedor } = await axios.get(
@@ -64,7 +64,7 @@ Consultas.verificarDetalleOrden = async (orden, ret) => {
     );
     return detalleOrden.length > 0;
 };
- 
+
 Consultas.cargarOrden = async (orden) => {
     /* ACTUALIZAR LOS DATOS PARA PODER SUBIR LA ORDEN DE PAGO */
     const ordenPago = {

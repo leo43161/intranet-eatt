@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    urlServer: "http://10.15.15.151:3000/"
+  },
   rewrites: {
   },
   swcMinify: true,

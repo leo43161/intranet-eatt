@@ -31,6 +31,7 @@ const getProveedor = async (req, res) => {
 
 const getProveedores = async (req, res) => {
     try {
+        console.log(queryGetProveedores());
         const results = await poolLocal.query(queryGetProveedores());
         return res.status(200).json(results[0]);
     } catch (error) {

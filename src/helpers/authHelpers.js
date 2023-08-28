@@ -16,9 +16,10 @@ export const getRoles = () => {
 }
 
 export const loginVerify = async () => {
+    console.log(`${process.env.urlServer}api/auth/login`)
     try {
         const response = await axios.get(
-            "http://10.15.15.151:3000/api/auth/login"
+            `${process.env.urlServer}api/auth/login`
         );
         if (response.status === 200) {
             return true;
@@ -43,9 +44,11 @@ export const loginVerify = async () => {
 }
 
 export const login = async (usuario) => {
+    console.log(`${process.env.urlServer}api/auth/login`)
+    console.log(process.env)
     try {
         const response = await axios.post(
-            "http://10.15.15.151:3000/api/auth/login", { usuario }
+            `${process.env.urlServer}api/auth/login`, { usuario }
         );
         console.log(response);
         if (response.status === 200) {
@@ -60,7 +63,7 @@ export const login = async (usuario) => {
                 console.log("Esta el local disponible");
             } else {
                 console.log("El local no está disponible");
-              }
+            }
             const jsonData = JSON.stringify(data);
             console.log(jsonData);
             localStorage.setItem('userData', jsonData);
@@ -71,7 +74,7 @@ export const login = async (usuario) => {
     } catch (error) {
         if (error.response.status === 401) {
             return { login: false, msg: "Contraseña o usuario incorrecto" };
-        }else{
+        } else {
             return { login: false, msg: "Hubo un error con la consulta, intente mas tarde" };
         }
     }
