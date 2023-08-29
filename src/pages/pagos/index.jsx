@@ -125,7 +125,7 @@ export default function Pagos() {
                             </tr>
                         </thead>
                         <tbody>
-                            {pagos.map(pago => (<ItemTable key={pago.Id} setPagoModal={setPagoModal} handleShow={handleShow} pago={pago}></ItemTable>))}
+                            {pagos.map(pago => (<ItemTable key={pago.Id} setPagoModal={setPagoModal} setPagosReload={setPagosReload} handleShow={handleShow} pago={pago}></ItemTable>))}
                         </tbody>
                     </Table>
                 </div>

@@ -18,7 +18,7 @@ export async function middleware(request) {
 
         // Buscar el rol en el JSON de roles y rutas
         const role = rolesJson.roles.find(role => role.id === userRole);
-        
+
         // Verificar si el usuario tiene acceso a la ruta actual
         if (!role || !role.rutas.includes(currentPath)) {
             return NextResponse.redirect(new URL('/', request.url));
@@ -38,5 +38,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-    matcher: ['/', '/carga', '/pagos', '/proveedores', '/login'],
+    matcher: ['/', '/carga', '/pagos', '/proveedores', '/login','/eventos'],
 };

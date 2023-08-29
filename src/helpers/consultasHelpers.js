@@ -240,6 +240,30 @@ Consultas.editarOrdenPago = async (orden) => {
     );
     return check;
 };
+Consultas.desactivarOrdenPago = async (orden) => {
+    const ordenPago = {
+        idControl: orden.Id,
+        codOp: orden.codop,
+        factura: orden.Factura,
+        tipoFactura: orden.TipoFactura,
+        fechaPago: orden.FechaPago,
+        fechaFact: orden.fechaFactura,
+        montoBase: orden.MontoBase,
+        pagada: 0,
+        borrado: 0,
+        activo: 0,
+        cuit: orden.Cuit,
+        idCuentaEmisora: orden.IdCuentaEmisora,
+        libramiento: orden.Libramiento,
+        fantasma: 0
+    }
+    console.log(ordenPago);
+    const { data: check } = await axios.put(
+        apiUrl + "pagos/orden", { params: { ordenPago } }
+    );
+    return check;
+};
+
 Consultas.actualizarOrdenPago = async (orden) => {
     const ordenPago = {
         codOp: orden.nOrden,
