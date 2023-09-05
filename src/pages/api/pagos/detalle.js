@@ -3,6 +3,7 @@ import { exectQueryGlobal } from "../../../helpers/dbHelpers";
 const queryGetAct = (orden, ret) => `CALL sp_VerificarCargaDetalleOrdenPago(${orden},${ret});`;
 const queryPostDetalle = ({ porcentaje, montoR, borrado, activo, codRetencion, idControl }) => `CALL sp_InsertarDetalleOrdenPago(${porcentaje},${montoR},${borrado},${activo},${codRetencion},${idControl});`;
 const queryPutDetalle = ({ idDOP, porcentaje, montoR, borrado, activo, codRetencion, idControl }) => `CALL sp_ModificarDetalleOrdenPago(${idDOP},${porcentaje},${montoR},${borrado},${activo},${codRetencion},${idControl});`;
+const queryUploadDetalle = ({ porcentaje, montoR, borrado, activo, codRetencion, idControl }) => `CALL sp_ActualizarDetalleOrdenPago(${porcentaje},${montoR},${borrado},${activo},${codRetencion},${idControl});`;
 
 export default async function handler(req, res) {
     switch (req.method) {
@@ -11,7 +12,13 @@ export default async function handler(req, res) {
         case "POST":
             return await postOrdenDetalle(req, res);
         case "PUT":
-            return await putOrdenDetalle(req, res);
+            const { detalleOrden } = req.body.params
+            const { idDOP } = detalleOrden;
+            if (idDOP) {
+                return await putOrdenDetalle(req, res);
+            } else {
+                return await uploadOrdenDetalle(req, res);
+            }
         default:
             return res.status(400).send("Method not allowed");
     }
@@ -41,6 +48,16 @@ const putOrdenDetalle = async (req, res) => {
     const { detalleOrden } = req.body.params
     try {
         const results = await exectQueryGlobal(queryPutDetalle(detalleOrden));
+        return res.status(200).json(results);
+    } catch (error) {
+        return res.status(500).json({ error, queryString: queryPostDetalle(detalleOrden) });
+    }
+};
+
+const uploadOrdenDetalle = async (req, res) => {
+    const { detalleOrden } = req.body.params;
+    try {
+        const results = await exectQueryGlobal(queryUploadDetalle(detalleOrden));
         return res.status(200).json(results);
     } catch (error) {
         return res.status(500).json({ error, queryString: queryPostDetalle(detalleOrden) });

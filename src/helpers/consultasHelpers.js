@@ -235,6 +235,8 @@ Consultas.editarOrdenPago = async (orden) => {
         libramiento: orden.Libramiento,
         fantasma: 0
     }
+    console.log("esta editando")
+    console.log(ordenPago)
     const { data: check } = await axios.put(
         apiUrl + "pagos/orden", { params: { ordenPago } }
     );
@@ -246,8 +248,8 @@ Consultas.desactivarOrdenPago = async (orden) => {
         codOp: orden.codop,
         factura: orden.Factura,
         tipoFactura: orden.TipoFactura,
-        fechaPago: orden.FechaPago,
-        fechaFact: orden.fechaFactura,
+        fechaPago: convertirFormatoFecha(orden.FechaPago),
+        fechaFact: convertirFormatoFecha(orden.fechaFactura),
         montoBase: orden.MontoBase,
         pagada: 0,
         borrado: 0,
@@ -257,6 +259,7 @@ Consultas.desactivarOrdenPago = async (orden) => {
         libramiento: orden.Libramiento,
         fantasma: 0
     }
+    console.log("esta editando");
     console.log(ordenPago);
     const { data: check } = await axios.put(
         apiUrl + "pagos/orden", { params: { ordenPago } }
@@ -308,5 +311,29 @@ Consultas.actualizarPagosFantasmas = async (idControl, orden) => {
     );
     return check;
 };
+
+Consultas.actualizarDetallePago = async (orden) => {
+    const detalleOrden = {
+        porcentaje: 0,
+        montoR: orden.importeRet,
+        borrado: 0,
+        activo: 1,
+        codRetencion: orden.codRet,
+        idControl: orden.nOrden
+    }
+    const { data: check } = await axios.put(
+        apiUrl + "pagos/detalle", { params: { detalleOrden } }
+    );
+    return check;
+};
+
+function convertirFormatoFecha(fecha) {
+    var partes = fecha.split('/');
+    var dia = partes[0];
+    var mes = partes[1];
+    var anio = partes[2];
+    var nuevaFecha = anio + '-' + mes.padStart(2, '0') + '-' + dia.padStart(2, '0');
+    return nuevaFecha;
+}
 
 export default Consultas;

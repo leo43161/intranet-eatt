@@ -1,5 +1,5 @@
 import Consultas from "./consultasHelpers";
-const { verificarProv, verificarOrden, verificarDetalleOrden, verificarOrdenFantasma, cargarOrden, cargarProv, cargarDetallePago, cargarOrdenFantasma, actualizarPagosFantasmas, cargarUserProv, verificarUserProv, actualizarOrdenPago } = Consultas;
+const { verificarProv, verificarOrden, verificarDetalleOrden, verificarOrdenFantasma, cargarOrden, cargarProv, cargarDetallePago, cargarOrdenFantasma, actualizarPagosFantasmas, cargarUserProv, verificarUserProv, actualizarOrdenPago, actualizarDetallePago } = Consultas;
 const codRetVerif = {
     101: "D.G.R. ING.BRUTOS P/PAG. ELECTR.",
     133: "TRIBUTO DE EMERGENCIA MUNICIPAL- TEM",
@@ -178,6 +178,9 @@ export const subirDeudas = async (deudas) => {
         const checkDetallePago = await verificarDetalleOrden(deuda.nOrden, deuda.codRet);
         if (!checkDetallePago) {
             const detalleCheck = await cargarDetallePago(deuda);
+            if (!detalleCheck) countDeudas.deudasError.push(deuda.nOrden);
+        } else {
+            const detalleCheck = await actualizarDetallePago(deuda);
             if (!detalleCheck) countDeudas.deudasError.push(deuda.nOrden);
         };
     });

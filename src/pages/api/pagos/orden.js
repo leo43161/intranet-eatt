@@ -46,6 +46,10 @@ const postOrdenPago = async (req, res) => {
 
 const putOrdenPago = async (req, res) => {
     const { ordenPago } = req.body.params
+    if (ordenPago.codOp === "73546") {
+        console.log("se edita");
+        console.log(ordenPago);
+    }
     try {
         const results = await exectQueryGlobal(queryPutOrden(ordenPago));
         return res.status(200).json(results);
@@ -55,6 +59,11 @@ const putOrdenPago = async (req, res) => {
 };
 const uploadOrdenPago = async (req, res) => {
     const { ordenPago } = req.body.params
+    if (ordenPago.codOp === "73546") {
+        console.log("se actualiza");
+        console.log(ordenPago);
+        console.log(queryUploadOrden(ordenPago));
+    }
     try {
         const results = await exectQueryGlobal(queryUploadOrden(ordenPago));
         return res.status(200).json(results);

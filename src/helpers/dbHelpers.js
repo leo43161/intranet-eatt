@@ -13,8 +13,6 @@ export const exectQueryGlobal = async (query) => {
 }
 
 const executeQuery = async (pool, query) => {
-    console.log('Executing query')
-    console.log(query);
     try {
         const results = await pool.query(query);
         return results;
