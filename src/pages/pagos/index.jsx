@@ -79,8 +79,9 @@ export default function Pagos() {
                                     <Form.Select
                                         name="TipoFactura"
                                         onChange={handlerCuenta}
-                                        defaultValue={cuenta}
+                                        defaultValue={!cuentas.length > 0 ? "0" : cuenta}
                                     >
+                                        {!cuentas.length > 0 && <option value="0">Cargando...</option>}
                                         {cuentas.map(({ IdCuentaEmisora, NombreC }, index) => (
                                             <option key={index} value={IdCuentaEmisora} >{IdCuentaEmisora} - {NombreC}</option>
                                         ))}
