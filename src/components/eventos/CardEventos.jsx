@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Button from 'react-bootstrap/Button';
 import { useState } from "react";
-export default function CardEventos() {
+export default function CardEventos({ handleOpen }) {
     const [checkbox, toggleButton] = useState(true)
     return (
         <div>
@@ -27,7 +27,7 @@ export default function CardEventos() {
                     >
                         <FontAwesomeIcon icon={faEye} />
                     </ToggleButton>
-                    <Button variant="success">
+                    <Button variant="success" onClick={handleOpen}>
                         <FontAwesomeIcon icon={faEdit} />
                     </Button>
                     <Button variant="danger">

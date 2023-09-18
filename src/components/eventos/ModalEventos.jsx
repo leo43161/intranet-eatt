@@ -5,15 +5,29 @@ import Alert from 'react-bootstrap/Alert';
 import { useState, useEffect } from "react";
 import Consultas from "../../helpers/consultasHelpers";
 import Swal from 'sweetalert2';
+import dynamic from 'next/dynamic';
 
-export default function ModalEventos({ show, handleClose, proveedor, setProvReload, addProv }) {
+export default function ModalEventos({ show, handleClose, setProvReload, addProv }) {
+  const MapWithNoSSR = dynamic(() => import("../Map"), {
+    ssr: false
+  });
   const { editarProveedor, crearProv, verificarProv, crearUserProv } = Consultas;
-  const { Cuit, Domicilio, NombreP, Telefono, cp, email, localidad, provincia, password } = proveedor;
+  const [evento, setEvento] = useState({
+    titulo: "",
+    copete: "",
+    cuerpo: "",
+    fechainicio: "",
+    fechafin: "",
+    fechacreacion: "",
+    estado: "",
+    ubicacion: [-26.8311352, -65.2044729]
+  })
+  const { Cuit, Domicilio, NombreP, Telefono, cp, email, localidad, provincia, password } = evento;
   const [editProv, setEditProv] = useState({});
 
   const [error, setError] = useState({ error: false, msg: "" });
   useEffect(() => {
-    if (!addProv) { setEditProv(proveedor) } else {
+    if (!addProv) { setEditProv(evento) } else {
       setEditProv({
         Cuit: null,
         NombreP: "",
@@ -28,7 +42,7 @@ export default function ModalEventos({ show, handleClose, proveedor, setProvRelo
         password: ""
       })
     };
-  }, [proveedor, show]);
+  }, [evento, show]);
 
   const handleChange = (e) => {
     setEditProv({
@@ -38,7 +52,7 @@ export default function ModalEventos({ show, handleClose, proveedor, setProvRelo
   };
 
   const handlerSubmit = async () => {
-    const provUpdate = !addProv ? { ...proveedor, ...editProv } : editProv;
+    const provUpdate = !addProv ? { ...evento, ...editProv } : editProv;
     let _errorAlert = false;
     let _errorsKeys = "";
     /* COMPRUEBA SI EL USUARIO EXISTE EN LA DB */
@@ -87,60 +101,111 @@ export default function ModalEventos({ show, handleClose, proveedor, setProvRelo
   return (
     <>
       <Modal show={show} onHide={handleClose} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>
-            <div className='d-flex'>
-              <span className='fw-bold me-2'>Editar Proovedor - Cuit: {Cuit}</span>
-              {addProv && <div>
-                <Form.Control type="number" onChange={handleChange} name="Cuit" defaultValue={Cuit} placeholder="ej: 3451816807" />
-              </div>}
-            </div>
-          </Modal.Title>
-        </Modal.Header>
         <Modal.Body>
-          <div>
-            <Form className='mb-2'>
-              <div className='d-flex justify-content-between'>
-                <Form.Group className="mb-3 col pe-3" controlId="razonSocial">
-                  <Form.Label>Razon Social</Form.Label>
-                  <Form.Control type="text" onChange={handleChange} name="NombreP" defaultValue={NombreP} placeholder="ej: MAGAL S.R.L." />
-                </Form.Group>
-                <Form.Group className="mb-3 col" controlId="contraseña">
-                  <Form.Label>Contraseña</Form.Label>
-                  <Form.Control type="text" onChange={handleChange} name="password" defaultValue={password} placeholder="*********" />
-                </Form.Group>
+          <div className='p-3'>
+            <Form className=''>
+              <div className='d-flex justify-content-between align-items-center gap-4 mb-3'>
+                <div className="col">
+                  <div>
+                    <Form.Check
+                      type={"checkbox"}
+                      id={`default-checkbox`}
+                      label={`Destacar evento`}
+                    />
+                  </div>
+                </div>
+                <div className="col">
+                  <div>
+                    <Form.Check
+                      type={"checkbox"}
+                      id={`default-checkbox`}
+                      label={`Visible`}
+                    />
+                  </div>
+                </div>
+                <div className="col">
+                  <Form.Select className="col" controlId="razonSocial">
+                    <option>Seleccione una categoria</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </Form.Select>
+                </div>
               </div>
-              <Form.Group className="mb-3" controlId="domicilio">
-                <Form.Label>Domicilio</Form.Label>
-                <Form.Control type="text" onChange={handleChange} name="Domicilio" defaultValue={Domicilio} placeholder="ej: 24 de Septiembre" />
-              </Form.Group>
-              <div className='d-flex justify-content-between'>
-                <div className='col pe-3'>
+              <div>
+                <h5 className="mb-0">Lugar</h5>
+                <hr />
+              </div>
+              <div className='d-flex justify-content-between gap-4 mb-3'>
+                <div className='col'>
                   <Form.Group className="mb-2" controlId="email">
-                    <Form.Label>Email</Form.Label>
+                    <Form.Label>Localidad</Form.Label>
                     <Form.Control type="text" onChange={handleChange} name="email" defaultValue={email} placeholder="ej: ejemplo@correo.com" />
                   </Form.Group>
                 </div>
                 <div className='col'>
                   <Form.Group className="mb-2" controlId="telefono">
-                    <Form.Label>Telefono</Form.Label>
+                    <Form.Label>Direccion</Form.Label>
                     <Form.Control type="text" onChange={handleChange} name="Telefono" defaultValue={Telefono} placeholder="ej: 3816162181" />
                   </Form.Group>
                 </div>
               </div>
+              <div>
+                <h5 className="mb-0">Horario</h5>
+                <hr />
+              </div>
+              <div className='d-flex justify-content-between gap-4'>
+                <div className='col-5'>
+                  <Form.Group className="mb-2 d-flex justify-content-between align-items-center" controlId="email">
+                    <Form.Label className='col'>Inicio</Form.Label>
+                    <div className='col'>
+                      <Form.Control type="time" onChange={handleChange} name="email" defaultValue={email} placeholder="ej: ejemplo@correo.com" />
+                    </div>
+                  </Form.Group>
+                </div>
+                <div className='col-5'>
+                  <Form.Group className="mb-2 d-flex justify-content-between align-items-center" controlId="email">
+                    <Form.Label className='col'>Fin</Form.Label>
+                    <div className='col'>
+                      <Form.Control type="time" onChange={handleChange} name="email" defaultValue={email} placeholder="ej: ejemplo@correo.com" />
+                    </div>
+                  </Form.Group>
+                </div>
+              </div>
+              <div>
+                <h5 className="mb-0">Fecha</h5>
+                <hr />
+              </div>
+              <div className='d-flex justify-content-between gap-4'>
+                <div className='col-5'>
+                  <Form.Group className="mb-2 d-flex justify-content-between align-items-center" controlId="email">
+                    <Form.Label className='col'>Inicio</Form.Label>
+                    <div className='col'>
+                      <Form.Control type="date" onChange={handleChange} name="email" defaultValue={email} placeholder="ej: ejemplo@correo.com" />
+                    </div>
+                  </Form.Group>
+                </div>
+                <div className='col-5'>
+                  <Form.Group className="mb-2 d-flex justify-content-between align-items-center" controlId="email">
+                    <Form.Label className='col'>Fin</Form.Label>
+                    <div className='col'>
+                      <Form.Control type="date" onChange={handleChange} name="email" defaultValue={email} placeholder="ej: ejemplo@correo.com" />
+                    </div>
+                  </Form.Group>
+                </div>
+              </div>
               <div className='d-flex justify-content-between'>
-                <Form.Group className="mb-2" controlId="localidad">
-                  <Form.Label>Localidad</Form.Label>
-                  <Form.Control type="text" onChange={handleChange} name="localidad" defaultValue={localidad} placeholder="ej: San Miguel de tucuman" />
+                <Form.Group className="mb-2 col" controlId="localidad">
+                  <Form.Label className='fw-bold h5'>Titulo *</Form.Label>
+                  <Form.Control type="text" size='lg' onChange={handleChange} name="localidad" defaultValue={localidad} placeholder="ej: San Miguel de tucuman" />
                 </Form.Group>
-
-                <Form.Group className="mb-2" controlId="provincia">
-                  <Form.Label>Provincia</Form.Label>
-                  <Form.Control type="text" onChange={handleChange} name="provincia" defaultValue={provincia} placeholder="ej: Tucuman" />
-                </Form.Group>
-                <Form.Group className="mb-2" controlId="cp">
-                  <Form.Label>Codigo Postal</Form.Label>
-                  <Form.Control type="number" onChange={handleChange} name="cp" defaultValue={cp} placeholder="ej: 4000" />
+              </div>
+              <div className='d-flex justify-content-between'>
+                <Form.Group className="mb-2 col" controlId="localidad">
+                  <Form.Label className='fw-bold h5'>Ubicacion *</Form.Label>
+                  <div style={{ height: "40vh" }}>
+                    <MapWithNoSSR position={evento.ubicacion}></MapWithNoSSR>
+                  </div>
                 </Form.Group>
               </div>
             </Form>
