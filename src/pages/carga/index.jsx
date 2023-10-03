@@ -22,20 +22,51 @@ export default function Carga() {
             lector.onload = async function (event) {
                 const result = event.target.result;
                 const _pagos = formatearTxt(result, 1);
-                setPagos(_pagos);
-                const pagosRepeat = checkPagos(_pagos);
-                if (pagosRepeat.length > 0) {
-                    setPagosFitered(pagosRepeat);
-                    handleShow();
-                    return;
+                try {
+                    // Muestra el mensaje de "Cargando pagos"
+                    Swal.fire({
+                        title: 'Cargando pagos',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading();
+                        },
+                    });
+                    
+                    setPagos(_pagos);
+                    const pagosRepeat = checkPagos(_pagos);
+                    if (pagosRepeat.length > 0) {
+                        setPagosFitered(pagosRepeat);
+                        handleShow();
+                        return;
+                    }
+                    setPagosFitered(null);
+                    setPagosUpload(true);
+                    await subirPagos(_pagos);
+    
+                    // Simula una carga de 30 segundos
+                    setTimeout(async () => {
+                        
+                        // Cierra el Swal loading
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Se han guardado correctamente los pagos',
+                        });
+                    }, 30000); // 30 segundos (30000 milisegundos)
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ha ocurrido un problema al intentar subir los pagos',
+                    });
+                    console.log(error);
                 }
-                setPagosFitered(null);
-                setPagosUpload(true);
-                await subirPagos(_pagos);
             }
             lector.readAsText(pagoFile);
         }
     }
+
+
     const handlerDeudas = async () => {
         if (deudasFile && pagosUpload) {
             let lector = new FileReader();
@@ -43,22 +74,40 @@ export default function Carga() {
                 const result = event.target.result;
                 const _deudas = formatearTxt(result, 2);
                 try {
-                    await subirDeudas(_deudas);
+                    // Muestra el mensaje de "Cargando deudas"
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Se han guardado correctamente las deudas',
+                        title: 'Cargando deudas',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading();
+                        },
                     });
+
+                    // Simula una carga de 30 segundos
+                    setTimeout(async () => {
+                        await subirDeudas(_deudas);
+
+                        // Cierra el Swal loading
+                        Swal.close();
+
+                        // Muestra el mensaje de éxito
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Se han guardado correctamente las deudas',
+                        });
+                    }, 30000); // 30 segundos (30000 milisegundos)
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'A ocurrido un problema al intentar subir las',
+                        title: 'Ha ocurrido un problema al intentar subir las deudas',
                     });
                     console.log(error);
                 }
-            }
+            };
             lector.readAsText(deudasFile);
         }
-    }
+    };
     return (
         <>
             <div className="mt-4">

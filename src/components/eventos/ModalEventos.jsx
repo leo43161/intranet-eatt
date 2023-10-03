@@ -50,6 +50,12 @@ export default function ModalEventos({ show, handleClose, setProvReload, addProv
       [e.target.name]: e.target.value,
     });
   };
+  const ubicationHandler = (location) => {
+    setEditProv({
+      ...editProv,
+      ["ubicacion"]: location,
+    });
+  }
 
   const handlerSubmit = async () => {
     const provUpdate = !addProv ? { ...evento, ...editProv } : editProv;

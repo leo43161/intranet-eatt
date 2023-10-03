@@ -115,6 +115,7 @@ export default function Pagos() {
                                 <th>FACTURA</th>
                                 <th>FECHA FACTURA</th>
                                 <th>MONTO</th>
+                                <th>MONTO TOTAL</th>
                                 <th>%</th>
                                 <th>SARET</th>
                                 <th>Gan</th>

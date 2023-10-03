@@ -78,15 +78,16 @@ const formatearPago = (pago) => {
     _pago.tipoFact = pago.tipoFact.replace('FACT ', '');
     _pago.nFactura = `${pago.factura1}-${pago.factura2}`;
     _pago.netoProv = `${_pago.netoProv.trim().slice(0, _pago.netoProv.trim().length - 2)}.${_pago.netoProv.trim().slice(-2)}`;
-    _pago.ctaEmisora = `${pago.ctaEmisora1}${pago.ctaEmisora2}${pago.ctaEmisora3}`;
+    _pago.ctaEmisora = `${pago.ctaEmisora1}${pago.ctaEmisora2}${pago.ctaEmisora3.padStart(6, '0')}`;
     return _pago;
 }
-const formatearDeudas = (pago) => {
-    let _pago = pago;
-    _pago.importeRet = parseFloat(pago.importeRet.replace(",", ""));
-    _pago.nCuenta = pago.nCuenta.replaceAll("-", "");
-    _pago.fecha = _pago.fecha.slice(0, 4) + "-" + _pago.fecha.slice(4, 6) + "-" + _pago.fecha.slice(6, 8);
-    return _pago;
+const formatearDeudas = (deuda) => {
+    let _deuda = deuda;
+    _deuda.importeRet = parseFloat(deuda.importeRet.replace(",", ""));
+    _deuda.nCuenta = deuda.nCuenta.replaceAll("-", "");
+    _deuda.fecha = _deuda.fecha.slice(0, 4) + "-" + _deuda.fecha.slice(4, 6) + "-" + _deuda.fecha.slice(6, 8);
+    console.log(_deuda);
+    return _deuda;
 }
 const filterPagos = (pagos = []) => {
     /* Se aplica la filtracion a la cuenta de pagos del ente EATT - pagos segun su nro de cuenta */

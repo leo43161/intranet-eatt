@@ -8,6 +8,7 @@ const GeneratePDF = dynamic(() => import("../../components/GeneratePDF"), { ssr:
 
 export default function ItemTable({ setPagoModal, handleShow, pago, setPagosReload }) {
     const { Id, Libramiento, codop, FechaPago, fechaFactura, Cuit, NombreP, Domicilio, TipoFactura, Factura, MontoBase, saretP, SARET, Gan, SS, temId, temP, TEM } = pago;
+    const montoRet = SARET + Gan + SS + TEM;
     const handleModal = (pago) => {
         handleShow(true)
         setPagoModal(pago);
@@ -57,6 +58,7 @@ export default function ItemTable({ setPagoModal, handleShow, pago, setPagosRelo
             <td>{Factura}</td>
             <td>{fechaFactura}</td>
             <td>${MontoBase}</td>
+            <td>${MontoBase + montoRet}</td>
             <td>{saretP}</td>
             <td>
                 <div className="d-flex justify-content-between align-items-center">
@@ -100,7 +102,7 @@ export default function ItemTable({ setPagoModal, handleShow, pago, setPagosRelo
                     </GeneratePDF> : null}
                 </div>
             </td>
-            <td>${(SARET + Gan + SS + TEM)}</td>
+            <td>${montoRet}</td>
         </tr>
     </>
     )

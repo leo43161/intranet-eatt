@@ -626,7 +626,7 @@ export const ssHTML = () => `
 
         </div>
 `
-export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, TipoFactura, Factura, SARET, saretP, MontoBase }) => `
+export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, TipoFactura, Factura, SARET, saretP, MontoBase, montoTotal }) => `
 <div class="d-flex position-relative" id="maintable-3" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; width: 1349px; word-spacing: 0.25em;">
 <img src="img/0.jpg" style="width: 1349px;" alt="">
 <div id="agente-1">
@@ -644,7 +644,7 @@ export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, Tipo
     <p style="position: absolute; top: 395px; left: 45px;" id="localidad">${localidad}</p>
     <p style="position: absolute; top: 395px; left: 345px;" id="provincia">${provincia}</p>
     <p style="position: absolute; top: 495px; left: 40px;" id="num-comprobante">${TipoFactura} / ${facturaFormatSARET(Factura)}</p>
-    <p style="position: absolute; top: 495px; left: 210px;" id="monto-retencion">$${MontoBase}</p>
+    <p style="position: absolute; top: 495px; left: 210px;" id="monto-retencion">$${montoTotal}</p>
     <p style="position: absolute; top: 495px; left: 400px;" id="porcentaje">${saretP}%</p>
     <p style="position: absolute; top: 495px; left: 530px;" id="importe-retenido">$${SARET}</p>
     <p style="position: absolute; top: 610px; left: 530px;" id="importe-depositar">$${SARET}</p>
@@ -665,7 +665,7 @@ export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, Tipo
     <p style="position: absolute; top: 395px; left: 730px;" id="localidad">${localidad}</p>
     <p style="position: absolute; top: 395px; left: 1030px;" id="provincia">${provincia}</p>
     <p style="position: absolute; top: 495px; left: 725px;" id="num-comprobante">${TipoFactura} / ${facturaFormatSARET(Factura)}</p>
-    <p style="position: absolute; top: 495px; left: 895px;" id="monto-retencion">$310.023,60</p>
+    <p style="position: absolute; top: 495px; left: 895px;" id="monto-retencion">$${montoTotal}</p>
     <p style="position: absolute; top: 495px; left: 1090px;" id="porcentaje">${saretP}%</p>
     <p style="position: absolute; top: 495px; left: 1215px;" id="importe-retenido">$${SARET}</p>
     <p style="position: absolute; top: 610px; left: 1215px;" id="importe-depositar">$${SARET}</p>
@@ -686,7 +686,7 @@ export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, Tipo
     <p style="position: absolute; top: 1347px; left: 45px;" id="localidad">${localidad}</p>
     <p style="position: absolute; top: 1347px; left: 345px;" id="provincia">${provincia}</p>
     <p style="position: absolute; top: 1447px; left: 40px;" id="num-comprobante">${TipoFactura} / ${facturaFormatSARET(Factura)}</p>
-    <p style="position: absolute; top: 1447px; left: 210px;" id="monto-retencion">$310.023,60</p>
+    <p style="position: absolute; top: 1447px; left: 210px;" id="monto-retencion">$${montoTotal}</p>
     <p style="position: absolute; top: 1447px; left: 400px;" id="porcentaje">${saretP}%</p>
     <p style="position: absolute; top: 1447px; left: 530px;" id="importe-retenido">$${SARET}</p>
     <p style="position: absolute; top: 1562px; left: 530px;" id="importe-depositar">$${SARET}</p>
@@ -707,7 +707,7 @@ export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, Tipo
     <p style="position: absolute; top: 1347px; left: 730px;" id="localidad">${localidad}</p>
     <p style="position: absolute; top: 1347px; left: 1030px;" id="provincia">${provincia}</p>
     <p style="position: absolute; top: 1447px; left: 725px;" id="num-comprobante">${TipoFactura} / ${facturaFormatSARET(Factura)}</p>
-    <p style="position: absolute; top: 1447px; left: 895px;" id="monto-retencion">$310.023,60</p>
+    <p style="position: absolute; top: 1447px; left: 895px;" id="monto-retencion">$${montoTotal}</p>
     <p style="position: absolute; top: 1447px; left: 1085px;" id="porcentaje">${saretP}%</p>
     <p style="position: absolute; top: 1447px; left: 1215px;" id="importe-retenido">$${SARET}</p>
     <p style="position: absolute; top: 1562px; left: 1215px;" id="importe-depositar">$${SARET}</p>
