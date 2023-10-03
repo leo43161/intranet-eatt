@@ -138,7 +138,7 @@ export const subirPagos = async (pagos) => {
                 countPagos.proveedoresRepetidos.push(pago);
             }
 
-            if (!checkOrdenFantasma) {
+            if (!checkOrdenFantasma) {S
                 if (!checkOrden) {
                     const resPago = await cargarOrden(pago);
                     countPagos.ordenesDePago.push(pago);
