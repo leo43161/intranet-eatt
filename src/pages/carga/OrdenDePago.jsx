@@ -8,7 +8,6 @@ export default function OrdenDePago({ pago, handleChange, idx }) {
     }
     const { _pago, index } = pago;
     const { fechaP, razonSocial, netoProv, fechafact, nFactura, nOrden } = _pago;
-    console.log(pago)
     return (
         <>
             <Card className="mb-2" key={idx}>

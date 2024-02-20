@@ -50,6 +50,7 @@ export default function Pagos() {
     const consultarCuentas = async () => {
         try {
             const _cuentas = await listCuentas();
+            console.log(_cuentas);
             setCuentas(_cuentas);
             if (!cuenta) {
                 setCuenta(_cuentas[0].IdCuentaEmisora);

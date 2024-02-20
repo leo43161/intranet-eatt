@@ -1,6 +1,8 @@
 import axios from "axios";
 const Consultas = {};
 const apiUrl = process.env.urlServer + "api/"
+const queryPostOrden = ({ codOp, factura, fechaPago, fechaFact, tipoFactura, montoBase, pagada, borrado, activo, cuit, idCuentaEmisora, libramiento, fantasma }) => `CALL sp_InsertarOrdenPago(${codOp},'${factura}','${fechaPago}','${fechaFact}','${tipoFactura ? tipoFactura : "A"}',${montoBase},${pagada},${borrado},${activo},${cuit},${idCuentaEmisora},'${libramiento}', ${fantasma});`;
+
 
 Consultas.traerProv = async (cuit) => {
     const { data: proovedor } = await axios.get(
@@ -28,6 +30,18 @@ Consultas.listarProv = async () => {
         apiUrl + "proveedores"
     );
     return prov;
+};
+Consultas.listarPrest = async () => {
+    const { data: prest } = await axios.get(
+        apiUrl + "prestadores"
+    );
+    return prest;
+};
+Consultas.listarLocalidades = async () => {
+    const { data: localidades } = await axios.get(
+        apiUrl + "localidades"
+    );
+    return localidades;
 };
 
 Consultas.verificarProv = async (cuit) => {
@@ -78,9 +92,13 @@ Consultas.cargarOrden = async (orden) => {
         borrado: 0,
         activo: 1,
         cuit: orden.cuit,
-        idCuentaEmisora: orden.ctaEmisora,
+        idCuentaEmisora: orden.nCuenta,
         libramiento: orden.libramiento,
         fantasma: 0
+    }
+    if (ordenPago.codOp === "117241" || ordenPago.codOp === "116780" || ordenPago.codOp === "116777") {
+        console.log(ordenPago);
+        console.log(queryPostOrden(ordenPago));
     }
     const { data: check } = await axios.post(
         apiUrl + "pagos/orden", { params: { ordenPago } }
@@ -95,6 +113,7 @@ Consultas.cargarOrdenFantasma = async (deuda) => {
         factura: "0",
         tipoFactura: "",
         fechaPago: deuda.fecha,
+        fechaFact: deuda.fecha,
         montoBase: deuda.importeRet,
         pagada: 0,
         borrado: 0,
@@ -104,16 +123,17 @@ Consultas.cargarOrdenFantasma = async (deuda) => {
         libramiento: "",
         fantasma: 1
     }
+    console.log(queryPostOrden(ordenPago));
     const { data: check } = await axios.post(
         apiUrl + "pagos/orden", { params: { ordenPago } }
     );
     return check;
 };
 
-Consultas.cargarProv = async (prov) => {
+Consultas.cargarProv = async (prest) => {
     const proveedor = {
-        cuit: prov.cuit,
-        nombreP: prov.razonSocial,
+        cuit: prest.cuit,
+        nombreP: prest.razonSocial,
         domicilio: "",
         localidad: "",
         provincia: "",
@@ -142,6 +162,33 @@ Consultas.crearProv = async (prov) => {
     }
     const { data: check } = await axios.post(
         apiUrl + "proveedores", { params: { proveedor } }
+    );
+    return check;
+};
+
+Consultas.crearPrestador = async (prestador) => {
+    const queryPostPrest = ({
+        titulo,
+        responsable,
+        direccion,
+        idLocalidad,
+        telefono,
+        email,
+        web,
+        facebook,
+        instagram,
+        actividades,
+        visible,
+    }) => `CALL sp_InsertarPrestador("${titulo}","${responsable}","${direccion}",${idLocalidad},"${telefono}","${email}","${web}","${facebook}","${instagram}","${actividades}",${visible ? 1 : 0});`;
+    console.log(queryPostPrest(prestador));
+    const { data: check } = await axios.post(
+        apiUrl + "prestadores", { params: { prestador } }
+    );
+    return check;
+};
+Consultas.editarPrestador = async (prest) => {
+    const { data: check } = await axios.put(
+        apiUrl + "prestadores", { params: { prest } }
     );
     return check;
 };
@@ -235,8 +282,16 @@ Consultas.editarOrdenPago = async (orden) => {
         libramiento: orden.Libramiento,
         fantasma: 0
     }
-    console.log("esta editando")
-    console.log(ordenPago)
+    const { data: check } = await axios.put(
+        apiUrl + "pagos/orden", { params: { ordenPago } }
+    );
+    return check;
+};
+Consultas.statesPrestador = async (prest) => {
+    const ordenPago = {
+        ...prest,
+        activo: 0
+    }
     const { data: check } = await axios.put(
         apiUrl + "pagos/orden", { params: { ordenPago } }
     );
@@ -279,7 +334,7 @@ Consultas.actualizarOrdenPago = async (orden) => {
         borrado: 0,
         activo: 1,
         cuit: orden.cuit,
-        idCuentaEmisora: orden.ctaEmisora,
+        idCuentaEmisora: orden.nCuenta,
         libramiento: orden.libramiento,
         fantasma: 0
     }
@@ -302,7 +357,7 @@ Consultas.actualizarPagosFantasmas = async (idControl, orden) => {
         borrado: 0,
         activo: 1,
         cuit: orden.cuit,
-        idCuentaEmisora: orden.ctaEmisora,
+        idCuentaEmisora: orden.nCuenta,
         libramiento: orden.libramiento,
         fantasma: 0
     }

@@ -17,7 +17,7 @@ const FORMAT_DEUDAS = {
     19: "codRet",
     22: "recursoEstado",
     24: "tipoRet",
-    40: "cuit",
+    23: "cuit",
 }
 const FORMAT_PAGOS = {
     0: "nCuenta",
@@ -86,21 +86,30 @@ const formatearDeudas = (deuda) => {
     _deuda.importeRet = parseFloat(deuda.importeRet.replace(",", ""));
     _deuda.nCuenta = deuda.nCuenta.replaceAll("-", "");
     _deuda.fecha = _deuda.fecha.slice(0, 4) + "-" + _deuda.fecha.slice(4, 6) + "-" + _deuda.fecha.slice(6, 8);
-    console.log(_deuda);
     return _deuda;
 }
 const filterPagos = (pagos = []) => {
     /* Se aplica la filtracion a la cuenta de pagos del ente EATT - pagos segun su nro de cuenta */
+    console.log(pagos);
     let filterPagos = pagos.filter(({ cuit }) => cuit !== "30709204617");
-    /* filterPagos = deudas.filter(({ cuit }) => cuit.length < 10); */
+    filterPagos = filterPagos.filter(({ cuit }) => cuit.length > 9 && cuit.length < 12);
+    filterPagos = filterPagos.filter(({ ctaEmisora }) => ctaEmisora !== "71975050");
+    filterPagos.find(({ cuit }) => cuit === "27341863711")
+    console.log(filterPagos);
     /* filterPagos = deudas; */
     return filterPagos;
 }
 const filterDeudas = (deudas = []) => {
+
     /* let deudasFiltradas = deudas.filter(({ cuit }) => cuit === "30709204617"); */
     /* Se aplica la filtracion a la cuenta de deudas del ente EATT - deudas segun su nro de cuenta */
     let filterDeudas = deudas.filter(({ cuit }) => cuit !== "30709204617");
-    filterDeudas = filterDeudas.filter(({ codRet }) => codRetVerif[codRet]);
+    filterDeudas = deudas.filter(({ cuit }) => cuit !== "30709204617");
+    console.log(filterDeudas);
+    /* filterDeudas = deudas.filter(({ codRet }) => codRet.trim() !== ""); */
+
+    /* filterDeudas = filterDeudas.filter(({ cuit }) => cuit.length > 12); */
+
     /* filterDeudas = deudas; */
     /* console.log("deudas filtradas con el cuit 30709204617");
     console.log(deudasFiltradas);
@@ -108,8 +117,6 @@ const filterDeudas = (deudas = []) => {
     return filterDeudas;
 }
 export const subirPagos = async (pagos) => {
-    console.log("Estas son las ordenes de pago");
-    console.log(pagos)
     const countPagos = {
         proveedores: [],
         ordenesDePago: [],
@@ -138,13 +145,20 @@ export const subirPagos = async (pagos) => {
                 countPagos.proveedoresRepetidos.push(pago);
             }
 
-            if (!checkOrdenFantasma) {S
+            if (!checkOrdenFantasma) {
                 if (!checkOrden) {
                     const resPago = await cargarOrden(pago);
+                    /* console.log(resPago); */
                     countPagos.ordenesDePago.push(pago);
                 } else {
+                    if (pago.nOrden === "117241" || pago.nOrden === "116780" || pago.nOrden === "116777") {
+                        console.log("existen y se actualizan")
+                        console.log(pago);
+                        console.log(checkOrden);
+                    }
                     const resPago = await actualizarOrdenPago(pago);
-                    console.log(pago);
+                    /* console.log(resPago);
+                    console.log(pago); */
                     countPagos.pagosRepetidos.push(pago);
                 }
             } else {
@@ -155,7 +169,6 @@ export const subirPagos = async (pagos) => {
 
         }
     });
-    console.log(countPagos)
     return countPagos;
 }
 export const subirDeudas = async (deudas) => {
@@ -166,16 +179,19 @@ export const subirDeudas = async (deudas) => {
         ordenesDePagoFantasmasError: [],
         deudasRepetidas: [],
     };
-    const _deudasFilter = await checkDeudas(deudas);
+    const _deudasFilter = deudas;
+    console.log(_deudasFilter);
     _deudasFilter.forEach(async (deuda) => {
         const checkOrden = await verificarOrden(deuda.nOrden);
+        console.log(checkOrden);
         if (!checkOrden) {
             const fantasmaCheck = await cargarOrdenFantasma(deuda);
+            console.log(fantasmaCheck);
             countDeudas.ordenesDePagoFantasmas.push(deuda.nOrden);
             if (!fantasmaCheck) countDeudas.ordenesDePagoFantasmasError.push(deuda.nOrden);
         };
     });
-    deudas.forEach(async (deuda) => {
+    _deudasFilter.forEach(async (deuda) => {
         const checkDetallePago = await verificarDetalleOrden(deuda.nOrden, deuda.codRet);
         if (!checkDetallePago) {
             const detalleCheck = await cargarDetallePago(deuda);
@@ -185,33 +201,40 @@ export const subirDeudas = async (deudas) => {
             if (!detalleCheck) countDeudas.deudasError.push(deuda.nOrden);
         };
     });
+    console.log(countDeudas)
 }
-export const checkPagos = (pagos) => {
+export const checkPagosRepeat = (pagos) => {
     let _pagos = pagos;
-    let _checkPagos = [];
+    let _checkPagosRepeat = [];
     const busqueda = _pagos.reduce((acc, _pagos) => {
         acc[_pagos.nOrden] = ++acc[_pagos.nOrden] || 0;
         return acc;
     }, {});
 
+    console.log(busqueda);
+
     for (const key in busqueda) {
         const element = busqueda[key];
         if (element) {
             const filterExist = _pagos.map((_pago, idx) => _pago.nOrden === key && { _pago, index: idx }).filter(Boolean);
-            _checkPagos.push(filterExist);
+            _checkPagosRepeat.push(filterExist);
         };
     };
-    return _checkPagos;
+    return _checkPagosRepeat;
 };
-export const checkDeudas = async (deudas) => {
-    const valoresUnicos = {};
-    const _deudasFilter = deudas.filter(deuda => {
-        const valor = deuda.nOrden;
-        const existe = valoresUnicos[valor];
-        valoresUnicos[valor] = true;
-        return !existe;
-    });
-    return _deudasFilter;
+
+export const checkPagos = (pagos) => {
+
+};
+export const checkDeudas = (deudas) => {
+    // Filtrar objetos con "codRet" igual a ""
+    const deudasCheck = deudas.filter(deuda => deuda.codRet.trim() !== "");
+
+    // Filtrar objetos con "codRet" diferente de ""
+    const retFiltered = deudas.filter(deuda => deuda.codRet.trim() === "");
+
+    // Devolver un objeto que contiene ambos arrays
+    return { retFiltered, deudasCheck };
 };
 const convertirFecha = (fecha) => {
     let hoy = new Date();

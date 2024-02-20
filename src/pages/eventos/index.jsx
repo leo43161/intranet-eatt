@@ -25,20 +25,20 @@ export default function Eventos() {
                 <header className="container mb-3"></header>
                 <section className='container'>
                     <h2>Eventos</h2>
-                    <div class="row row-cols-2 row-cols-lg-3 g-2 g-lg-3">
-                        <div class="col">
+                    <div className="row row-cols-2 row-cols-lg-3 g-2 g-lg-3">
+                        <div className="col">
                             <CardEventos handleOpen={handleOpen}></CardEventos>
                         </div>
-                        <div class="col">
+                        <div className="col">
                             <CardEventos handleOpen={handleOpen}></CardEventos>
                         </div>
-                        <div class="col">
+                        <div className="col">
                             <CardEventos handleOpen={handleOpen}></CardEventos>
                         </div>
-                        <div class="col">
+                        <div className="col">
                             <CardEventos handleOpen={handleOpen}></CardEventos>
                         </div>
-                        <div class="col">
+                        <div className="col">
                             <CardEventos handleOpen={handleOpen}></CardEventos>
                         </div>
                     </div>

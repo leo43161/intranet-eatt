@@ -17,18 +17,25 @@ export default function ModalPagos({ show, handleClose, pagosFitered, pagos, pag
             setPagosDeleted(_pagosDeleted);
         }
     }, [pagosFitered]);
+    
     const handleChange = (e) => {
         setPagosDeleted({
             ...pagosDeleted,
             [e.target.name]: parseInt(e.target.id),
         });
+        console.log(pagosDeleted);
     }
+
     const handleSubmit = () => {
-        let _pagos = pagos;
+        let pagosSelected = [];
+        let _pagosFiltered = pagos;
         for (const key in pagosDeleted) {
             const element = pagosDeleted[key];
-            _pagos = _pagos.filter(({ }, index) => index !== element);
+            const numeroOrden = key.toString();
+            _pagosFiltered = _pagosFiltered.filter(({ nOrden }) => nOrden !== key);
+            pagosSelected.push(pagos.find(({ nOrden }, index) => index === element && nOrden === numeroOrden));
         }
+        const pagosUpdated = [ ...pagosSelected, ..._pagosFiltered];
 
         Swal.fire({
             icon: 'warning',
@@ -37,14 +44,29 @@ export default function ModalPagos({ show, handleClose, pagosFitered, pagos, pag
             confirmButtonText: 'Continuar',
             cancelButtonText: 'Cancelar'
         }).then(async (result) => {
-            console.log(_pagos);
+            console.log(pagosUpdated);
             Swal.showLoading();
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                await subirPagos(_pagos);
+                Swal.fire({
+                    title: 'Cargando pagos',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading();
+                    },
+                });
+                await subirPagos(pagosUpdated);
+                // Simula una carga de 30 segundos
+                setTimeout(async () => {
+                    // Cierra el Swal loading
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Se han guardado correctamente los pagos',
+                    });
+                }, 30000);
                 pagosHandler(true);
-                Swal.hideLoading();
-                Swal.fire('Pagos guardados!', '', 'success');
                 handleClose();
             } else if (result.isDenied) {
                 Swal.hideLoading()
@@ -56,7 +78,7 @@ export default function ModalPagos({ show, handleClose, pagosFitered, pagos, pag
         <>
             <Modal show={show} size="xl" onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Selecciona los pagos a descartar</Modal.Title>
+                    <Modal.Title>Selecciona el pago correspondiente</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {pagosFitered ? pagosFitered.map((pagos, idx) => {

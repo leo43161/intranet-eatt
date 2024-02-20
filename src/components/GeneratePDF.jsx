@@ -6,7 +6,6 @@ const GeneratePdf = ({ ret, children, pago }) => {
     const { traerProv } = Consultas;
     const { Gan, SARET, SS, TEM, MontoBase } = pago;
     const montoTotal = MontoBase + (SARET + Gan + SS + TEM);
-    console.log(pago);
     const retenciones = {
         "Gan": { config: { scale: 0.6072, hoja: "letter", margin: 30 }, html: gananciasHTML },
         "TEM": { config: { scale: 0.54, hoja: "letter", margin: 30 }, html: temHTML },
@@ -16,6 +15,7 @@ const GeneratePdf = ({ ret, children, pago }) => {
     const generatePdf = async () => {
         const { localidad, provincia, cp } = await traerProv(pago.Cuit);
         const _pago = { ...pago, localidad, provincia, cp, montoTotal };
+        console.log(_pago);
         const { config: { scale, hoja, margin }, html } = retenciones[ret];
         let element = html(_pago);
         const doc = new jsPDF("p", "pt", hoja);

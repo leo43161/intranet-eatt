@@ -1,7 +1,22 @@
 import { poolRemote } from "../../../config/db";
 import { exectQueryGlobal } from "../../../helpers/dbHelpers";
 const queryGetOrdenVerf = (orden) => `CALL sp_VerificarCargaOrdenPago(${orden});`;
-const queryPostOrden = ({ codOp, factura, fechaPago, fechaFact, tipoFactura, montoBase, pagada, borrado, activo, cuit, idCuentaEmisora, libramiento, fantasma }) => `CALL sp_InsertarOrdenPago(${codOp},'${factura}','${fechaPago}','${fechaFact}','${tipoFactura ? tipoFactura : "A"}',${montoBase},${pagada},${borrado},${activo},${cuit},${idCuentaEmisora},'${libramiento}', ${fantasma});`;
+const queryPostOrden = (
+    {
+        codOp,
+        factura,
+        fechaPago,
+        fechaFact,
+        tipoFactura,
+        montoBase,
+        pagada,
+        borrado,
+        activo,
+        cuit,
+        idCuentaEmisora,
+        libramiento,
+        fantasma
+    }) => `CALL sp_InsertarOrdenPago(${codOp},'${factura}','${fechaPago}','${fechaFact}','${tipoFactura ? tipoFactura : "A"}',${montoBase},${pagada},${borrado},${activo},${cuit},${idCuentaEmisora},'${libramiento}', ${fantasma});`;
 const queryPutOrden = ({ idControl, codOp, factura, fechaPago, fechaFact, tipoFactura, montoBase, pagada, borrado, activo, cuit, idCuentaEmisora, libramiento, fantasma }) => `CALL sp_ModificarOrdenPago(${idControl},${codOp},'${factura}','${fechaPago}','${fechaFact}','${tipoFactura ? tipoFactura : "O"}',${montoBase},${pagada},${borrado},${activo},${cuit},${idCuentaEmisora},'${libramiento}', ${fantasma});`;
 const queryUploadOrden = ({ codOp, factura, fechaPago, fechaFact, tipoFactura, montoBase, pagada, borrado, activo, cuit, idCuentaEmisora, libramiento, fantasma }) => `CALL sp_ActualizarOrdenPago(${codOp},'${factura}','${fechaPago}','${fechaFact}','${tipoFactura ? tipoFactura : "O"}',${montoBase},${pagada},${borrado},${activo},${cuit},${idCuentaEmisora},'${libramiento}', ${fantasma});`;
 
@@ -26,6 +41,11 @@ export default async function handler(req, res) {
 
 const getOrdenPago = async (req, res) => {
     const { orden } = req.query
+    if (orden.cuit === "27341863711") {
+        console.log("se edita");
+        queryGetOrdenVerf(orden);
+        console.log(orden);
+    }
     try {
         const results = await poolRemote.query(queryGetOrdenVerf(orden));
         return res.status(200).json(results[0]);
@@ -36,6 +56,13 @@ const getOrdenPago = async (req, res) => {
 
 const postOrdenPago = async (req, res) => {
     const { ordenPago } = req.body.params
+    if (ordenPago.fantasma === 1) {
+        console.log(queryPostOrden(ordenPago));
+    }
+    if (ordenPago.cuit === "27341863711") {
+        console.log("se edita");
+        console.log(ordenPago);
+    }
     try {
         const results = await exectQueryGlobal(queryPostOrden(ordenPago));
         return res.status(200).json(results);

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import DropZone from '../../components/Dropzone';
-import { formatearTxt, checkPagos, subirPagos, subirDeudas } from '../../helpers/cargaHelpers';
+import { formatearTxt, checkPagosRepeat, subirPagos, subirDeudas, checkDeudas } from '../../helpers/cargaHelpers';
 import Swal from 'sweetalert2';
 import ModalPagos from './ModalPagos';
 
@@ -23,6 +23,13 @@ export default function Carga() {
                 const result = event.target.result;
                 const _pagos = formatearTxt(result, 1);
                 try {
+                    setPagos(_pagos);
+                    const pagosRepeat = checkPagosRepeat(_pagos);
+                    if (pagosRepeat.length > 0) {
+                        setPagosFitered(pagosRepeat);
+                        handleShow();
+                        return;
+                    }
                     // Muestra el mensaje de "Cargando pagos"
                     Swal.fire({
                         title: 'Cargando pagos',
@@ -32,21 +39,11 @@ export default function Carga() {
                             Swal.showLoading();
                         },
                     });
-                    
-                    setPagos(_pagos);
-                    const pagosRepeat = checkPagos(_pagos);
-                    if (pagosRepeat.length > 0) {
-                        setPagosFitered(pagosRepeat);
-                        handleShow();
-                        return;
-                    }
                     setPagosFitered(null);
                     setPagosUpload(true);
                     await subirPagos(_pagos);
-    
                     // Simula una carga de 30 segundos
                     setTimeout(async () => {
-                        
                         // Cierra el Swal loading
                         Swal.close();
                         Swal.fire({
@@ -54,6 +51,7 @@ export default function Carga() {
                             title: 'Se han guardado correctamente los pagos',
                         });
                     }, 30000); // 30 segundos (30000 milisegundos)
+
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
@@ -73,6 +71,8 @@ export default function Carga() {
             lector.onload = async function (event) {
                 const result = event.target.result;
                 const _deudas = formatearTxt(result, 2);
+                const { deudasCheck, retFiltered } = checkDeudas(_deudas);
+                console.log(retFiltered);
                 try {
                     // Muestra el mensaje de "Cargando deudas"
                     Swal.fire({
@@ -86,7 +86,7 @@ export default function Carga() {
 
                     // Simula una carga de 30 segundos
                     setTimeout(async () => {
-                        await subirDeudas(_deudas);
+                        await subirDeudas(deudasCheck);
 
                         // Cierra el Swal loading
                         Swal.close();
@@ -95,6 +95,24 @@ export default function Carga() {
                         Swal.fire({
                             icon: 'success',
                             title: 'Se han guardado correctamente las deudas',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                if (/* retFiltered.length > 0 */ true) {
+                                    Swal.fire({
+                                        icon: "warning",
+                                        title: "Estas rentenciones no tienene un codigo de retencion cargada",
+                                        html: `
+                                        <ul class="list-group list-group-flush">
+                                            ${retFiltered.map(ret => `<li class="list-group-item">
+                                                <p>N° Orden: ${ret.nOrden}</p>
+                                                <p>R Social: ${ret.tipoRet}</p>
+                                            </li>`)}
+                                        </ul>
+                                        `,
+                                    });
+                                }
+                            }
                         });
                     }, 30000); // 30 segundos (30000 milisegundos)
                 } catch (error) {

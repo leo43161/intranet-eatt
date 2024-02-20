@@ -626,7 +626,7 @@ export const ssHTML = () => `
 
         </div>
 `
-export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, TipoFactura, Factura, SARET, saretP, MontoBase, montoTotal }) => `
+export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, TipoFactura, Factura, SARET, saretP, MontoBase, montoTotal,fechaFactura }) => `
 <div class="d-flex position-relative" id="maintable-3" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; width: 1349px; word-spacing: 0.25em;">
 <img src="img/0.jpg" style="width: 1349px;" alt="">
 <div id="agente-1">
@@ -636,18 +636,18 @@ export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, Tipo
     <p style="position: absolute; top: 163px; left: 365px;" id="agente">400525</p>
     <p style="position: absolute; top: 163px; left: 590px;" id="establecimiento">0</p>
     <p style="position: absolute; top: 200px; left: 160px;" id="obligacion">30-70920461-7</p>
-    <p style="position: absolute; top: 200px; left: 385px;" id="mes">12</p>
-    <p style="position: absolute; top: 200px; left: 540px;" id="año">2022</p>
+    <p style="position: absolute; top: 200px; left: 385px;" id="mes">${getMes(fechaFactura)}</p>
+    <p style="position: absolute; top: 200px; left: 540px;" id="año">${getAnio(fechaFactura)}</p>
     <p style="position: absolute; top: 255px; left: 200px;" id="razon-social">${NombreP}</p>
     <p style="position: absolute; top: 300px; left: 160px;" id="cuit-dni">${cuitFormat(Cuit)}</p>
     <p style="position: absolute; top: 350px; left: 45px;" id="domicilio-fiscal">${Domicilio}</p>
     <p style="position: absolute; top: 395px; left: 45px;" id="localidad">${localidad}</p>
     <p style="position: absolute; top: 395px; left: 345px;" id="provincia">${provincia}</p>
     <p style="position: absolute; top: 495px; left: 40px;" id="num-comprobante">${TipoFactura} / ${facturaFormatSARET(Factura)}</p>
-    <p style="position: absolute; top: 495px; left: 210px;" id="monto-retencion">$${montoTotal}</p>
+    <p style="position: absolute; top: 495px; left: 210px;" id="monto-retencion">$${montoFormat(montoTotal)}</p>
     <p style="position: absolute; top: 495px; left: 400px;" id="porcentaje">${saretP}%</p>
-    <p style="position: absolute; top: 495px; left: 530px;" id="importe-retenido">$${SARET}</p>
-    <p style="position: absolute; top: 610px; left: 530px;" id="importe-depositar">$${SARET}</p>
+    <p style="position: absolute; top: 495px; left: 530px;" id="importe-retenido">$${montoFormat(SARET)}</p>
+    <p style="position: absolute; top: 610px; left: 530px;" id="importe-depositar">$${montoFormat(SARET)}</p>
     <p style="position: absolute; top: 650px; left: 190px; text-transform: uppercase;" id="importe-letras">${NumerosALetras(SARET)}</p>
 </div>
 <div id="agente-2">
@@ -657,18 +657,18 @@ export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, Tipo
     <p style="position: absolute; top: 163px; left: 1045px;" id="agente">400525</p>
     <p style="position: absolute; top: 163px; left: 1270px;" id="establecimiento">0</p>
     <p style="position: absolute; top: 200px; left: 840px;" id="obligacion">30-70920461-7</p>
-    <p style="position: absolute; top: 200px; left: 1075px;" id="mes">12</p>
-    <p style="position: absolute; top: 200px; left: 1230px;" id="año">2022</p>
+    <p style="position: absolute; top: 200px; left: 1075px;" id="mes">${getMes(fechaFactura)}</p>
+    <p style="position: absolute; top: 200px; left: 1230px;" id="año">${getAnio(fechaFactura)}</p>
     <p style="position: absolute; top: 255px; left: 890px;" id="razon-social">${NombreP}</p>
     <p style="position: absolute; top: 300px; left: 850px;" id="cuit-dni">${cuitFormat(Cuit)}</p>
     <p style="position: absolute; top: 350px; left: 730px;" id="domicilio-fiscal">${Domicilio}</p>
     <p style="position: absolute; top: 395px; left: 730px;" id="localidad">${localidad}</p>
     <p style="position: absolute; top: 395px; left: 1030px;" id="provincia">${provincia}</p>
     <p style="position: absolute; top: 495px; left: 725px;" id="num-comprobante">${TipoFactura} / ${facturaFormatSARET(Factura)}</p>
-    <p style="position: absolute; top: 495px; left: 895px;" id="monto-retencion">$${montoTotal}</p>
+    <p style="position: absolute; top: 495px; left: 895px;" id="monto-retencion">$${montoFormat(montoTotal)}</p>
     <p style="position: absolute; top: 495px; left: 1090px;" id="porcentaje">${saretP}%</p>
-    <p style="position: absolute; top: 495px; left: 1215px;" id="importe-retenido">$${SARET}</p>
-    <p style="position: absolute; top: 610px; left: 1215px;" id="importe-depositar">$${SARET}</p>
+    <p style="position: absolute; top: 495px; left: 1215px;" id="importe-retenido">$${montoFormat(SARET)}</p>
+    <p style="position: absolute; top: 610px; left: 1215px;" id="importe-depositar">$${montoFormat(SARET)}</p>
     <p style="position: absolute; top: 650px; left: 875px; text-transform: uppercase;" id="importe-letras">${NumerosALetras(SARET)}</p>
 </div>
 <div id="agente-3">
@@ -678,18 +678,18 @@ export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, Tipo
     <p style="position: absolute; top: 1115px; left: 365px;" id="agente">400525</p>
     <p style="position: absolute; top: 1115px; left: 590px;" id="establecimiento">0</p>
     <p style="position: absolute; top: 1152px; left: 160px;" id="obligacion">30-70920461-7</p>
-    <p style="position: absolute; top: 1152px; left: 385px;" id="mes">12</p>
-    <p style="position: absolute; top: 1152px; left: 540px;" id="año">2022</p>
+    <p style="position: absolute; top: 1152px; left: 385px;" id="mes">${getMes(fechaFactura)}</p>
+    <p style="position: absolute; top: 1152px; left: 540px;" id="año">${getAnio(fechaFactura)}</p>
     <p style="position: absolute; top: 1207px; left: 200px;" id="razon-social">${NombreP}</p>
     <p style="position: absolute; top: 1252px; left: 160px;" id="cuit-dni">${cuitFormat(Cuit)}</p>
     <p style="position: absolute; top: 1302px; left: 45px;" id="domicilio-fiscal">${Domicilio}</p>
     <p style="position: absolute; top: 1347px; left: 45px;" id="localidad">${localidad}</p>
     <p style="position: absolute; top: 1347px; left: 345px;" id="provincia">${provincia}</p>
     <p style="position: absolute; top: 1447px; left: 40px;" id="num-comprobante">${TipoFactura} / ${facturaFormatSARET(Factura)}</p>
-    <p style="position: absolute; top: 1447px; left: 210px;" id="monto-retencion">$${montoTotal}</p>
+    <p style="position: absolute; top: 1447px; left: 210px;" id="monto-retencion">$${montoFormat(montoTotal)}</p>
     <p style="position: absolute; top: 1447px; left: 400px;" id="porcentaje">${saretP}%</p>
-    <p style="position: absolute; top: 1447px; left: 530px;" id="importe-retenido">$${SARET}</p>
-    <p style="position: absolute; top: 1562px; left: 530px;" id="importe-depositar">$${SARET}</p>
+    <p style="position: absolute; top: 1447px; left: 530px;" id="importe-retenido">$${montoFormat(SARET)}</p>
+    <p style="position: absolute; top: 1562px; left: 530px;" id="importe-depositar">$${montoFormat(SARET)}</p>
     <p style="position: absolute; top: 1602px; left: 190px; text-transform: uppercase;" id="importe-letras">${NumerosALetras(SARET)}</p>
 </div>
 <div id="agente-4">
@@ -699,18 +699,18 @@ export const saretHTML = ({ NombreP, Cuit, Domicilio, localidad, provincia, Tipo
     <p style="position: absolute; top: 1115px; left: 1050px;" id="agente">400525</p>
     <p style="position: absolute; top: 1115px; left: 1275px;" id="establecimiento">0</p>
     <p style="position: absolute; top: 1152px; left: 845px;" id="obligacion">30-70920461-7</p>
-    <p style="position: absolute; top: 1152px; left: 1070px;" id="mes">12</p>
-    <p style="position: absolute; top: 1152px; left: 1225px;" id="año">2022</p>
+    <p style="position: absolute; top: 1152px; left: 1070px;" id="mes">${getMes(fechaFactura)}</p>
+    <p style="position: absolute; top: 1152px; left: 1225px;" id="año">${getAnio(fechaFactura)}</p>
     <p style="position: absolute; top: 1207px; left: 885px;" id="razon-social">${NombreP}</p>
     <p style="position: absolute; top: 1252px; left: 845px;" id="cuit-dni">${cuitFormat(Cuit)}</p>
     <p style="position: absolute; top: 1302px; left: 730px;" id="domicilio-fiscal">${Domicilio}</p>
     <p style="position: absolute; top: 1347px; left: 730px;" id="localidad">${localidad}</p>
     <p style="position: absolute; top: 1347px; left: 1030px;" id="provincia">${provincia}</p>
     <p style="position: absolute; top: 1447px; left: 725px;" id="num-comprobante">${TipoFactura} / ${facturaFormatSARET(Factura)}</p>
-    <p style="position: absolute; top: 1447px; left: 895px;" id="monto-retencion">$${montoTotal}</p>
+    <p style="position: absolute; top: 1447px; left: 895px;" id="monto-retencion">$${montoFormat(montoTotal)}</p>
     <p style="position: absolute; top: 1447px; left: 1085px;" id="porcentaje">${saretP}%</p>
-    <p style="position: absolute; top: 1447px; left: 1215px;" id="importe-retenido">$${SARET}</p>
-    <p style="position: absolute; top: 1562px; left: 1215px;" id="importe-depositar">$${SARET}</p>
+    <p style="position: absolute; top: 1447px; left: 1215px;" id="importe-retenido">$${montoFormat(SARET)}</p>
+    <p style="position: absolute; top: 1562px; left: 1215px;" id="importe-depositar">$${montoFormat(SARET)}</p>
     <p style="position: absolute; top: 1602px; left: 875px; text-transform: uppercase;" id="importe-letras">${NumerosALetras(SARET)}</p>
 </div>
 </div>
@@ -739,18 +739,31 @@ const facturaFormatSARET = (factura) => {
     return formattedNumber;
 }
 
+const montoFormat = (monto) => {
+    const numeroFormateado = monto.toLocaleString('es-ES', {
+        minimumFractionDigits: 1, // Muestra al menos 1 decimal
+        maximumFractionDigits: 1, // Muestra como máximo 1 decimal
+    });
+    return numeroFormateado;
+}
 const idTemFormat = (id) => {
     const formatteId = id.toString().padStart(8, '0');
     return formatteId;
 }
 
-function getMes() {
-    var fecha = new Date();
-    var numeroMes = fecha.getMonth() + 1;
-    return numeroMes;
+function getMes(fecha) {
+    // Divide la cadena en partes usando '/' como separador
+    const partes = fecha.split('/');
+
+    // Obtén el mes como una cadena y asegúrate de tener dos dígitos usando padStart
+    const mes = partes[1].padStart(2, '0');
+    return mes;
 }
-function getAnio() {
-    var fecha = new Date();
-    var anio = fecha.getFullYear();
+function getAnio(fecha) {
+    // Divide la cadena en partes usando '/' como separador
+    const partes = fecha.split('/');
+
+    // Obtén el mes como una cadena y asegúrate de tener dos dígitos usando padStart
+    const anio = partes[2]
     return anio;
 }

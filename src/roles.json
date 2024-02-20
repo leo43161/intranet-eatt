@@ -34,6 +34,12 @@
                     "icono": "faCalendarDays",
                     "ruta": "/eventos",
                     "titulo": "Eventos"
+                },
+                {
+                    "nombre": "Prestadores",
+                    "icono": "faUserTie",
+                    "ruta": "/prestadores",
+                    "titulo": "Prestadores"
                 }
             ]
         },

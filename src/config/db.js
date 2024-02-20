@@ -17,4 +17,13 @@ const poolRemote = mysql({
         password: "admin159753+",
     },
 });
-export { poolLocal, poolRemote };
+const poolEatt = mysql({
+    config: {
+        host: 'tucumanturismo.gob.ar',
+        port: 3306,
+        database: "eatt2024",
+        user: "adminintranet",
+        password: "admin159753+",
+    },
+});
+export { poolLocal, poolRemote, poolEatt };
