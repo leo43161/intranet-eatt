@@ -38,5 +38,13 @@ export async function middleware(request) {
 }
 
 export const config = {
-    matcher: ['/', '/carga', '/pagos', '/proveedores', '/login','/eventos'],
+    matcher: [
+        '/',
+        '/carga',
+        '/pagos',
+        '/proveedores',
+        '/login',
+        '/eventos',
+        '/prestadores'
+    ],
 };

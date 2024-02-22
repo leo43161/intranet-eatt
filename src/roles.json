@@ -8,6 +8,7 @@
                 "/proveedores",
                 "/carga",
                 "/pagos",
+                "/prestadores",
                 "/eventos"
             ],
             "secciones": [
@@ -70,6 +71,22 @@
                     "icono": "faUserTie",
                     "ruta": "/proveedores",
                     "titulo": "Proveedores"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "rol": "prestadores",
+            "rutas": [
+                "/",
+                "/prestadores"
+            ],
+            "secciones": [
+                {
+                    "nombre": "Prestadores",
+                    "icono": "faUserTie",
+                    "ruta": "/prestadores",
+                    "titulo": "Prestadores"
                 }
             ]
         }

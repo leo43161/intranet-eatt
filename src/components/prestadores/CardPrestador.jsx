@@ -77,7 +77,7 @@ export default function CardPrestador({
                             <FontAwesomeIcon size="lg" icon={faPhone} />
                             <h6 className="mb-0">{telefono}</h6>
                         </div>
-                        {web && (
+                        {email && (
                             <div className="d-flex align-items-center gap-1">
                                 <FontAwesomeIcon size="lg" icon={faEnvelope} />
                                 <h6 className="mb-0">{email}</h6>
