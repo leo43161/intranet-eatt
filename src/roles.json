@@ -9,6 +9,7 @@
                 "/carga",
                 "/pagos",
                 "/prestadores",
+                "/agencias",
                 "/eventos"
             ],
             "secciones": [
@@ -41,6 +42,12 @@
                     "icono": "faUserTie",
                     "ruta": "/prestadores",
                     "titulo": "Prestadores"
+                },
+                {
+                    "nombre": "Agencias",
+                    "icono": "faUserTie",
+                    "ruta": "/agencias",
+                    "titulo": "Agencias"
                 }
             ]
         },

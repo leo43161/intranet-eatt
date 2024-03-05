@@ -236,14 +236,16 @@ export const checkDeudas = (deudas) => {
     // Devolver un objeto que contiene ambos arrays
     return { retFiltered, deudasCheck };
 };
-const convertirFecha = (fecha) => {
-    let hoy = new Date();
-    let anio = hoy.getFullYear();
-    let fechaCompleta = fecha + "/" + anio;
-    let fechaConvertida = new Date(fechaCompleta.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$2/$1/$3"));
-    let anioConvertido = fechaConvertida.getFullYear();
-    let mesConvertido = ("0" + (fechaConvertida.getMonth() + 1)).slice(-2);
-    let diaConvertido = ("0" + fechaConvertida.getDate()).slice(-2);
+export const convertirFechaInput = (fecha) => {
+    return fecha.split("/").reverse().join("-");
+}
 
-    return anioConvertido + "-" + mesConvertido + "-" + diaConvertido;
+export function convertirFechaIso(fechaISO) {
+    const fecha = new Date(fechaISO);
+
+    const dia = fecha.getDate().toString().padStart(2, '0');
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+    const anio = fecha.getFullYear();
+
+    return `${dia}/${mes}/${anio}`;
 }

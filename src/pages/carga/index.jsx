@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import DropZone from '../../components/Dropzone';
+import DropZoneFile from '../../components/DropzoneFile';
 import { formatearTxt, checkPagosRepeat, subirPagos, subirDeudas, checkDeudas } from '../../helpers/cargaHelpers';
 import Swal from 'sweetalert2';
 import ModalPagos from './ModalPagos';
@@ -136,7 +136,7 @@ export default function Carga() {
                             <h1 className="text-center">Pagos</h1>
                             <h3 className="text-center mb-3">Inserte el archivo txt</h3>
                             <div className="d-flex justify-content-center mb-3" style={{ height: "300px" }}>
-                                <DropZone setState={setPagoFile}></DropZone>
+                                <DropZoneFile setState={setPagoFile}></DropZoneFile>
                             </div>
                         </Card>
                     </div>
@@ -145,7 +145,7 @@ export default function Carga() {
                             <h1 className="text-center">Deudas</h1>
                             <h3 className="text-center mb-3">Inserte el archivo txt</h3>
                             <div className="d-flex justify-content-center mb-3" style={{ height: "300px" }}>
-                                <DropZone setState={setDeudasFile}></DropZone>
+                                <DropZoneFile setState={setDeudasFile}></DropZoneFile>
                             </div>
                         </Card>
                     </div>

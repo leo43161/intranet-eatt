@@ -1,9 +1,33 @@
 import axios from "axios";
 const Consultas = {};
 const apiUrl = process.env.urlServer + "api/"
-const queryPostOrden = ({ codOp, factura, fechaPago, fechaFact, tipoFactura, montoBase, pagada, borrado, activo, cuit, idCuentaEmisora, libramiento, fantasma }) => `CALL sp_InsertarOrdenPago(${codOp},'${factura}','${fechaPago}','${fechaFact}','${tipoFactura ? tipoFactura : "A"}',${montoBase},${pagada},${borrado},${activo},${cuit},${idCuentaEmisora},'${libramiento}', ${fantasma});`;
 
+Consultas.traerTodoEventos = async (filters) => {
+    const { data: eventos } = await axios.get(
+        apiUrl + "eventos", { params: { consulta: "all", filters: JSON.stringify(filters) } }
+    );
+    return eventos;
+}
 
+Consultas.uploadImage = async (imagen) => {
+    try {
+        const formData = new FormData();
+        formData.append('imagen', imagen);
+        console.log(formData.get( 'imagen' ));
+        const response = await axios.post('http://10.15.15.151/touchvanilla/api/imagenes', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            withCredentials: true
+        });
+
+        return response.data;
+    } catch (error) {
+        // Maneja los errores aquí si es necesario
+        console.error('Error:', error);
+        return response.data;
+    }
+};
 Consultas.traerProv = async (cuit) => {
     const { data: proovedor } = await axios.get(
         apiUrl + "proveedores", { params: { cuit } }
@@ -24,12 +48,31 @@ Consultas.listarPagos = async (cuenta) => {
     );
     return pagos;
 };
-
+Consultas.listarSubCategEvento = async (idCategEvento) => {
+    const { data: subCategorias } = await axios.get(
+        apiUrl + "categorias", { params: { idCategEvento } }
+    );
+    return subCategorias;
+};
+Consultas.listarCategEvento = async () => {
+    const { data: categorias } = await axios.get(
+        apiUrl + "categorias"
+    );
+    console.log(categorias);
+    return categorias;
+};
 Consultas.listarProv = async () => {
     const { data: prov } = await axios.get(
         apiUrl + "proveedores"
     );
     return prov;
+};
+Consultas.listarEventos = async (filters) => {
+    console.log(filters)
+    const { data: eventos } = await axios.get(
+        apiUrl + "eventos", { params: { filters: JSON.stringify(filters) } }
+    );
+    return eventos;
 };
 Consultas.listarPrest = async () => {
     const { data: prest } = await axios.get(
@@ -130,6 +173,30 @@ Consultas.cargarOrdenFantasma = async (deuda) => {
     return check;
 };
 
+Consultas.crearEvento = async (evento) => {
+    const queryPostEvento = ({
+        nombre,
+        fechaInicio,
+        fechaFin,
+        horaInicio,
+        horaFin,
+        descripcion,
+        imagen,
+        visible,
+        destacado,
+        idSubcat,
+        idCategoria,
+        direccion,
+        idLocalidad,
+        latitud,
+        longitud
+    }) => `CALL sp_InsertarEvento("${nombre}","${fechaInicio}","${fechaFin}",${horaInicio},"${horaFin}","${descripcion}","${imagen}", 1,${visible},${destacado},${idSubcat},"${direccion}",${idLocalidad},${latitud},${longitud},"${idCategoria}");`;
+    console.log(queryPostEvento(evento));
+    const { data: check } = await axios.post(
+        apiUrl + "eventos", { params: { evento } }
+    );
+    return check;
+};
 Consultas.cargarProv = async (prest) => {
     const proveedor = {
         cuit: prest.cuit,
@@ -189,6 +256,32 @@ Consultas.crearPrestador = async (prestador) => {
 Consultas.editarPrestador = async (prest) => {
     const { data: check } = await axios.put(
         apiUrl + "prestadores", { params: { prest } }
+    );
+    return check;
+};
+Consultas.editarEvento = async (evento) => {
+    const queryPutEvento = ({
+        id,
+        nombre,
+        fechaInicio,
+        fechaFin,
+        horaInicio,
+        horaFin,
+        descripcion,
+        imagen,
+        visible,
+        destacado,
+        idSubcat,
+        idCategoria,
+        direccion,
+        idLocalidad,
+        latitud,
+        longitud
+    }) => `CALL sp_ModificarEvento(${id},"${nombre}","${fechaInicio}","${fechaFin}",${horaInicio},"${horaFin}","${descripcion}","${imagen}", 1,"${visible}","${destacado}","${idSubcat}","${direccion}","${idLocalidad}","${latitud}","${longitud}","${idCategoria}");`;
+    console.log(evento);
+    console.log(queryPutEvento(evento))
+    const { data: check } = await axios.put(
+        apiUrl + "eventos", { params: { evento } }
     );
     return check;
 };
@@ -287,9 +380,9 @@ Consultas.editarOrdenPago = async (orden) => {
     );
     return check;
 };
-Consultas.statesPrestador = async (prest) => {
+Consultas.statesPrestador = async (evento) => {
     const ordenPago = {
-        ...prest,
+        ...evento,
         activo: 0
     }
     const { data: check } = await axios.put(

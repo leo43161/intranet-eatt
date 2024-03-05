@@ -45,6 +45,7 @@ export const config = {
         '/proveedores',
         '/login',
         '/eventos',
-        '/prestadores'
+        '/prestadores',
+        '/agencias'
     ],
 };

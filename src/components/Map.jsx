@@ -4,10 +4,10 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 import { useMemo, useRef, useState } from 'react';
 
-export default function Map({ position }) {
-    const [draggable, setDraggable] = useState(false)
+export default function Map({ position, setState }) {
     const [_position, setPosition] = useState(position)
     const markerRef = useRef(null)
+
     const eventHandlers = useMemo(
         () => ({
             dragend() {
@@ -15,18 +15,19 @@ export default function Map({ position }) {
                 if (marker != null) {
                     const { lat, lng } = marker.getLatLng()
                     setPosition(marker.getLatLng());
-                    console.log([lat, lng]);
+                    setState([lat, lng]); // Aquí se actualizan las coordenadas
                 }
             },
         }),
-        [],
+        [setState],
     )
+
     return (
         <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <Marker
                 draggable={true}
-                position={position}
+                position={_position}
                 eventHandlers={eventHandlers}
                 ref={markerRef}
             ></Marker>
