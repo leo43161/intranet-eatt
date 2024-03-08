@@ -16,7 +16,6 @@ export const getRoles = () => {
 }
 
 export const loginVerify = async () => {
-    console.log(`${process.env.urlServer}api/auth/login`)
     try {
         const response = await axios.get(
             `${process.env.urlServer}api/auth/login`
@@ -44,13 +43,10 @@ export const loginVerify = async () => {
 }
 
 export const login = async (usuario) => {
-    console.log(`${process.env.urlServer}api/auth/login`)
-    console.log(process.env)
     try {
         const response = await axios.post(
             `${process.env.urlServer}api/auth/login`, { usuario }
         );
-        console.log(response);
         if (response.status === 200) {
             const { usuario, rol, token } = response.data;
             const data = {
@@ -58,14 +54,7 @@ export const login = async (usuario) => {
                 rol,
                 token
             };
-            console.log(token);
-            if (typeof localStorage !== "undefined") {
-                console.log("Esta el local disponible");
-            } else {
-                console.log("El local no está disponible");
-            }
             const jsonData = JSON.stringify(data);
-            console.log(jsonData);
             localStorage.setItem('userData', jsonData);
             return { login: true, msg: "Logueado" };
         } else if (response.status === 401) {

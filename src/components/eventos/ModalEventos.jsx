@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -15,7 +14,14 @@ export default function ModalEventos({ show, handleClose, setEventReload, addEve
     ssr: false
   });
 
-  const { editarEvento, crearEvento, listarLocalidades, listarCategEvento, listarSubCategEvento, uploadImage } = Consultas;
+  const {
+    editarEvento,
+    crearEvento,
+    listarLocalidades,
+    listarCategEvento,
+    listarSubCategEvento,
+    uploadImage
+  } = Consultas;
 
   const [formData, setFormData] = useState({
     id: 1,
@@ -88,6 +94,7 @@ export default function ModalEventos({ show, handleClose, setEventReload, addEve
         longitud: -65.2044409
       });
     } else {
+      setCoordenadas([evento.latitud, evento.longitud]);
       setFormData({
         ...evento,
         idLocalidad: evento.idLocalidad?.toString(),
@@ -117,13 +124,11 @@ export default function ModalEventos({ show, handleClose, setEventReload, addEve
       idLocalidad: parseInt(idLocalidad),
       visible: formData.visible ? 1 : 0,
       destacado: formData.destacado ? 1 : 0,
-      idSubcat: subCategorias.length > 0 ? 1 : null,
+      idSubcat: subCategorias.length > 0 ? parseInt(formData.idSubcat) : null,
       imagen: imagen ? imagen : formData.imagen,
       latitud: ubiView ? coordenadas[0] : null,
       longitud: ubiView ? coordenadas[1] : null,
     };
-    console.log(formData);
-    console.log(eventoData);
     const requiredFields = ["nombre", "fechaInicio", "idCategoria", "idLocalidad", "imagen"];
     const missingFields = requiredFields.filter(field => !eventoData[field] || eventoData[field].toString().trim() === "");
 
@@ -135,7 +140,6 @@ export default function ModalEventos({ show, handleClose, setEventReload, addEve
       setError({ isError: true, message: 'La imagen no tiene que pesar mas de 400kb.' });
       return;
     };
-    console.log(eventoData.imagen);
 
     try {
       const actionMessage = addEvent ? 'crear' : 'editar';
@@ -150,7 +154,6 @@ export default function ModalEventos({ show, handleClose, setEventReload, addEve
         if (typeof eventoData.imagen === "object") {
           try {
             const resultImage = await uploadImage(imagen);
-            console.log(resultImage);
             if (resultImage.status !== 200) {
               setError({ isError: true, message: 'Se produjo un error al procesar la solicitud. Por favor, inténtelo de nuevo más tarde.' });
               return;
@@ -218,14 +221,17 @@ export default function ModalEventos({ show, handleClose, setEventReload, addEve
                 </div>
                 <div className="col d-flex flex-md-row flex-column gap-3">
                   <Form.Select className="col" value={formData.idCategoria || ""} name="idCategoria" onChange={handleChange} controlid="idCategoria">
-                    <option value={""}>Seleccione una Categorias</option>
+                    {categorias.length > 0 ?
+                      <option value={0}>Seleccione una Categorias</option>
+                      :
+                      <option value={0}>Cargando...</option>}
                     {categorias.map(({ nombre, id }) => (
                       <option value={id} key={id}>{nombre.trim()}</option>
                     ))}
                   </Form.Select>
                   {subCategorias.length > 0 &&
                     <Form.Select className="col" value={formData.idSubcat || ""} name="idSubcat" onChange={handleChange} controlid="idSubcat">
-                      <option value={""}>Seleccione una Categorias</option>
+                      <option value={0}>Seleccione una Subcategoria</option>
                       {subCategorias.map(({ nombre, id }) => (
                         <option value={id} key={id}>{nombre?.trim()}</option>
                       ))}

@@ -37,9 +37,10 @@ const queryPostEvento = ({
     idLocalidad,
     latitud,
     longitud
-}) => `CALL sp_InsertarEvento("${nombre}","${fechaInicio}","${fechaFin}","${horaInicio}","${horaFin}","${descripcion}","${imagen}", 1,${visible},${destacado},${idSubcat},"${direccion}",${idLocalidad},${latitud},${longitud},"${idCategoria}");`;
+}) => `CALL sp_InsertarEvento("${nombre}","${fechaInicio}","${fechaFin}","${horaInicio}","${horaFin}","${descripcion}","${imagen}", 1,${visible},${destacado},${idSubcat === 0 ? null : idSubcat},"${direccion}",${idLocalidad},${latitud},${longitud},${idCategoria === 0 ? null : idCategoria});`;
 const queryPutEvento = ({
     id,
+    activa,
     nombre,
     fechaInicio,
     fechaFin,
@@ -55,7 +56,7 @@ const queryPutEvento = ({
     idLocalidad,
     latitud,
     longitud
-}) => `CALL sp_ModificarEvento(${id},"${nombre}","${fechaInicio}","${fechaFin}","${horaInicio}","${horaFin}","${descripcion}","${imagen}", 1,${visible},${destacado},${idSubcat},"${direccion}",${idLocalidad},${latitud},${longitud},${idCategoria});`;
+}) => `CALL sp_ModificarEvento(${id},"${nombre}","${fechaInicio}","${fechaFin}","${horaInicio}","${horaFin}","${descripcion}","${imagen}", ${activa},${visible},${destacado},${idSubcat === 0 ? null : idSubcat},"${direccion}",${idLocalidad},${latitud},${longitud},${idCategoria === 0 ? null : idCategoria});`;
 
 export default async function handler(req, res) {
     switch (req.method) {

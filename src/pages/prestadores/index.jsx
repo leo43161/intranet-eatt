@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-export default function Prestadores() {
+export default function Prestadores({ setLoader }) {
     const [prestadores, setPrestadores] = useState([]);
     const [prestador, setPrestador] = useState({});
     const [addPrest, setAddPrest] = useState(true);
@@ -35,11 +35,14 @@ export default function Prestadores() {
     }, [prestReload]);
 
     const consultarPrest = async () => {
+        setLoader(true);
         try {
             const _prestadores = await listarPrest();
             setPrestadores(_prestadores);
             setFilteredPrestadores(_prestadores); // Inicializar los prestadores filtrados con todos los prestadores
+            setLoader(false);
         } catch (error) {
+            setLoader(false);
             console.log(error);
         }
     };
@@ -87,6 +90,7 @@ export default function Prestadores() {
                                         prestador={prestador}
                                         handleOpen={handleOpen}
                                         setPrestReload={setPrestReload}
+                                        setLoader={setLoader}
                                     ></CardPrestador>
                                 </div>
                             ))}
@@ -94,7 +98,14 @@ export default function Prestadores() {
                     )}
                 </section>
             </div>
-            <ModalEventos show={showModal} setPrestReload={setPrestReload} addPrest={addPrest} handleClose={handleClose} prestador={prestador}></ModalEventos>
+            <ModalEventos
+                show={showModal}
+                setPrestReload={setPrestReload}
+                addPrest={addPrest}
+                handleClose={handleClose}
+                prestador={prestador}
+                setLoader={setLoader}
+            ></ModalEventos>
         </>
     )
 }

@@ -52,7 +52,6 @@ export const formatearTxt = (contenido, txt) => {
 function formatearOrdenes(_ordenes, txt) {
     let ordenes = [];
     const FORMAT = txt === 1 ? FORMAT_PAGOS : FORMAT_DEUDAS;
-    console.log(_ordenes);
     _ordenes.forEach((orden) => {
         let _orden = {};
         for (const key in orden) {
@@ -61,7 +60,6 @@ function formatearOrdenes(_ordenes, txt) {
             }
         }
         /* Verificar las facturas */
-        /* console.log(_orden); */
         if (txt === 1) _orden = formatearPago(_orden);
         if (txt === 2) _orden = formatearDeudas(_orden);
         ordenes.push(_orden);
@@ -90,12 +88,10 @@ const formatearDeudas = (deuda) => {
 }
 const filterPagos = (pagos = []) => {
     /* Se aplica la filtracion a la cuenta de pagos del ente EATT - pagos segun su nro de cuenta */
-    console.log(pagos);
     let filterPagos = pagos.filter(({ cuit }) => cuit !== "30709204617");
     filterPagos = filterPagos.filter(({ cuit }) => cuit.length > 9 && cuit.length < 12);
     filterPagos = filterPagos.filter(({ ctaEmisora }) => ctaEmisora !== "71975050");
     filterPagos.find(({ cuit }) => cuit === "27341863711")
-    console.log(filterPagos);
     /* filterPagos = deudas; */
     return filterPagos;
 }
@@ -105,15 +101,10 @@ const filterDeudas = (deudas = []) => {
     /* Se aplica la filtracion a la cuenta de deudas del ente EATT - deudas segun su nro de cuenta */
     let filterDeudas = deudas.filter(({ cuit }) => cuit !== "30709204617");
     filterDeudas = deudas.filter(({ cuit }) => cuit !== "30709204617");
-    console.log(filterDeudas);
     /* filterDeudas = deudas.filter(({ codRet }) => codRet.trim() !== ""); */
 
     /* filterDeudas = filterDeudas.filter(({ cuit }) => cuit.length > 12); */
 
-    /* filterDeudas = deudas; */
-    /* console.log("deudas filtradas con el cuit 30709204617");
-    console.log(deudasFiltradas);
-    console.log(filterDeudas); */
     return filterDeudas;
 }
 export const subirPagos = async (pagos) => {
@@ -180,13 +171,10 @@ export const subirDeudas = async (deudas) => {
         deudasRepetidas: [],
     };
     const _deudasFilter = deudas;
-    console.log(_deudasFilter);
     _deudasFilter.forEach(async (deuda) => {
         const checkOrden = await verificarOrden(deuda.nOrden);
-        console.log(checkOrden);
         if (!checkOrden) {
             const fantasmaCheck = await cargarOrdenFantasma(deuda);
-            console.log(fantasmaCheck);
             countDeudas.ordenesDePagoFantasmas.push(deuda.nOrden);
             if (!fantasmaCheck) countDeudas.ordenesDePagoFantasmasError.push(deuda.nOrden);
         };
@@ -201,7 +189,7 @@ export const subirDeudas = async (deudas) => {
             if (!detalleCheck) countDeudas.deudasError.push(deuda.nOrden);
         };
     });
-    console.log(countDeudas)
+
 }
 export const checkPagosRepeat = (pagos) => {
     let _pagos = pagos;
@@ -210,8 +198,6 @@ export const checkPagosRepeat = (pagos) => {
         acc[_pagos.nOrden] = ++acc[_pagos.nOrden] || 0;
         return acc;
     }, {});
-
-    console.log(busqueda);
 
     for (const key in busqueda) {
         const element = busqueda[key];

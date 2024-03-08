@@ -7,7 +7,7 @@ import Consultas from "../../helpers/consultasHelpers";
 import PaginationTouch from "../../components/Pagination";
 
 
-export default function Eventos() {
+export default function Eventos({ setLoader }) {
     const [eventos, setEventos] = useState([]);
     const [evento, setEvento] = useState({});
     const [addEvent, setAddEvent] = useState(true);
@@ -68,6 +68,7 @@ export default function Eventos() {
     }, [eventReload]);
 
     const consultarEvent = async () => {
+        setLoader(true);
         const indexLast = currentPage * perPage;
         const indexFirst = indexLast - perPage;
         const _filters = { ...filters, last: indexLast, first: indexFirst }
@@ -77,7 +78,9 @@ export default function Eventos() {
             setTotal(_allEventos.total);
             setEventos(_eventos);
             console.log(_eventos);
+            setLoader(false);
         } catch (error) {
+            setLoader(false);
             console.log(error);
         }
     };
@@ -122,7 +125,12 @@ export default function Eventos() {
                     <div className="row row-cols-2 row-cols-lg-3 g-2 g-lg-3">
                         {eventos.map((evento, idx) => (
                             <div className="col" key={idx}>
-                                <CardEventos evento={evento} handleOpenEdit={handleOpenEdit}></CardEventos>
+                                <CardEventos
+                                    evento={evento}
+                                    handleOpenEdit={handleOpenEdit}
+                                    setEventReload={setEventReload}
+                                    setLoader={setLoader}
+                                ></CardEventos>
                             </div>
                         ))}
                     </div>

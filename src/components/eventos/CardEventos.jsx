@@ -1,23 +1,48 @@
 import { faEdit, faTrash, faEye, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Button from 'react-bootstrap/Button';
-import { useState } from "react";
-export default function CardEventos({ evento, handleOpenEdit }) {
-    const [checkbox, toggleButton] = useState(true)
-    const { descripcion, imagen, nombre, fechaInicio, fechaFin } = evento;
-    function convertirFechaIso(fechaISO) {
-        const fecha = new Date(fechaISO);
-
-        const dia = fecha.getDate().toString().padStart(2, '0');
-        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
-        const anio = fecha.getFullYear();
-
-        return `${dia}/${mes}/${anio}`;
+import Consultas from "../../helpers/consultasHelpers";
+import { convertirFechaIso } from "../../helpers/cargaHelpers";
+export default function CardEventos({ evento, handleOpenEdit, setEventReload, setLoader }) {
+    const { id, descripcion, imagen, nombre, fechaInicio, fechaFin, visible } = evento;
+    const { statesEvento } = Consultas;
+    const stateHandler = async (state) => {
+        try {
+            const actionMessage = state === "visible" ? 'desactivar la visibilidad de el evento' : 'eliminar el evento';
+            const result = await Swal.fire({
+                icon: 'warning',
+                title: `¿Estás seguro de que deseas ${actionMessage}?`,
+                showCancelButton: true,
+                confirmButtonText: 'Continuar',
+                cancelButtonText: 'Cancelar'
+            });
+            if (result.isConfirmed) {
+                Swal.showLoading();
+                setLoader(true);
+                await statesEvento(evento, state);
+                setEventReload(true);
+                Swal.fire(`${state === "visible" ? 'Visibilidad desactivada correctamente' : 'Evento eliminado'} correctamente`, '', 'success');
+            } else {
+                setEventReload(true);
+                Swal.fire('Operación cancelada', '', 'info');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: "error",
+                title: "Ocurrio un error",
+                text: "No se pudo ejecutar ejecutar el cambio, intentelo de nuevo en unos minutos",
+            });
+        } finally {
+            Swal.hideLoading();
+            setLoader(false);
+        }
     }
     return (
-        <div className="border d-flex flex-column" style={{ height: "540px" }}>
-            <div className="d-flex flex-row p-0 overflow-hidden col rounded flex-grow-1 border">
+        <div className="d-flex flex-column" style={{ height: "540px" }}>
+            <div className="d-flex flex-row p-0 overflow-hidden col rounded-top flex-grow-1 border">
                 <div className="col p-3 d-flex flex-column gap-3">
                     <div className="col d-flex justify-content-center flex-column overflow-hidden flex-fill">
                         <img src={"https://www.institucionalturismotuc.gob.ar/public/img/" + imagen} className="img-fluid" alt="" />
@@ -33,24 +58,28 @@ export default function CardEventos({ evento, handleOpenEdit }) {
                         <p className="text-clamp-4">{descripcion}</p>
                     </div>
                 </div>
-
             </div>
             <div>
                 <div className="btn-group w-100" role="group" aria-label="Basic example">
                     <ToggleButton
-                        id="toggle-check"
+                        id={"visible-check-" + id}
                         type="checkbox"
                         variant="outline-secondary"
-                        checked={checkbox}
+                        checked={visible === 1}
                         value="1"
-                        onChange={() => toggleButton(!checkbox)}
+                        onChange={() => stateHandler("visible")}
+                        style={{ borderTopLeftRadius: "0" }}
                     >
                         <FontAwesomeIcon icon={faEye} />
                     </ToggleButton>
                     <Button variant="success" onClick={() => handleOpenEdit(evento)}>
                         <FontAwesomeIcon icon={faEdit} />
                     </Button>
-                    <Button variant="danger">
+                    <Button 
+                    variant="danger" 
+                    onClick={() => stateHandler("activa")}
+                    style={{ borderTopRightRadius: "0" }}
+                    >
                         <FontAwesomeIcon icon={faTrash} />
                     </Button>
                 </div>

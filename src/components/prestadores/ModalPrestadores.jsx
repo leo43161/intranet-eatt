@@ -7,7 +7,14 @@ import Swal from 'sweetalert2';
 import Consultas from "../../helpers/consultasHelpers";
 import ActividadList from './ActividadList';
 
-export default function ModalPrestadores({ show, handleClose, setPrestReload, addPrest, prestador }) {
+export default function ModalPrestadores({
+  show,
+  handleClose,
+  setPrestReload,
+  addPrest,
+  prestador,
+  setLoader
+}) {
   const { editarPrestador, crearPrestador, listarLocalidades } = Consultas;
 
   const [formData, setFormData] = useState({
@@ -77,10 +84,10 @@ export default function ModalPrestadores({ show, handleClose, setPrestReload, ad
   };
 
   const handleSubmit = async () => {
+    setLoader(true);
     const { idLocalidad, ...restFormData } = formData;
     setError({ isError: false, message: "" });
     const prestadorData = { id: prestador.id, ...restFormData, idLocalidad: parseInt(idLocalidad), actividades: actividades.join(","), activo: formData.activo ? 1 : 0 };
-    console.log(prestadorData);
     const requiredFields = ["titulo", "responsable", "telefono", "idLocalidad"];
     const missingFields = requiredFields.filter(field => !prestadorData[field] || prestadorData[field].toString().trim() === "");
 
@@ -108,14 +115,18 @@ export default function ModalPrestadores({ show, handleClose, setPrestReload, ad
         setPrestReload(true);
         Swal.fire(`${addPrest ? 'Prestador creado' : 'Prestador editado'} correctamente`, '', 'success');
         handleClose();
+        setLoader(false);
       } else {
+        setLoader(false);
         setPrestReload(true);
         Swal.fire('Operación cancelada', '', 'info');
       }
     } catch (error) {
+      setLoader(false);
       console.error('Error:', error);
       setError({ isError: true, message: 'Se produjo un error al procesar la solicitud. Por favor, inténtelo de nuevo más tarde.' });
     } finally {
+      setLoader(false);
       Swal.hideLoading();
     }
   };

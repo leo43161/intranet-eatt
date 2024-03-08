@@ -9,7 +9,8 @@ export default function CardPrestador({
     handleOpen,
     prestador,
     setPrestador,
-    setPrestReload
+    setPrestReload,
+    setLoader
 }) {
     const {
         id,
@@ -28,7 +29,6 @@ export default function CardPrestador({
     const { editarPrestador } = Consultas;
     const handleState = async (state, value) => {
         const _prestador = { ...prestador, [state]: value }
-        console.log(_prestador);
         try {
             const result = await Swal.fire({
                 icon: 'warning',
@@ -37,24 +37,28 @@ export default function CardPrestador({
                 confirmButtonText: 'Continuar',
                 cancelButtonText: 'Cancelar'
             });
-
+            
             if (result.isConfirmed) {
+                setLoader(true);
                 Swal.showLoading();
                 await editarPrestador(_prestador);
                 setPrestReload(true);
                 Swal.fire(`Estado cambiado correctamente`, '', 'success');
+                setLoader(false);
             } else {
                 setPrestReload(true);
                 Swal.fire('Operación cancelada', '', 'info');
             }
         } catch (error) {
             console.error('Error:', error);
+            setLoader(false);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: "Se produjo un error al procesar la solicitud. Por favor, inténtelo de nuevo más tarde.",
             });
         } finally {
+            setLoader(false);
             Swal.hideLoading();
         }
     }

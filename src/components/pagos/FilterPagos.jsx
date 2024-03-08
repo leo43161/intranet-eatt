@@ -45,9 +45,7 @@ export default function FilterPagos({ setPagos, cuenta, setFilters, filters }) {
                 return codOp.includes(valorInput);
             });
         }
-        console.log(!filters.fantasma);
         if (!filters.fantasma) {
-            console.log(_pagos);
             _pagos = _pagos.filter(pago => pago.fantasma === 0);
         }
         setPagos(_pagos);
@@ -57,7 +55,6 @@ export default function FilterPagos({ setPagos, cuenta, setFilters, filters }) {
             const _pagos = await listPagos(cuenta);
             return _pagos
         } catch (error) {
-            console.log(error);
         }
     }
     return (

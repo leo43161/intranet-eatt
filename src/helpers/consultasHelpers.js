@@ -13,7 +13,6 @@ Consultas.uploadImage = async (imagen) => {
     try {
         const formData = new FormData();
         formData.append('imagen', imagen);
-        console.log(formData.get( 'imagen' ));
         const response = await axios.post('http://10.15.15.151/touchvanilla/api/imagenes', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -58,7 +57,6 @@ Consultas.listarCategEvento = async () => {
     const { data: categorias } = await axios.get(
         apiUrl + "categorias"
     );
-    console.log(categorias);
     return categorias;
 };
 Consultas.listarProv = async () => {
@@ -68,7 +66,6 @@ Consultas.listarProv = async () => {
     return prov;
 };
 Consultas.listarEventos = async (filters) => {
-    console.log(filters)
     const { data: eventos } = await axios.get(
         apiUrl + "eventos", { params: { filters: JSON.stringify(filters) } }
     );
@@ -191,7 +188,6 @@ Consultas.crearEvento = async (evento) => {
         latitud,
         longitud
     }) => `CALL sp_InsertarEvento("${nombre}","${fechaInicio}","${fechaFin}",${horaInicio},"${horaFin}","${descripcion}","${imagen}", 1,${visible},${destacado},${idSubcat},"${direccion}",${idLocalidad},${latitud},${longitud},"${idCategoria}");`;
-    console.log(queryPostEvento(evento));
     const { data: check } = await axios.post(
         apiUrl + "eventos", { params: { evento } }
     );
@@ -247,7 +243,6 @@ Consultas.crearPrestador = async (prestador) => {
         actividades,
         visible,
     }) => `CALL sp_InsertarPrestador("${titulo}","${responsable}","${direccion}",${idLocalidad},"${telefono}","${email}","${web}","${facebook}","${instagram}","${actividades}",${visible ? 1 : 0});`;
-    console.log(queryPostPrest(prestador));
     const { data: check } = await axios.post(
         apiUrl + "prestadores", { params: { prestador } }
     );
@@ -278,8 +273,6 @@ Consultas.editarEvento = async (evento) => {
         latitud,
         longitud
     }) => `CALL sp_ModificarEvento(${id},"${nombre}","${fechaInicio}","${fechaFin}",${horaInicio},"${horaFin}","${descripcion}","${imagen}", 1,"${visible}","${destacado}","${idSubcat}","${direccion}","${idLocalidad}","${latitud}","${longitud}","${idCategoria}");`;
-    console.log(evento);
-    console.log(queryPutEvento(evento))
     const { data: check } = await axios.put(
         apiUrl + "eventos", { params: { evento } }
     );
@@ -390,6 +383,16 @@ Consultas.statesPrestador = async (evento) => {
     );
     return check;
 };
+Consultas.statesEvento = async (_evento, state) => {
+    const evento = {
+        ..._evento,
+        [state]: _evento[state] === 1 ? 0 : 1
+    }
+    const { data: check } = await axios.put(
+        apiUrl + "eventos", { params: { evento } }
+    );
+    return check;
+};
 Consultas.desactivarOrdenPago = async (orden) => {
     const ordenPago = {
         idControl: orden.Id,
@@ -407,8 +410,6 @@ Consultas.desactivarOrdenPago = async (orden) => {
         libramiento: orden.Libramiento,
         fantasma: 0
     }
-    console.log("esta editando");
-    console.log(ordenPago);
     const { data: check } = await axios.put(
         apiUrl + "pagos/orden", { params: { ordenPago } }
     );

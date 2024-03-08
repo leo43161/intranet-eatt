@@ -15,7 +15,6 @@ const GeneratePdf = ({ ret, children, pago }) => {
     const generatePdf = async () => {
         const { localidad, provincia, cp } = await traerProv(pago.Cuit);
         const _pago = { ...pago, localidad, provincia, cp, montoTotal };
-        console.log(_pago);
         const { config: { scale, hoja, margin }, html } = retenciones[ret];
         let element = html(_pago);
         const doc = new jsPDF("p", "pt", hoja);
