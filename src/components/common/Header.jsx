@@ -53,17 +53,6 @@ export default function Header({ setLoggedReload }) {
                                     {nombre}
                                 </Nav.Link>
                             ))}
-                            {seccionesSelected?.map(({ nombre, ruta, icono }, idx) => (
-                                <Nav.Link
-                                    key={idx}
-                                    href={ruta}
-                                    active={router.asPath === ruta}
-                                    className='d-flex align-items-center gap-2'
-                                >
-                                    <FontAwesomeIcon className="ms-2" size="1x" icon={icons[icono]} />
-                                    {nombre}
-                                </Nav.Link>
-                            ))}
                         </Nav>
                     </div>
                     <div className='col ps-4'>
