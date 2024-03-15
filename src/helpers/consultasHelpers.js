@@ -255,6 +255,7 @@ Consultas.editarPrestador = async (prest) => {
     return check;
 };
 Consultas.editarEvento = async (evento) => {
+    console.log(evento);
     const queryPutEvento = ({
         id,
         nombre,
@@ -273,6 +274,7 @@ Consultas.editarEvento = async (evento) => {
         latitud,
         longitud
     }) => `CALL sp_ModificarEvento(${id},"${nombre}","${fechaInicio}","${fechaFin}",${horaInicio},"${horaFin}","${descripcion}","${imagen}", 1,"${visible}","${destacado}","${idSubcat}","${direccion}","${idLocalidad}","${latitud}","${longitud}","${idCategoria}");`;
+    console.log(queryPutEvento(evento));
     const { data: check } = await axios.put(
         apiUrl + "eventos", { params: { evento } }
     );

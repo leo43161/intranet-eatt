@@ -314,7 +314,7 @@ export default function ModalEventos({ show, handleClose, setEventReload, addEve
                 </Form.Group>
                 <Form.Group className="mb-2 col" controlid="descripcion">
                   <Form.Label className='fw-bold h5'>Descripcion</Form.Label>
-                  <Form.Control as="textarea" defaultValue={formData.descripcion} name='descripcion' rows={4} />
+                  <Form.Control onChange={handleChange} as="textarea" defaultValue={formData.descripcion} name='descripcion' rows={4} />
                 </Form.Group>
               </div>
 

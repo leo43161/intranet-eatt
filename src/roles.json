@@ -9,46 +9,16 @@
                 "/carga",
                 "/pagos",
                 "/prestadores",
-                "/agencias",
-                "/eventos"
+                "/eventos",
+                "/agencias"
             ],
             "secciones": [
-                {
-                    "nombre": "Carga",
-                    "icono": "faFileLines",
-                    "ruta": "/carga",
-                    "titulo": "Cargar digedoc"
-                },
-                {
-                    "nombre": "Pagos",
-                    "icono": "faBook",
-                    "ruta": "/pagos",
-                    "titulo": "Pagos registrados"
-                },
-                {
-                    "nombre": "Proveedores",
-                    "icono": "faUserTie",
-                    "ruta": "/proveedores",
-                    "titulo": "Proveedores"
-                },
-                {
-                    "nombre": "Eventos",
-                    "icono": "faCalendarDays",
-                    "ruta": "/eventos",
-                    "titulo": "Eventos"
-                },
-                {
-                    "nombre": "Prestadores",
-                    "icono": "faUserTie",
-                    "ruta": "/prestadores",
-                    "titulo": "Prestadores"
-                },
-                {
-                    "nombre": "Agencias",
-                    "icono": "faUserTie",
-                    "ruta": "/agencias",
-                    "titulo": "Agencias"
-                }
+                "proveedores",
+                "carga",
+                "pagos",
+                "prestadores",
+                "eventos",
+                "agencias"
             ]
         },
         {
@@ -61,24 +31,9 @@
                 "/pagos"
             ],
             "secciones": [
-                {
-                    "nombre": "Carga",
-                    "icono": "faFileLines",
-                    "ruta": "/carga",
-                    "titulo": "Cargar digedoc"
-                },
-                {
-                    "nombre": "Pagos",
-                    "icono": "faBook",
-                    "ruta": "/pagos",
-                    "titulo": "Pagos registrados"
-                },
-                {
-                    "nombre": "Proveedores",
-                    "icono": "faUserTie",
-                    "ruta": "/proveedores",
-                    "titulo": "Proveedores"
-                }
+                "proveedores",
+                "carga",
+                "pagos"
             ]
         },
         {
@@ -86,15 +41,12 @@
             "rol": "prestadores",
             "rutas": [
                 "/",
-                "/prestadores"
+                "/prestadores",
+                "/eventos"
             ],
             "secciones": [
-                {
-                    "nombre": "Prestadores",
-                    "icono": "faUserTie",
-                    "ruta": "/prestadores",
-                    "titulo": "Prestadores"
-                }
+                "prestadores",
+                "eventos"
             ]
         }
     ]

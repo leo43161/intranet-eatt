@@ -1,0 +1,44 @@
+[
+    {
+        "id": "carga",
+        "nombre": "Carga",
+        "icono": "faFileLines",
+        "ruta": "/carga",
+        "titulo": "Cargar digedoc"
+    },
+    {
+        "id": "pagos",
+        "nombre": "Pagos",
+        "icono": "faBook",
+        "ruta": "/pagos",
+        "titulo": "Pagos registrados"
+    },
+    {
+        "id": "proveedores",
+        "nombre": "Proveedores",
+        "icono": "faUserTie",
+        "ruta": "/proveedores",
+        "titulo": "Proveedores"
+    },
+    {
+        "id": "eventos",
+        "nombre": "Eventos",
+        "icono": "faCalendarDays",
+        "ruta": "/eventos",
+        "titulo": "Eventos"
+    },
+    {
+        "id": "prestadores",
+        "nombre": "Prestadores",
+        "icono": "faUserTie",
+        "ruta": "/prestadores",
+        "titulo": "Prestadores"
+    },
+    {
+        "id": "agencias",
+        "nombre": "Agencias",
+        "icono": "faUserTie",
+        "ruta": "/agencias",
+        "titulo": "Agencias"
+    }
+]

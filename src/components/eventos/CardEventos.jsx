@@ -45,7 +45,7 @@ export default function CardEventos({ evento, handleOpenEdit, setEventReload, se
             <div className="d-flex flex-row p-0 overflow-hidden col rounded-top flex-grow-1 border">
                 <div className="col p-3 d-flex flex-column gap-3">
                     <div className="col d-flex justify-content-center flex-column overflow-hidden flex-fill">
-                        <img src={"https://www.institucionalturismotuc.gob.ar/public/img/" + imagen} className="img-fluid" alt="" />
+                        <img src={"http://10.15.15.151/touchvanilla/public/img/eventos-img/" + imagen} className="img-fluid" alt="" />
                     </div>
                     <div>
                         <h4 className="text-clamp-2">{nombre}</h4>

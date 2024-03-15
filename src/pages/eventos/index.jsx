@@ -31,11 +31,9 @@ export default function Eventos({ setLoader }) {
             ...filters,
             [name]: value.trim() !== '' ? value.trim() : null,
         });
-        console.log(filters);
     }
     const handlerFilter = () => {
         setEventReload(true);
-        console.log(filters);
     }
 
     const handleClose = () => {
@@ -77,7 +75,6 @@ export default function Eventos({ setLoader }) {
             const _allEventos = await traerTodoEventos(_filters);
             setTotal(_allEventos.total);
             setEventos(_eventos);
-            console.log(_eventos);
             setLoader(false);
         } catch (error) {
             setLoader(false);

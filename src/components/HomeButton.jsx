@@ -1,8 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBook, faFileLines, faUserTie, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import Link from 'next/link'
+import secciones from '../categorias.json';
 export default function HomeButton({ seccion }) {
-    const { titulo, icono, ruta } = seccion
+    const seccionSelected = secciones.find(_seccion => _seccion.id === seccion)
+    const { titulo, icono, ruta } = seccionSelected
     const icons = { faBook, faFileLines, faUserTie, faCalendarDays };
     return (
         <div className="col">

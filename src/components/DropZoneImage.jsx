@@ -33,7 +33,7 @@ export default function DropZone({ setState, imagen }) {
         <div {...getRootProps()} style={{ border: "dashed 3px #6C757D", height: "350px" }} className="col d-flex flex-column justify-content-center align-items-center rounded overflow-hidden">
             <input {...getInputProps()} />
             {!file && !imagen && <FontAwesomeIcon className="mb-2" size="3x" icon={faFileImage} />}
-            {imagen && <img src={"https://www.institucionalturismotuc.gob.ar/public/img/" + imagen} className='h-100' alt="Previsualización" style={{ objectFit: "contain" }} />}
+            {imagen && !file && <img src={"http://10.15.15.151/touchvanilla/public/img/eventos-img/" + imagen} className='h-100' alt="Previsualización" style={{ objectFit: "contain" }} />}
             {isDragActive ?
                 <h4 className="mb-2 text-center">Suelte aquí</h4> :
                 (

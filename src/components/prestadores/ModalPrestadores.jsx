@@ -84,18 +84,17 @@ export default function ModalPrestadores({
   };
 
   const handleSubmit = async () => {
-    setLoader(true);
     const { idLocalidad, ...restFormData } = formData;
     setError({ isError: false, message: "" });
     const prestadorData = { id: prestador.id, ...restFormData, idLocalidad: parseInt(idLocalidad), actividades: actividades.join(","), activo: formData.activo ? 1 : 0 };
     const requiredFields = ["titulo", "responsable", "telefono", "idLocalidad"];
     const missingFields = requiredFields.filter(field => !prestadorData[field] || prestadorData[field].toString().trim() === "");
-
+    
     if (missingFields.length > 0) {
       setError({ isError: true, message: `Los siguientes campos son obligatorios: ${missingFields.join(", ")}` });
       return;
     }
-
+    
     try {
       const actionMessage = addPrest ? 'crear' : 'editar';
       const result = await Swal.fire({
@@ -106,6 +105,7 @@ export default function ModalPrestadores({
         cancelButtonText: 'Cancelar'
       });
       if (result.isConfirmed) {
+        setLoader(true);
         Swal.showLoading();
         if (addPrest) {
           await crearPrestador(prestadorData);
