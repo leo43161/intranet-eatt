@@ -39,9 +39,20 @@ export default function Header({ setLoggedReload }) {
         <>
             <Navbar bg="dark" variant="dark">
                 <Container>
-                    <div className="d-flex">
-                        <Navbar.Brand href="/">Turismo Tucuman</Navbar.Brand>
-                        <Nav className="me-auto">
+                    <div className="d-flex col-10">
+                        <Navbar.Brand className='col' href="/">Turismo Tucuman</Navbar.Brand>
+                        <Nav className="me-auto flex-grow-1 overflow-auto" style={{ scrollbarWidth: "none" }}>
+                            {seccionesSelected?.map(({ nombre, ruta, icono }, idx) => (
+                                <Nav.Link
+                                    key={idx}
+                                    href={ruta}
+                                    active={router.asPath === ruta}
+                                    className='d-flex align-items-center gap-2'
+                                >
+                                    <FontAwesomeIcon className="ms-2" size="1x" icon={icons[icono]} />
+                                    {nombre}
+                                </Nav.Link>
+                            ))}
                             {seccionesSelected?.map(({ nombre, ruta, icono }, idx) => (
                                 <Nav.Link
                                     key={idx}
@@ -55,7 +66,7 @@ export default function Header({ setLoggedReload }) {
                             ))}
                         </Nav>
                     </div>
-                    <div>
+                    <div className='col ps-4'>
                         <Button className="d-flex align-items-center" variant="danger" onClick={logout}>
                             <span>Cerrar Sesion</span>
                             <FontAwesomeIcon className="ms-2" size="1x" icon={faRightFromBracket} />
