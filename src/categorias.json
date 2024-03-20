@@ -40,5 +40,12 @@
         "icono": "faUserTie",
         "ruta": "/agencias",
         "titulo": "Agencias"
+    },
+    {
+        "id": "actividades",
+        "nombre": "Actividades",
+        "icono": "faPersonHiking",
+        "ruta": "/actividades",
+        "titulo": "Actividades"
     }
 ]

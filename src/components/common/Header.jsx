@@ -6,13 +6,13 @@ import { useRouter } from 'next/router';
 import seccionesArray from '../../categorias.json';
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightFromBracket, faBook, faFileLines, faUserTie, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { faRightFromBracket, faBook, faFileLines, faUserTie, faCalendarDays, faPersonHiking } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 export default function Header({ setLoggedReload }) {
     const router = useRouter();
     const [secciones, setSecciones] = useState([]);
-    const icons = { faBook, faFileLines, faUserTie, faCalendarDays };
+    const icons = { faBook, faFileLines, faUserTie, faCalendarDays, faPersonHiking };
 
     useEffect(() => {
         const fetchRoles = async () => {

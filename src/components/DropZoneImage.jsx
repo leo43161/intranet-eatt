@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImage, faPlus } from '@fortawesome/free-solid-svg-icons';
 
-export default function DropZone({ setState, imagen }) {
+export default function DropZoneImage({ setState, imagen, path }) {
     const [file, setFile] = useState(null);
     const onDrop = useCallback(acceptedFiles => {
         setFile(acceptedFiles[0]);
@@ -30,15 +30,15 @@ export default function DropZone({ setState, imagen }) {
         )
     });
     return (
-        <div {...getRootProps()} style={{ border: "dashed 3px #6C757D", height: "350px" }} className="col d-flex flex-column justify-content-center align-items-center rounded overflow-hidden">
+        <div {...getRootProps()} style={{ border: "dashed 3px #6C757D", height: "350px" }} className="col d-flex flex-column justify-content-center align-items-center rounded overflow-hidden bg-dark">
             <input {...getInputProps()} />
             {!file && !imagen && <FontAwesomeIcon className="mb-2" size="3x" icon={faFileImage} />}
-            {imagen && !file && <img src={"http://10.15.15.151/touchvanilla/public/img/eventos-img/" + imagen} className='h-100' alt="Previsualización" style={{ objectFit: "contain" }} />}
+            {imagen && !file && <img src={"" + path + imagen} className='h-100 w-100' alt="Previsualización" style={{ objectFit: "contain" }} />}
             {isDragActive ?
                 <h4 className="mb-2 text-center">Suelte aquí</h4> :
                 (
                     file ? (
-                        <img src={URL.createObjectURL(file)} className='h-100' alt="Previsualización" style={{ objectFit: "contain" }} />
+                        <img src={URL.createObjectURL(file)} className='h-100 w-100' alt="Previsualización" style={{ objectFit: "contain" }} />
                     ) : !imagen && <h4 className="mb-2 text-center">Arrastre o haga clic aquí</h4>
                 )
             }

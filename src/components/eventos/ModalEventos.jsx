@@ -320,7 +320,7 @@ export default function ModalEventos({ show, handleClose, setEventReload, addEve
 
               <div className='mb-3'>
                 <h5>Imagen</h5>
-                <DropZoneImage setState={setImagen} imagen={formData.imagen}></DropZoneImage>
+                <DropZoneImage setState={setImagen} path={"http://10.15.15.151/touchvanilla/public/img/eventos-img/"} imagen={formData.imagen}></DropZoneImage>
               </div>
 
               <div className='d-flex justify-content-between'>

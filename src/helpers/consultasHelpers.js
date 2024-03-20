@@ -230,21 +230,28 @@ Consultas.crearProv = async (prov) => {
 };
 
 Consultas.crearPrestador = async (prestador) => {
-    const queryPostPrest = ({
-        titulo,
-        responsable,
-        direccion,
-        idLocalidad,
-        telefono,
-        email,
-        web,
-        facebook,
-        instagram,
-        actividades,
-        visible,
-    }) => `CALL sp_InsertarPrestador("${titulo}","${responsable}","${direccion}",${idLocalidad},"${telefono}","${email}","${web}","${facebook}","${instagram}","${actividades}",${visible ? 1 : 0});`;
     const { data: check } = await axios.post(
         apiUrl + "prestadores", { params: { prestador } }
+    );
+    return check;
+};
+
+Consultas.listarActividades = async () => {
+    const { data: actividad } = await axios.get(
+        apiUrl + "actividades"
+    );
+    return actividad;
+};
+
+Consultas.crearActividad = async (actividad) => {
+    const { data: check } = await axios.post(
+        apiUrl + "actividades", { params: { actividad } }
+    );
+    return check;
+};
+Consultas.editarActividad = async (actividad) => {
+    const { data: check } = await axios.put(
+        apiUrl + "actividades", { params: { actividad } }
     );
     return check;
 };

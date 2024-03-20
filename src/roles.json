@@ -10,6 +10,7 @@
                 "/pagos",
                 "/prestadores",
                 "/eventos",
+                "/actividades",
                 "/agencias"
             ],
             "secciones": [
@@ -18,6 +19,7 @@
                 "pagos",
                 "prestadores",
                 "eventos",
+                "actividades",
                 "agencias"
             ]
         },
